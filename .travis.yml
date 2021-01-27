@@ -1,4 +1,4 @@
-# java-library-template .travis.yml
+# gradle-migration-data .travis.yml
 
 language: java
 
