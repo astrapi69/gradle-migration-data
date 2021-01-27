@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69;
+package io.github.astrapi69.gradle.migration.data;
 
 import de.alpharogroup.collections.array.ArrayExtensions;
 import de.alpharogroup.collections.list.ListExtensions;
@@ -40,6 +40,7 @@ import io.github.astrapi69.rename.RenameFileExtensions;
 import io.github.astrapi69.search.FileSearchExtensions;
 import io.github.astrapi69.write.WriteFileExtensions;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,6 +97,13 @@ public class GradleRunConfigurationsCopier
 			.sourceProjectName(sourceProjectName).targetProjectName(targetProjectName)
 			.runConfigurationsInSameFolder(runConfigurationsInSameFolder)
 			.build();
+	}
+
+	public static String getProjectVersionKeyName(String projectName) {
+		String camelCased = WordUtils
+			.capitalizeFully(projectName, new char[]{'-'}).replaceAll("-", "");
+		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
+		return projectVersionKeyName + "Version";
 	}
 
 	public static GradleRunConfigurationsCopier of(
@@ -182,16 +190,16 @@ public class GradleRunConfigurationsCopier
 
 	private void externalizeVersionFromBuildGradle(File targetProjectDir) throws IOException
 	{
-		File buildGradle = new File(targetProjectDir, DependenciesData.BUILD_GRADLE_NAME);
-		File gradleProperties = new File(targetProjectDir, DependenciesData.GRADLE_PROPERTIES_NAME);
+		File buildGradle = new File(targetProjectDir, DependenciesInfo.BUILD_GRADLE_NAME);
+		File gradleProperties = new File(targetProjectDir, DependenciesInfo.GRADLE_PROPERTIES_NAME);
 		FileFactory.newFile(gradleProperties);
 		String dependenciesContent = getDependenciesContent(buildGradle);
 		List<String> stringList = getDependenciesAsStringList(dependenciesContent);
-		DependenciesData dependenciesData = getGradlePropertiesWithVersions(stringList);
-		String newDependenciesContent = getNewDependenciesContent(dependenciesData);
+		DependenciesInfo dependenciesInfo = getGradlePropertiesWithVersions(stringList);
+		String newDependenciesContent = getNewDependenciesContent(dependenciesInfo);
 		String replaceDependenciesContent = replaceDependenciesContent(buildGradle,
-			newDependenciesContent, dependenciesData.getProperties());
-		PropertiesExtensions.export(dependenciesData.getProperties(),
+			newDependenciesContent, dependenciesInfo.getProperties());
+		PropertiesExtensions.export(dependenciesInfo.getProperties(),
 			StreamExtensions.getOutputStream(gradleProperties));
 		WriteFileExtensions.string2File(buildGradle, replaceDependenciesContent);
 	}
@@ -213,7 +221,7 @@ public class GradleRunConfigurationsCopier
 		return buildGradleContent.substring(indexOfStart, indexOfEnd);
 	}
 
-	private DependenciesData getGradlePropertiesWithVersions(List<String> stringList)
+	private DependenciesInfo getGradlePropertiesWithVersions(List<String> stringList)
 	{
 		List<String> versionStrings = ListFactory.newArrayList();
 		Properties properties = new Properties();
@@ -253,7 +261,7 @@ public class GradleRunConfigurationsCopier
 
 		setDefaultProperties(properties);
 
-		return DependenciesData.builder().properties(properties).versionStrings(versionStrings)
+		return DependenciesInfo.builder().properties(properties).versionStrings(versionStrings)
 			.build();
 	}
 
@@ -278,11 +286,11 @@ public class GradleRunConfigurationsCopier
 		properties.setProperty("systemProp.org.gradle.internal.publish.checksums.insecure", "true");
 	}
 
-	private String getNewDependenciesContent(DependenciesData dependenciesData)
+	private String getNewDependenciesContent(DependenciesInfo dependenciesInfo)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("dependencies {").append("\n");
-		dependenciesData.getVersionStrings().forEach(entry -> sb.append(entry).append("\n"));
+		dependenciesInfo.getVersionStrings().forEach(entry -> sb.append(entry).append("\n"));
 		sb.append("}");
 		return sb.toString();
 	}
