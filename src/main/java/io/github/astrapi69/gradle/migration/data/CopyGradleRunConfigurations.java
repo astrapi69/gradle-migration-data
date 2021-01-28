@@ -24,10 +24,10 @@
  */
 package io.github.astrapi69.gradle.migration.data;
 
+import java.io.File;
+
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-
-import java.io.File;
 
 @Data
 @SuperBuilder

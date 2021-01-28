@@ -37,7 +37,9 @@ public class DependenciesInfoTest
 	/**
 	 * Test method for {@link DependenciesInfo}
 	 */
-	@Test @Disabled public void testWithBeanTester()
+	@Test
+	@Disabled
+	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(DependenciesInfo.class);

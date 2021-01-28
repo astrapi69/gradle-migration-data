@@ -22,7 +22,8 @@ No animals were harmed in the making of this library.
 
 # Donations
 
-If you like this library, please consider a donation through paypal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B37J9DZF6G9ZC" target="_blank">
+If you like this library, please consider a donation through
+paypal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B37J9DZF6G9ZC" target="_blank">
 <img src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" alt="PayPal this" title="PayPal – The safer, easier way to pay online!" border="0" />
 </a>
 
@@ -41,14 +42,16 @@ or over flattr:
 
 ## License
 
-The source code comes under the liberal MIT License, making gradle-migration-data great for all types of applications.
+The source code comes under the liberal MIT License, making gradle-migration-data great for all
+types of applications.
 
 ## Maven dependency
 
-Maven dependency is now on sonatype.
-Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~gradle-migration-data~~~) for latest snapshots and releases.
+Maven dependency is now on sonatype. Check
+out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~gradle-migration-data~~~)
+for latest snapshots and releases.
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core 
+Add the following maven dependency to your project `pom.xml` if you want to import the core
 functionality of gradle-migration-data:
 
 Than you can add the dependency to your dependencies:
@@ -77,6 +80,7 @@ You can first define the version in the ext section and add than the following g
 your project `build.gradle` if you want to import the core functionality of gradle-migration-data:
 
 define version in file gradle.properties
+
 ```
 gradleMigrationDataVersion=1
 ```
@@ -109,22 +113,30 @@ Release version numbers will be incremented in the following format:
 
 `<major>.<minor>.<patch>`
 
-For detailed information on versioning you can visit the [wiki page](https://github.com/lightblueseas/mvn-parent-projects/wiki/Semantic-Versioning).
+For detailed information on versioning you can visit
+the [wiki page](https://github.com/lightblueseas/mvn-parent-projects/wiki/Semantic-Versioning).
 
 ## Want to Help and improve it? ###
 
-The source code for gradle-migration-data are on GitHub. Please feel free to fork and send pull requests!
+The source code for gradle-migration-data are on GitHub. Please feel free to fork and send pull
+requests!
 
-Create your own fork of [astrapi69/gradle-migration-data/fork](https://github.com/astrapi69/gradle-migration-data/fork)
+Create your own fork
+of [astrapi69/gradle-migration-data/fork](https://github.com/astrapi69/gradle-migration-data/fork)
 
-To share your changes, [submit a pull request](https://github.com/astrapi69/gradle-migration-data/pull/new/develop).
+To share your
+changes, [submit a pull request](https://github.com/astrapi69/gradle-migration-data/pull/new/develop)
+.
 
 Don't forget to add new units tests on your changes.
 
 ## Contacting the Developers
 
-Do not hesitate to contact the gradle-migration-data developers with your questions, concerns, comments, bug reports, or feature requests.
-- Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/gradle-migration-data/issues).
+Do not hesitate to contact the gradle-migration-data developers with your questions, concerns,
+comments, bug reports, or feature requests.
+
+- Feature requests, questions and bug reports can be reported at
+  the [issues page](https://github.com/astrapi69/gradle-migration-data/issues).
 
 ## Similar projects
 

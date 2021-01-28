@@ -24,11 +24,11 @@
  */
 package io.github.astrapi69.gradle.migration.data;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.commons.text.WordUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The unit test class for the class {@link GradleRunConfigurationsCopier}
@@ -39,7 +39,8 @@ public class GradleRunConfigurationsCopierTest
 	/**
 	 * Test method for {@link GradleRunConfigurationsCopier#getProjectVersionKeyName(String)}
 	 */
-	@Test void getProjectVersionKeyName()
+	@Test
+	void getProjectVersionKeyName()
 	{
 		String actual;
 		String expected;
@@ -49,8 +50,8 @@ public class GradleRunConfigurationsCopierTest
 
 		input = templateProjectName;
 		expected = "JavaLibraryTemplate";
-		assertEquals(expected, WordUtils
-			.capitalizeFully(input, new char[]{'-'}).replaceAll("-", ""));
+		assertEquals(expected,
+			WordUtils.capitalizeFully(input, new char[] { '-' }).replaceAll("-", ""));
 
 		actual = GradleRunConfigurationsCopier.getProjectVersionKeyName(input);
 		expected = "javaLibraryTemplateVersion";
@@ -85,8 +86,7 @@ public class GradleRunConfigurationsCopierTest
 		onlyRunConfigurations = true;
 		copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
 			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
-				sourceProjectDirNamePrefix, targetProjectDirNamePrefix,
-				onlyRunConfigurations,
+				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, onlyRunConfigurations,
 				runConfigurationsInSameFolder);
 		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 	}

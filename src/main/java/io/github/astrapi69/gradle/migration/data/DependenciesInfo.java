@@ -24,14 +24,14 @@
  */
 package io.github.astrapi69.gradle.migration.data;
 
+import java.io.File;
+import java.util.List;
+import java.util.Properties;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-
-import java.io.File;
-import java.util.List;
-import java.util.Properties;
 
 @Data
 @Builder
