@@ -25,6 +25,7 @@
 package io.github.astrapi69.gradle.migration.data;
 
 import org.apache.commons.text.WordUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,4 +56,39 @@ public class GradleRunConfigurationsCopierTest
 		expected = "javaLibraryTemplateVersion";
 		assertEquals(expected, actual);
 	}
+
+	/**
+	 * Test method for copy run configurations file from a source project to a target project and
+	 * modifies its content
+	 */
+	@Test
+	@Disabled
+	public void testCopyIdeaRunConfigurations()
+	{
+		String sourceProjectDirNamePrefix;
+		String targetProjectDirNamePrefix;
+		CopyGradleRunConfigurations copyGradleRunConfigurationsData;
+		boolean onlyRunConfigurations;
+		boolean runConfigurationsInSameFolder;
+		String sourceProjectName;
+		String targetProjectName;
+		String sourceGithubUser;
+		String targetGithubUser;
+		// copy
+		sourceProjectName = "gradle-migration-data";
+		targetProjectName = "message-mail-data";
+		sourceGithubUser = "astrapi69";
+		targetGithubUser = "astrapi69";
+		sourceProjectDirNamePrefix = "/home/astrapi69/dev/github/" + sourceGithubUser + "/";
+		targetProjectDirNamePrefix = "/home/astrapi69/dev/github/" + targetGithubUser + "/";
+		runConfigurationsInSameFolder = false;
+		onlyRunConfigurations = true;
+		copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
+			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
+				sourceProjectDirNamePrefix, targetProjectDirNamePrefix,
+				onlyRunConfigurations,
+				runConfigurationsInSameFolder);
+		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
+	}
+
 }
