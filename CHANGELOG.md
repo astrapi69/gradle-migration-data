@@ -1,10 +1,11 @@
 ## Change log
 ----------------------
 
-Version 1.1-SNAPSHOT
+Version 1.1
 -------------
 CHANGED:
 
+- downgrade to openjdk8
 - update gradle to new version 7.1
 - update gradle-plugin dependency of gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin to new version 0.16.1
 
