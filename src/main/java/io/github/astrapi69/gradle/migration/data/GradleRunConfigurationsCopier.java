@@ -35,11 +35,11 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
-import de.alpharogroup.collections.array.ArrayExtensions;
-import de.alpharogroup.collections.list.ListExtensions;
-import de.alpharogroup.collections.list.ListFactory;
-import de.alpharogroup.collections.properties.PropertiesExtensions;
-import de.alpharogroup.string.StringExtensions;
+import io.github.astrapi69.collections.array.ArrayExtensions;
+import io.github.astrapi69.collections.list.ListExtensions;
+import io.github.astrapi69.collections.list.ListFactory;
+import io.github.astrapi69.collections.properties.PropertiesExtensions;
+import io.github.astrapi69.string.StringExtensions;
 import io.github.astrapi69.copy.CopyFileExtensions;
 import io.github.astrapi69.create.FileFactory;
 import io.github.astrapi69.exceptions.FileDoesNotExistException;
