@@ -27,7 +27,6 @@ package io.github.astrapi69.gradle.migration.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.text.WordUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**

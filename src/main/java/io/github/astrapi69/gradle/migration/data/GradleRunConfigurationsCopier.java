@@ -39,7 +39,6 @@ import io.github.astrapi69.collections.array.ArrayExtensions;
 import io.github.astrapi69.collections.list.ListExtensions;
 import io.github.astrapi69.collections.list.ListFactory;
 import io.github.astrapi69.collections.properties.PropertiesExtensions;
-import io.github.astrapi69.string.StringExtensions;
 import io.github.astrapi69.copy.CopyFileExtensions;
 import io.github.astrapi69.create.FileFactory;
 import io.github.astrapi69.exceptions.FileDoesNotExistException;
@@ -49,6 +48,7 @@ import io.github.astrapi69.modify.ModifyFileExtensions;
 import io.github.astrapi69.read.ReadFileExtensions;
 import io.github.astrapi69.rename.RenameFileExtensions;
 import io.github.astrapi69.search.FileSearchExtensions;
+import io.github.astrapi69.string.StringExtensions;
 import io.github.astrapi69.write.WriteFileExtensions;
 
 public class GradleRunConfigurationsCopier
