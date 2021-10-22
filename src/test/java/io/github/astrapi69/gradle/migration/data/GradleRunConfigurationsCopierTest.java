@@ -77,14 +77,14 @@ public class GradleRunConfigurationsCopierTest
 		String targetGithubUser;
 		// copy
 		sourceProjectName = "gradle-migration-data";
-		targetProjectName = "design-patterns";
+		targetProjectName = "poi-worker";
 		sourceGithubUser = "astrapi69";
 		targetGithubUser = "lightblueseas";
 		// targetGithubUser = "astrapi69";
 		sourceProjectDirNamePrefix = "/home/astrapi69/dev/github/" + sourceGithubUser + "/";
 		targetProjectDirNamePrefix = "/home/astrapi69/dev/github/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
-		onlyRunConfigurations = true;
+		onlyRunConfigurations = false;
 		copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
 			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
 				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, onlyRunConfigurations,

@@ -4,8 +4,20 @@
 Version 1.2-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update gradle to new version 7.2
+- update of dependency lombok to new version 1.18.22
+- update of dependency silly-collections to new version 18
+- update of dependency silly-io to new version 1.6
+- update of dependency silly-strings to new version 8
+- update of dependency file-worker to new version 5.10
+- update of test dependency throw-able to new version 1.7
+- update of test dependency junit-jupiter-api to new version 5.8.1
+
 Version 1.1
 -------------
+
 CHANGED:
 
 - downgrade to openjdk8

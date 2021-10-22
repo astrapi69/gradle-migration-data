@@ -39,6 +39,7 @@ import lombok.experimental.FieldDefaults;
 public class DependenciesInfo
 {
 	public static final String JAVA_LIBRARY_TEMPLATE_NAME = "java-library-template";
+	public static final String SPRING_BOOT_TEMPLATE_NAME = "spring-boot-template";
 	public static final String SETTINGS_GRADLE_FILENAME = "settings.gradle";
 	public static final String BUILD_GRADLE_NAME = "build.gradle";
 	public static final String GRADLE_PROPERTIES_NAME = "gradle.properties";
