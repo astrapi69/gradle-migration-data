@@ -1,6 +1,13 @@
 ## Change log
 ----------------------
 
+Version 1.2.1
+-------------
+
+CHANGED:
+
+- update of dependency silly-strings to new version 8.1
+
 Version 1.2
 -------------
 
