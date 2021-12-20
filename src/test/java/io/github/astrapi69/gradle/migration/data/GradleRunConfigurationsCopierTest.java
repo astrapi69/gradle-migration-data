@@ -63,7 +63,7 @@ public class GradleRunConfigurationsCopierTest
 	 * modifies its content
 	 */
 	@Test
-	@Disabled
+//	@Disabled
 	public void testCopyIdeaRunConfigurations()
 	{
 		String sourceProjectDirNamePrefix;
@@ -77,10 +77,10 @@ public class GradleRunConfigurationsCopierTest
 		String targetGithubUser;
 		// copy
 		sourceProjectName = "gradle-migration-data";
-		targetProjectName = "poi-worker";
+		targetProjectName = "jobj-copy";
 		sourceGithubUser = "astrapi69";
-		targetGithubUser = "lightblueseas";
-		// targetGithubUser = "astrapi69";
+//		targetGithubUser = "lightblueseas";
+		 targetGithubUser = "astrapi69";
 		sourceProjectDirNamePrefix = "/home/astrapi69/dev/github/" + sourceGithubUser + "/";
 		targetProjectDirNamePrefix = "/home/astrapi69/dev/github/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
