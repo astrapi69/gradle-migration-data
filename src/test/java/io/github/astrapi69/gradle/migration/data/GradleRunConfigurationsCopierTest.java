@@ -62,7 +62,7 @@ public class GradleRunConfigurationsCopierTest
 	 * modifies its content
 	 */
 	@Test
-//	@Disabled
+	// @Disabled
 	public void testCopyIdeaRunConfigurations()
 	{
 		String sourceProjectDirNamePrefix;
