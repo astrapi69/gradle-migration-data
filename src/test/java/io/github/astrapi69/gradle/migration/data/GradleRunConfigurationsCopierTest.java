@@ -27,7 +27,6 @@ package io.github.astrapi69.gradle.migration.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.text.WordUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -77,10 +76,10 @@ public class GradleRunConfigurationsCopierTest
 		String targetGithubUser;
 		// copy
 		sourceProjectName = "gradle-migration-data";
-		targetProjectName = "jobj-copy";
+		targetProjectName = "auth";
 		sourceGithubUser = "astrapi69";
-//		targetGithubUser = "lightblueseas";
-		 targetGithubUser = "astrapi69";
+		// targetGithubUser = "lightblueseas";
+		targetGithubUser = "astrapi69";
 		sourceProjectDirNamePrefix = "/home/astrapi69/dev/github/" + sourceGithubUser + "/";
 		targetProjectDirNamePrefix = "/home/astrapi69/dev/github/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
