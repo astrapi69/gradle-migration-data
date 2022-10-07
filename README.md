@@ -31,23 +31,23 @@ functionality of gradle-migration-data:
 
 Than you can add the dependency to your dependencies:
 
-	<properties>
-			...
-		<!-- gradle-migration-data version -->
-		<gradle-migration-data.version>1.2.1</gradle-migration-data.version>
-			...
-	</properties>
-			...
-		<dependencies>
-			...
-			<!-- gradle-migration-data DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.astrapi69</groupId>
-				<artifactId>gradle-migration-data</artifactId>
-				<version>${gradle-migration-data.version}</version>
-			</dependency>
-			...
-		</dependencies>
+    <properties>
+            ...
+        <!-- gradle-migration-data version -->
+        <gradle-migration-data.version>1.3</gradle-migration-data.version>
+            ...
+    </properties>
+            ...
+        <dependencies>
+            ...
+            <!-- gradle-migration-data DEPENDENCY -->
+            <dependency>
+                <groupId>io.github.astrapi69</groupId>
+                <artifactId>gradle-migration-data</artifactId>
+                <version>${gradle-migration-data.version}</version>
+            </dependency>
+            ...
+        </dependencies>
 
 ## gradle dependency
 
@@ -57,16 +57,16 @@ your project `build.gradle` if you want to import the core functionality of grad
 define version in file gradle.properties
 
 ```
-gradleMigrationDataVersion=1.2.1
+gradleMigrationDataVersion=1.3
 ```
 
 or in build.gradle ext area
 
 ```
 ext {
-			...
-    gradleMigrationDataVersion = "1.2.1"
-			...
+            ...
+    gradleMigrationDataVersion = "1.3"
+            ...
 }
 ```
 
@@ -74,9 +74,9 @@ and then add the dependency to the dependencies area
 
 ```
 dependencies {
-			...
+            ...
     implementation("io.github.astrapi69:gradle-migration-data:$gradleMigrationDataVersion")
-			...
+            ...
 }
 ```
 
@@ -181,4 +181,3 @@ comments, bug reports, or feature requests.
 ## Similar projects
 
 ## Credits
-

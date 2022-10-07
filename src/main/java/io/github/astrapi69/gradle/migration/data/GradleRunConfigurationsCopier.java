@@ -32,17 +32,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
+import lombok.extern.java.Log;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
-import io.github.astrapi69.collections.array.ArrayExtensions;
-import io.github.astrapi69.collections.list.ListExtensions;
-import io.github.astrapi69.collections.list.ListFactory;
-import io.github.astrapi69.collections.properties.PropertiesExtensions;
+import io.github.astrapi69.collection.array.ArrayExtensions;
+import io.github.astrapi69.collection.list.ListExtensions;
+import io.github.astrapi69.collection.list.ListFactory;
+import io.github.astrapi69.collection.properties.PropertiesExtensions;
 import io.github.astrapi69.file.copy.CopyFileExtensions;
 import io.github.astrapi69.file.create.FileFactory;
-import io.github.astrapi69.file.exceptions.FileDoesNotExistException;
-import io.github.astrapi69.file.exceptions.FileIsADirectoryException;
+import io.github.astrapi69.file.exception.FileDoesNotExistException;
+import io.github.astrapi69.file.exception.FileIsADirectoryException;
 import io.github.astrapi69.file.modify.ModifyFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.rename.RenameFileExtensions;
@@ -51,6 +53,7 @@ import io.github.astrapi69.file.write.WriteFileExtensions;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
+@Log
 public class GradleRunConfigurationsCopier
 {
 
@@ -229,63 +232,47 @@ public class GradleRunConfigurationsCopier
 		Properties properties = new Properties();
 		stringList.forEach(entry -> {
 			String dependency = StringUtils.substringBetween(entry, "'");
-			String[] strings = dependency.split(":");
-			String group = strings[0];
-			String artifact = strings[1];
-			String version = strings[2];
-			String[] split = artifact.split("-");
-			StringBuilder sb = new StringBuilder();
-			if (1 < split.length)
+			if (dependency != null)
 			{
-				for (int i = 0; i < split.length; i++)
+				String[] strings = dependency.split(":");
+				String group = strings[0];
+				String artifact = strings[1];
+				String version = strings[2];
+				String[] split = artifact.split("-");
+				StringBuilder sb = new StringBuilder();
+				if (1 < split.length)
 				{
-					if (i == 0)
+					for (int i = 0; i < split.length; i++)
 					{
-						sb.append(split[i]);
-						continue;
+						if (i == 0)
+						{
+							sb.append(split[i]);
+							continue;
+						}
+						String artifactPart = split[i];
+						String artifactPartFirstCharacterToUpperCase = StringExtensions
+							.firstCharacterToUpperCase(artifactPart);
+						sb.append(artifactPartFirstCharacterToUpperCase);
 					}
-					String artifactPart = split[i];
-					String artifactPartFirstCharacterToUpperCase = StringExtensions
-						.firstCharacterToUpperCase(artifactPart);
-					sb.append(artifactPartFirstCharacterToUpperCase);
 				}
+				else
+				{
+					sb.append(split[0]);
+				}
+				String propertiesKey = sb.toString().trim() + "Version";
+				properties.setProperty(propertiesKey, version);
+				String newDependency = group + ":" + artifact + ":$" + propertiesKey;
+				String newEntry = StringUtils.replace(entry, dependency, newDependency);
+				versionStrings.add(newEntry);
 			}
 			else
 			{
-				sb.append(split[0]);
+				log.info("dependency for entry" + entry + " is null");
 			}
-			String propertiesKey = sb.toString().trim() + "Version";
-			properties.setProperty(propertiesKey, version);
-			String newDependency = group + ":" + artifact + ":$" + propertiesKey;
-			String newEntry = StringUtils.replace(entry, dependency, newDependency);
-			versionStrings.add(newEntry);
 		});
-
-		setDefaultProperties(properties);
 
 		return DependenciesInfo.builder().properties(properties).versionStrings(versionStrings)
 			.build();
-	}
-
-	private void setDefaultProperties(Properties properties)
-	{
-		properties.setProperty("projectSourceCompatibility", "1.8");
-		properties.setProperty("projectHolderUsername", "astrapi69");
-		properties.setProperty("projectDescription", "");
-		properties.setProperty("projectScmProviderDomain", "github.com");
-		properties.setProperty("projectScmProviderUrl", "https://github.com/");
-		properties.setProperty("projectLicenseName", "MIT License");
-		properties.setProperty("projectLicenseUrl",
-			"http://www.opensource.org/licenses/mit-license.php");
-		properties.setProperty("projectLicenseDistribution", "repo");
-		properties.setProperty("projectOrganizationName", "Alpha Ro Group UG (h.b.)");
-		properties.setProperty("projectOrganizationUrl", "http://www.alpharogroup.de/");
-		properties.setProperty("projectIssueManagementSystem", "GitHub");
-		properties.setProperty("projectRepositoriesReleasesRepoUrl",
-			"https://oss.sonatype.org/service/local/staging/deploy/maven2/");
-		properties.setProperty("projectRepositoriesSnapshotsRepoUrl",
-			"https://oss.sonatype.org/content/repositories/snapshots");
-		properties.setProperty("systemProp.org.gradle.internal.publish.checksums.insecure", "true");
 	}
 
 	private String getNewDependenciesContent(DependenciesInfo dependenciesInfo)

@@ -27,7 +27,6 @@ package io.github.astrapi69.gradle.migration.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.text.WordUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -63,7 +62,7 @@ public class GradleRunConfigurationsCopierTest
 	 * modifies its content
 	 */
 	@Test
-	@Disabled
+	// @Disabled
 	public void testCopyIdeaRunConfigurations()
 	{
 		String sourceProjectDirNamePrefix;
@@ -77,7 +76,7 @@ public class GradleRunConfigurationsCopierTest
 		String targetGithubUser;
 		// copy
 		sourceProjectName = "gradle-migration-data";
-		targetProjectName = "poi-worker";
+		targetProjectName = "email-tails";
 		sourceGithubUser = "astrapi69";
 		targetGithubUser = "lightblueseas";
 		// targetGithubUser = "astrapi69";
