@@ -6,12 +6,15 @@ Version 1.3-SNAPSHOT
 
 CHANGED:
 
-- update gradle to new version 7.4
+- update to jdk version 11
+- update gradle to new version 7.5.1
 - update gradle-plugin dependency of com.github.ben-manes:gradle-versions-plugin to new version 0.42.0
-- new gradle plugin dependency of 'com.diffplug.spotless:spotless-plugin-gradle' to minor version 6.3.0
-- update of dependency silly-io to new version 1.8
-- update of dependency file-worker to new version 8.2
-- update of test dependency junit-jupiter-api to new version 5.8.2
+- new gradle plugin dependency of 'com.diffplug.spotless:spotless-plugin-gradle' to minor version 6.11.0
+- update of dependency silly-strings to new version 8.2
+- update of dependency silly-io to new version 2.1
+- update of dependency file-worker to new version 11.3
+- update of test dependency junit-jupiter-api to new version 5.9.1
+- update of test dependency throwable to new version 2.3
 
 Version 1.2.1
 -------------

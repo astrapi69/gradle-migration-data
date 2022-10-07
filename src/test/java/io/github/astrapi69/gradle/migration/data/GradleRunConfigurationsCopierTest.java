@@ -76,10 +76,10 @@ public class GradleRunConfigurationsCopierTest
 		String targetGithubUser;
 		// copy
 		sourceProjectName = "gradle-migration-data";
-		targetProjectName = "auth";
+		targetProjectName = "email-tails";
 		sourceGithubUser = "astrapi69";
-		// targetGithubUser = "lightblueseas";
-		targetGithubUser = "astrapi69";
+		targetGithubUser = "lightblueseas";
+		// targetGithubUser = "astrapi69";
 		sourceProjectDirNamePrefix = "/home/astrapi69/dev/github/" + sourceGithubUser + "/";
 		targetProjectDirNamePrefix = "/home/astrapi69/dev/github/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
