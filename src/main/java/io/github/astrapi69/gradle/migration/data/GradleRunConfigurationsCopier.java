@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
-import lombok.extern.java.Log;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -52,6 +50,7 @@ import io.github.astrapi69.file.search.FileSearchExtensions;
 import io.github.astrapi69.file.write.WriteFileExtensions;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
+import lombok.extern.java.Log;
 
 @Log
 public class GradleRunConfigurationsCopier
@@ -220,7 +219,7 @@ public class GradleRunConfigurationsCopier
 
 	public String getDependenciesContent(File buildGradle) throws IOException
 	{
-		String buildGradleContent = ReadFileExtensions.readFromFile(buildGradle);
+		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
 		int indexOfStart = buildGradleContent.indexOf("dependencies {");
 		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
 		return buildGradleContent.substring(indexOfStart, indexOfEnd);
@@ -309,7 +308,7 @@ public class GradleRunConfigurationsCopier
 	public String replaceDependenciesContent(File buildGradle, String newDependenciesContent,
 		Properties gradleProperties) throws IOException
 	{
-		String buildGradleContent = ReadFileExtensions.readFromFile(buildGradle);
+		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
 		int indexOfStart = buildGradleContent.indexOf("dependencies {");
 		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
 		String dependencies = buildGradleContent.substring(indexOfStart, indexOfEnd);
