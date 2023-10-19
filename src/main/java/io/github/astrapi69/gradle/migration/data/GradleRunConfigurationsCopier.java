@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2023 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -50,12 +51,10 @@ import io.github.astrapi69.file.search.FileSearchExtensions;
 import io.github.astrapi69.file.write.WriteFileExtensions;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
-import lombok.extern.java.Log;
 
-@Log
 public class GradleRunConfigurationsCopier
 {
-
+	Logger log = Logger.getLogger(GradleRunConfigurationsCopier.class.getName());
 	private final CopyGradleRunConfigurations copyGradleRunConfigurations;
 
 	private GradleRunConfigurationsCopier(CopyGradleRunConfigurations copyGradleRunConfigurations)
