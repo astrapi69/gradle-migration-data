@@ -48,14 +48,14 @@ import io.github.astrapi69.file.modify.ModifyFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.rename.RenameFileExtensions;
 import io.github.astrapi69.file.search.FileSearchExtensions;
-import io.github.astrapi69.file.write.WriteFileExtensions;
+import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
 public class GradleRunConfigurationsCopier
 {
-	Logger log = Logger.getLogger(GradleRunConfigurationsCopier.class.getName());
 	private final CopyGradleRunConfigurations copyGradleRunConfigurations;
+	private final Logger log = Logger.getLogger(GradleRunConfigurationsCopier.class.getName());
 
 	private GradleRunConfigurationsCopier(CopyGradleRunConfigurations copyGradleRunConfigurations)
 	{
@@ -204,7 +204,7 @@ public class GradleRunConfigurationsCopier
 			newDependenciesContent, dependenciesInfo.getProperties());
 		PropertiesExtensions.export(dependenciesInfo.getProperties(),
 			StreamExtensions.getOutputStream(gradleProperties));
-		WriteFileExtensions.string2File(buildGradle, replaceDependenciesContent);
+		StoreFileExtensions.toFile(buildGradle, dependenciesContent);
 	}
 
 	private List<String> getDependenciesAsStringList(String dependenciesContent)
