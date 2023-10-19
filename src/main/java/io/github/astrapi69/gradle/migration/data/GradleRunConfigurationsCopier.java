@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2023 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -31,8 +31,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
-
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -49,15 +48,14 @@ import io.github.astrapi69.file.modify.ModifyFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.rename.RenameFileExtensions;
 import io.github.astrapi69.file.search.FileSearchExtensions;
-import io.github.astrapi69.file.write.WriteFileExtensions;
+import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
-@Log
 public class GradleRunConfigurationsCopier
 {
-
 	private final CopyGradleRunConfigurations copyGradleRunConfigurations;
+	private final Logger log = Logger.getLogger(GradleRunConfigurationsCopier.class.getName());
 
 	private GradleRunConfigurationsCopier(CopyGradleRunConfigurations copyGradleRunConfigurations)
 	{
@@ -206,7 +204,7 @@ public class GradleRunConfigurationsCopier
 			newDependenciesContent, dependenciesInfo.getProperties());
 		PropertiesExtensions.export(dependenciesInfo.getProperties(),
 			StreamExtensions.getOutputStream(gradleProperties));
-		WriteFileExtensions.string2File(buildGradle, replaceDependenciesContent);
+		StoreFileExtensions.toFile(buildGradle, dependenciesContent);
 	}
 
 	private List<String> getDependenciesAsStringList(String dependenciesContent)
@@ -220,7 +218,7 @@ public class GradleRunConfigurationsCopier
 
 	public String getDependenciesContent(File buildGradle) throws IOException
 	{
-		String buildGradleContent = ReadFileExtensions.readFromFile(buildGradle);
+		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
 		int indexOfStart = buildGradleContent.indexOf("dependencies {");
 		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
 		return buildGradleContent.substring(indexOfStart, indexOfEnd);
@@ -309,7 +307,7 @@ public class GradleRunConfigurationsCopier
 	public String replaceDependenciesContent(File buildGradle, String newDependenciesContent,
 		Properties gradleProperties) throws IOException
 	{
-		String buildGradleContent = ReadFileExtensions.readFromFile(buildGradle);
+		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
 		int indexOfStart = buildGradleContent.indexOf("dependencies {");
 		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
 		String dependencies = buildGradleContent.substring(indexOfStart, indexOfEnd);

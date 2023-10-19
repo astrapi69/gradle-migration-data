@@ -1,6 +1,23 @@
 ## Change log
 ----------------------
 
+Version 2
+-------------
+
+CHANGED:
+
+- update to jdk version 17
+- update gradle to new version 8.4
+- update of dependency lombok to new version 1.18.30
+- update gradle-plugin dependency of com.github.ben-manes:gradle-versions-plugin to new version 0.49.0
+- new gradle plugin dependency of 'com.diffplug.spotless:spotless-plugin-gradle' to minor version 6.22.0
+- update of dependency silly-collections to new version 27
+- update of dependency silly-io to new version 2.2
+- update of dependency silly-strings to new version 9
+- update of dependency file-worker to new version 17.1
+- update of test dependency commons-lang3 to new version 3.13.0
+- update of test dependency junit-jupiter-api to new version 5.10.0
+
 Version 1.3
 -------------
 

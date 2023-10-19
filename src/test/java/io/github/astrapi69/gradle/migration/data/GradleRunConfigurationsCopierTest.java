@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2023 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@ package io.github.astrapi69.gradle.migration.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.text.WordUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -62,7 +63,7 @@ public class GradleRunConfigurationsCopierTest
 	 * modifies its content
 	 */
 	@Test
-	// @Disabled
+	@Disabled
 	public void testCopyIdeaRunConfigurations()
 	{
 		String sourceProjectDirNamePrefix;
@@ -80,8 +81,8 @@ public class GradleRunConfigurationsCopierTest
 		sourceGithubUser = "astrapi69";
 		targetGithubUser = "lightblueseas";
 		// targetGithubUser = "astrapi69";
-		sourceProjectDirNamePrefix = "/home/astrapi69/dev/github/" + sourceGithubUser + "/";
-		targetProjectDirNamePrefix = "/home/astrapi69/dev/github/" + targetGithubUser + "/";
+		sourceProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + sourceGithubUser + "/";
+		targetProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
 		onlyRunConfigurations = false;
 		copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
