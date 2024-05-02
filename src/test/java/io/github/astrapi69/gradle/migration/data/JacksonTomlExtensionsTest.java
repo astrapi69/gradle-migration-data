@@ -19,6 +19,7 @@ import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.collection.map.MapFactory;
 import io.github.astrapi69.collection.properties.PropertiesExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import lombok.NonNull;
 
 /**
  * The unit test class for the class {@link JacksonTomlExtensions}
@@ -54,20 +55,29 @@ public class JacksonTomlExtensionsTest
 		File gradlePropertiesFile = PathFinder.getRelativePath(PathFinder.getProjectDirectory(),
 			"gradle.properties");
 		assertTrue(gradlePropertiesFile.exists());
+		// 1. Load all version from gradle.properties
+		Map<String, String> versionMap = getVersionMap(gradlePropertiesFile, "Version");
+		System.out.println(versionMap);
+		// 2. read and load all dependencies from dependencies.gradle file
+		// to implement
+		// 3. read and load all plugins from build.gradle file
+		// to implement
+		// 4. create toml file and combine all information together
+	}
+
+	public static Map<String, String> getVersionMap(final @NonNull File gradlePropertiesFile,
+		String keyVersionSuffix) throws IOException
+	{
 		Properties properties = PropertiesExtensions.loadProperties(gradlePropertiesFile);
-		List<String> versionKeys = ListFactory.newArrayList();
 		Map<String, String> versionMap = MapFactory.newLinkedHashMap();
 		properties.keySet().stream().forEach(e -> {
 			String versionKey = e.toString();
-			if (versionKey.endsWith("Version"))
+			if (versionKey.endsWith(keyVersionSuffix))
 			{
-				versionKeys.add(versionKey);
 				versionMap.put(versionKey, properties.getProperty(versionKey));
 			}
 		});
-		System.out.println(versionMap);
-
-
+		return versionMap;
 	}
 
 	/**
