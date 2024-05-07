@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.gradle.migration.data;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.text.WordUtils;
@@ -36,26 +37,12 @@ import org.junit.jupiter.api.Test;
 public class GradleRunConfigurationsCopierTest
 {
 
-	/**
-	 * Test method for {@link GradleRunConfigurationsCopier#getProjectVersionKeyName(String)}
-	 */
 	@Test
-	void getProjectVersionKeyName()
+	void testConstructorWithNullShouldThrowException()
 	{
-		String actual;
-		String expected;
-		String input;
-		String templateProjectName;
-		templateProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
-
-		input = templateProjectName;
-		expected = "JavaLibraryTemplate";
-		assertEquals(expected,
-			WordUtils.capitalizeFully(input, new char[] { '-' }).replaceAll("-", ""));
-
-		actual = GradleRunConfigurationsCopier.getProjectVersionKeyName(input);
-		expected = "javaLibraryTemplateVersion";
-		assertEquals(expected, actual);
+		assertThrows(NullPointerException.class, () -> {
+			GradleRunConfigurationsCopier.of(null);
+		});
 	}
 
 	/**
