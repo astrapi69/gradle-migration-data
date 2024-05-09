@@ -1,0 +1,52 @@
+[versions]
+commons-lang3-version = "3.14.0"
+commons-text-version = "1.12.0"
+file-worker-version = "17.1"
+gradle-plugin-version-catalog-update-version = "0.8.4"
+gradle-versions-plugin-version = "0.51.0"
+grgit-gradle-version = "5.2.2"
+jackson-dataformat-toml-version = "2.17.1"
+junit-jupiter-version = "5.11.0-M1"
+junit-platform-launcher-version = "1.11.0-M1"
+license-gradle-plugin-version = "0.16.1"
+lombok-plugin-version = "8.6"
+lombok-version = "1.18.32"
+meanbean-version = "3.0.0-M9"
+mockito-core-version = "5.11.0"
+silly-bean-version = "2"
+silly-collection-version = "27"
+silly-io-version = "3"
+silly-strings-version = "9"
+spotless-plugin-gradle-version = "6.25.0"
+throwable-version = "2.3"
+
+[libraries]
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3-version" }
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text-version" }
+file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
+jackson-dataformat-toml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-toml", version.ref = "jackson-dataformat-toml-version" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher-version" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok-version" }
+meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-core-version" }
+silly-bean = { module = "io.github.astrapi69:silly-bean", version.ref = "silly-bean-version" }
+silly-collection = { module = "io.github.astrapi69:silly-collection", version.ref = "silly-collection-version" }
+silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
+silly-strings = { module = "io.github.astrapi69:silly-strings", version.ref = "silly-strings-version" }
+throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
+
+[bundles]
+unit-testing = [
+    "junit-jupiter",
+    "meanbean",
+    "mockito-core",
+]
+
+[plugins]
+gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions-plugin-version" }
+grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "grgit-gradle-version" }
+license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "license-gradle-plugin-version" }
+lombok-plugin = { id = "io.freefair.lombok", version.ref = "lombok-plugin-version" }
+spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "spotless-plugin-gradle-version" }
+versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }

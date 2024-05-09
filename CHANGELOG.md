@@ -1,6 +1,26 @@
 ## Change log
 ----------------------
 
+Version 2.1
+-------------
+
+ADDED:
+
+- new class DependenciesExtensions for handling with the dependencies
+- new class DependencyInfo for dependency information
+- new file libs.versions.toml for automate version updates
+- new gradle plugin version-catalog-update for automate version updates
+
+CHANGED:
+
+- update gradle to new version 8.8-rc-1
+- update of dependency lombok to new version 1.18.32
+- update gradle-plugin dependency of com.github.ben-manes:gradle-versions-plugin to new version 0.51.0
+- new gradle plugin dependency of 'com.diffplug.spotless:spotless-plugin-gradle' to minor version 6.25.0
+- update of dependency silly-io to new version 3
+- update of test dependency commons-lang3 to new version 3.14.0
+- update of test dependency junit-jupiter-api to new version 5.11.0-M1
+
 Version 2
 -------------
 
