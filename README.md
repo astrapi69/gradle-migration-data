@@ -20,6 +20,39 @@ If you like this project put a ⭐ and donate
 
 No animals were harmed in the making of this library.
 
+## gradle dependency
+
+Replace the variable ${latestVersion} with the current latest version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data)
+
+You can first define the version in the ext section and add than the following gradle dependency to
+your project `build.gradle` if you want to import the core functionality of gradle-migration-data:
+
+define version in file gradle.properties
+
+```
+gradleMigrationDataVersion=${latestVersion}
+```
+
+or in build.gradle ext area
+
+```
+ext {
+            ...
+    gradleMigrationDataVersion = "${latestVersion}"
+            ...
+}
+```
+
+and then add the dependency to the dependencies area
+
+```
+dependencies {
+            ...
+    implementation("io.github.astrapi69:gradle-migration-data:$gradleMigrationDataVersion")
+            ...
+}
+```
+
 ## Maven dependency
 
 Maven dependency is now on sonatype. Check
@@ -34,7 +67,7 @@ Than you can add the dependency to your dependencies:
     <properties>
             ...
         <!-- gradle-migration-data version -->
-        <gradle-migration-data.version>2</gradle-migration-data.version>
+        <gradle-migration-data.version>${latestVersion}</gradle-migration-data.version>
             ...
     </properties>
             ...
@@ -49,36 +82,6 @@ Than you can add the dependency to your dependencies:
             ...
         </dependencies>
 
-## gradle dependency
-
-You can first define the version in the ext section and add than the following gradle dependency to
-your project `build.gradle` if you want to import the core functionality of gradle-migration-data:
-
-define version in file gradle.properties
-
-```
-gradleMigrationDataVersion=2
-```
-
-or in build.gradle ext area
-
-```
-ext {
-            ...
-    gradleMigrationDataVersion = "2"
-            ...
-}
-```
-
-and then add the dependency to the dependencies area
-
-```
-dependencies {
-            ...
-    implementation("io.github.astrapi69:gradle-migration-data:$gradleMigrationDataVersion")
-            ...
-}
-```
 
 # Donations
 
