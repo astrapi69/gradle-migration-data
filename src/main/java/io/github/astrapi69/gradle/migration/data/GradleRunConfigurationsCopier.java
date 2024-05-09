@@ -101,6 +101,13 @@ public class GradleRunConfigurationsCopier
 			.runConfigurationsInSameFolder(runConfigurationsInSameFolder).build();
 	}
 
+	public static String getProjectVersionKeyName(String projectName)
+	{
+		String camelCased = WordUtils.capitalizeFully(projectName, new char[] { '-' })
+			.replaceAll("-", "");
+		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
+		return projectVersionKeyName + "Version";
+	}
 
 	public static GradleRunConfigurationsCopier of(
 		CopyGradleRunConfigurations copyGradleRunConfigurations)
@@ -189,9 +196,8 @@ public class GradleRunConfigurationsCopier
 		File buildGradle = new File(targetProjectDir, DependenciesInfo.BUILD_GRADLE_NAME);
 		File gradleProperties = new File(targetProjectDir, DependenciesInfo.GRADLE_PROPERTIES_NAME);
 		FileFactory.newFile(gradleProperties);
-		String dependenciesContent = DependenciesExtensions.getDependenciesContent(buildGradle);
-		List<String> stringList = DependenciesExtensions
-			.getDependenciesAsStringList(dependenciesContent);
+		String dependenciesContent = getDependenciesContent(buildGradle);
+		List<String> stringList = getDependenciesAsStringList(dependenciesContent);
 		DependenciesInfo dependenciesInfo = getGradlePropertiesWithVersions(stringList);
 		String newDependenciesContent = getNewDependenciesContent(dependenciesInfo);
 		String replaceDependenciesContent = replaceDependenciesContent(buildGradle,
@@ -199,6 +205,23 @@ public class GradleRunConfigurationsCopier
 		PropertiesExtensions.export(dependenciesInfo.getProperties(),
 			StreamExtensions.getOutputStream(gradleProperties));
 		StoreFileExtensions.toFile(buildGradle, dependenciesContent);
+	}
+
+	private List<String> getDependenciesAsStringList(String dependenciesContent)
+	{
+		String[] lines = dependenciesContent.split("\n");
+		List<String> stringList = ArrayExtensions.asList(lines);
+		ListExtensions.removeFirst(stringList);
+		ListExtensions.removeLast(stringList);
+		return stringList;
+	}
+
+	public String getDependenciesContent(File buildGradle) throws IOException
+	{
+		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
+		int indexOfStart = buildGradleContent.indexOf("dependencies {");
+		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
+		return buildGradleContent.substring(indexOfStart, indexOfEnd);
 	}
 
 	private DependenciesInfo getGradlePropertiesWithVersions(List<String> stringList)
@@ -284,9 +307,10 @@ public class GradleRunConfigurationsCopier
 	public String replaceDependenciesContent(File buildGradle, String newDependenciesContent,
 		Properties gradleProperties) throws IOException
 	{
-		String dependencies = DependenciesExtensions.getDependenciesContent(buildGradle);
 		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
-
+		int indexOfStart = buildGradleContent.indexOf("dependencies {");
+		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
+		String dependencies = buildGradleContent.substring(indexOfStart, indexOfEnd);
 		String replacedBuildGradleContent = StringUtils.replace(buildGradleContent, dependencies,
 			newDependenciesContent);
 		replacedBuildGradleContent = getVersion(replacedBuildGradleContent, gradleProperties);
