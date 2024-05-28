@@ -4,7 +4,15 @@
 Version 2.2-SNAPSHOT
 -------------
 
+ADDED:
 
+- new method for get the content of a section from the build.gradle file
+
+CHANGED:
+
+- update gradle to new version 8.8-rc-2
+- update of test dependency mockito-core to new version 5.12.0
+- update of test dependency junit-jupiter-api to new version 5.11.0-M2
 
 Version 2.1
 -------------

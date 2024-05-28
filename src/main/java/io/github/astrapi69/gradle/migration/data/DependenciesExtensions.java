@@ -51,23 +51,26 @@ public class DependenciesExtensions
 		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
 		int indexOfStart = buildGradleContent.indexOf("dependencies {");
 		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
-		return buildGradleContent.substring(indexOfStart, indexOfEnd);
+		return GradleRunConfigurationsCopier.getContentOf("dependencies", buildGradle);
 	}
 
 	public static String getProjectVersionKeyName(String projectName)
 	{
-		String camelCased = WordUtils.capitalizeFully(projectName, new char[] { '-' })
-			.replaceAll("-", "");
+		String camelCased = toCamelCase(projectName);
 		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
 		return projectVersionKeyName + "Version";
+	}
+
+	public static String toCamelCase(String projectName)
+	{
+		return WordUtils.capitalizeFully(projectName, new char[] { '-' }).replaceAll("-", "");
 	}
 
 	public static List<String> getDependenciesAsStringList(String dependenciesContent)
 	{
 		String[] lines = dependenciesContent.split("\n");
 		String[] copyOfRange = Arrays.copyOfRange(lines, 1, lines.length - 1);
-		List<String> stringList = ArrayExtensions.asList(copyOfRange);
-		return stringList;
+		return ArrayExtensions.asList(copyOfRange);
 	}
 
 	public static List<DependencyInfo> getDependencyInfos(List<String> dependencyRows,

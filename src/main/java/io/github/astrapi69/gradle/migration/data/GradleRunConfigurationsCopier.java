@@ -101,6 +101,7 @@ public class GradleRunConfigurationsCopier
 			.runConfigurationsInSameFolder(runConfigurationsInSameFolder).build();
 	}
 
+	@Deprecated
 	public static String getProjectVersionKeyName(String projectName)
 	{
 		String camelCased = WordUtils.capitalizeFully(projectName, new char[] { '-' })
@@ -196,7 +197,7 @@ public class GradleRunConfigurationsCopier
 		File buildGradle = new File(targetProjectDir, DependenciesInfo.BUILD_GRADLE_NAME);
 		File gradleProperties = new File(targetProjectDir, DependenciesInfo.GRADLE_PROPERTIES_NAME);
 		FileFactory.newFile(gradleProperties);
-		String dependenciesContent = getDependenciesContent(buildGradle);
+		String dependenciesContent = DependenciesExtensions.getDependenciesContent(buildGradle);
 		List<String> stringList = getDependenciesAsStringList(dependenciesContent);
 		DependenciesInfo dependenciesInfo = getGradlePropertiesWithVersions(stringList);
 		String newDependenciesContent = getNewDependenciesContent(dependenciesInfo);
@@ -216,12 +217,47 @@ public class GradleRunConfigurationsCopier
 		return stringList;
 	}
 
-	public String getDependenciesContent(File buildGradle) throws IOException
+	public static String getContentOf(String section, File buildGradle) throws IOException
 	{
 		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
-		int indexOfStart = buildGradleContent.indexOf("dependencies {");
-		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
-		return buildGradleContent.substring(indexOfStart, indexOfEnd);
+		return getContentOf(section, buildGradleContent);
+	}
+
+	public static String getContentOf(String section, String buildGradleContent)
+	{
+		int indexOfStart = buildGradleContent.indexOf(section + " {");
+		if (indexOfStart == -1)
+		{
+			throw new IllegalArgumentException("Section not found: " + section);
+		}
+		int indexOfEnd = findClosingBrace(buildGradleContent, indexOfStart + section.length() + 2);
+		return buildGradleContent.substring(indexOfStart, indexOfEnd + 1);
+	}
+
+	private static int findClosingBrace(String content, int start)
+	{
+		int braceCount = 1;
+		for (int i = start; i < content.length(); i++)
+		{
+			if (content.charAt(i) == '{')
+			{
+				braceCount++;
+			}
+			else if (content.charAt(i) == '}')
+			{
+				braceCount--;
+				if (braceCount == 0)
+				{
+					return i;
+				}
+			}
+		}
+		throw new IllegalArgumentException("No matching closing brace found.");
+	}
+
+	public String getBuildscriptContent(File buildGradle) throws IOException
+	{
+		return GradleRunConfigurationsCopier.getContentOf("buildscript", buildGradle);
 	}
 
 	private DependenciesInfo getGradlePropertiesWithVersions(List<String> stringList)

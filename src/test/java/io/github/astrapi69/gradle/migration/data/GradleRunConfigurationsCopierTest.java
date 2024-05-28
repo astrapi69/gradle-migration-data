@@ -27,15 +27,76 @@ package io.github.astrapi69.gradle.migration.data;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.apache.commons.text.WordUtils;
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import io.github.astrapi69.file.search.PathFinder;
 
 /**
  * The unit test class for the class {@link GradleRunConfigurationsCopier}
  */
 public class GradleRunConfigurationsCopierTest
 {
+
+	@Test
+	public void testGetContentOfNonExistingSection() throws IOException
+	{
+		File srcTestResourcesTest = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"test");
+
+		File buildGradle = new File(srcTestResourcesTest, "/test-build.gradle");
+		assertThrows(IllegalArgumentException.class, () -> {
+			GradleRunConfigurationsCopier.getContentOf("nonExistingSection", buildGradle);
+		});
+	}
+
+	@Test
+	public void testGetContentOfDependencies() throws IOException
+	{
+		File srcTestResourcesTest = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"test");
+
+		File buildGradle = new File(srcTestResourcesTest, "/test-build.gradle");
+		String expectedContent = "dependencies {\n"
+			+ "        classpath \"com.github.ben-manes:gradle-versions-plugin:$gradlePluginVersionsVersion\"\n"
+			+ "        classpath \"gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:$licenseGradlePluginVersion\"\n"
+			+ "        classpath \"org.ajoberstar.grgit:grgit-gradle:$grgitGradlePluginVersion\"\n"
+			+ "        classpath \"com.diffplug.spotless:spotless-plugin-gradle:$spotlessGradlePluginVersion\"\n"
+			+ "    }";
+		String actualContent = GradleRunConfigurationsCopier.getContentOf("dependencies",
+			buildGradle);
+		assertEquals(expectedContent, actualContent);
+	}
+
+	@Test
+	public void testGetContentOfRepositories() throws IOException
+	{
+		File srcTestResourcesTest = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"test");
+
+		File buildGradle = new File(srcTestResourcesTest, "/test-build.gradle");
+		String expectedContent = "repositories {\n" + "        maven {\n"
+			+ "            url \"https://plugins.gradle.org/m2/\"\n" + "        }\n" + "    }";
+		String actualContent = GradleRunConfigurationsCopier.getContentOf("repositories",
+			buildGradle);
+		assertEquals(expectedContent, actualContent);
+	}
+
+	@Test
+	public void testGetContentOfBuildscript() throws IOException
+	{
+		File srcTestResourcesTest = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"test");
+
+		File buildGradle = new File(srcTestResourcesTest, "/test-build.gradle");
+		String expectedContent = "buildscript {\n    repositories {\n        maven {\n            url \"https://plugins.gradle.org/m2/\"\n        }\n    }\n    dependencies {\n        classpath \"com.github.ben-manes:gradle-versions-plugin:$gradlePluginVersionsVersion\"\n        classpath \"gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:$licenseGradlePluginVersion\"\n        classpath \"org.ajoberstar.grgit:grgit-gradle:$grgitGradlePluginVersion\"\n        classpath \"com.diffplug.spotless:spotless-plugin-gradle:$spotlessGradlePluginVersion\"\n    }\n}";
+		String actualContent = GradleRunConfigurationsCopier.getContentOf("buildscript",
+			buildGradle);
+		assertEquals(expectedContent, actualContent);
+	}
 
 	@Test
 	void testConstructorWithNullShouldThrowException()
@@ -46,8 +107,10 @@ public class GradleRunConfigurationsCopierTest
 	}
 
 	/**
-	 * Test method for copy run configurations file from a source project to a target project and
-	 * modifies its content
+	 * Test method for
+	 * {@link GradleRunConfigurationsCopier#newCopyGradleRunConfigurations(String, String, String, String, boolean, boolean)}
+	 * that copy run configurations file from a source project to a target project and modifies its
+	 * content
 	 */
 	@Test
 	@Disabled
