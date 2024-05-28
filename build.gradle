@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.spotless.plugin.gradle)
     alias(libs.plugins.versionCatalogUpdate)
 }
+
 group = "$groupPackage" as Object
 version = "$projectVersion" as Object
 description = "$rootProject.name"
