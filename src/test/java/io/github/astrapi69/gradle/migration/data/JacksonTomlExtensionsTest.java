@@ -29,10 +29,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.dataformat.toml.TomlMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
@@ -44,6 +50,54 @@ import io.github.astrapi69.file.search.PathFinder;
  */
 public class JacksonTomlExtensionsTest
 {
+
+
+	private File tempFile;
+
+	@BeforeEach
+	public void setUp() throws IOException {
+		tempFile = Files.createTempFile("test", ".toml").toFile();
+	}
+
+	@AfterEach
+	public void tearDown() {
+		if (tempFile.exists()) {
+			tempFile.delete();
+		}
+	}
+
+
+	@Test
+	public void testRead() throws IOException {
+		String tomlContent = "key = \"value\"";
+		try (FileWriter writer = new FileWriter(tempFile)) {
+			writer.write(tomlContent);
+		}
+
+		Map<String, String> result = JacksonTomlExtensions.read(tempFile);
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		assertEquals("value", result.get("key"));
+	}
+
+	@Test
+	public void testWriteValue() throws IOException {
+		Map<String, Map<String, String>> data = new HashMap<>();
+		Map<String, String> innerMap = new HashMap<>();
+		innerMap.put("key", "value");
+		data.put("section", innerMap);
+
+		JacksonTomlExtensions.writeValue(tempFile, data);
+
+		TomlMapper mapper = new TomlMapper();
+		Map<String, Map> result = mapper.readValue(tempFile, Map.class);
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		assertEquals("value", ((Map)result.get("section")).get("key"));
+	}
+
 	/**
 	 * Test method for {@link JacksonTomlExtensions}
 	 */

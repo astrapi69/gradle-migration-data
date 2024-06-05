@@ -26,7 +26,6 @@ package io.github.astrapi69.gradle.migration.data;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
@@ -42,11 +41,10 @@ public class JacksonTomlExtensions
 	}
 
 
-	public static void writeValue(File tomlFile, Map<String, Map> libsVersionTomlMap)
+	public static void writeValue(File tomlFile, Map<String, ?> libsVersionTomlMap)
 		throws IOException
 	{
 		TomlMapper mapper = new TomlMapper();
-		String valueAsString = mapper.writeValueAsString(libsVersionTomlMap);
-		mapper.writeValue(tomlFile, valueAsString);
+		mapper.writeValue(tomlFile, libsVersionTomlMap);
 	}
 }

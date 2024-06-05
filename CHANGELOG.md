@@ -10,7 +10,8 @@ ADDED:
 
 CHANGED:
 
-- update gradle to new version 8.8-rc-2
+- update gradle to new version 8.8
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 7.0.0.BETA1
 - update of test dependency mockito-core to new version 5.12.0
 - update of test dependency junit-jupiter-api to new version 5.11.0-M2
 
