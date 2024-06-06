@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.extension;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import io.github.astrapi69.gradle.migration.data.DependencyInfo;
+import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -74,7 +76,7 @@ public class DependenciesExtensions
 	}
 
 	public static List<DependencyInfo> getDependencyInfos(List<String> dependencyRows,
-		Map<String, String> versionMap)
+														  Map<String, String> versionMap)
 	{
 		List<DependencyInfo> dependencyInfos = ListFactory.newArrayList();
 		dependencyRows.stream().forEach(row -> {

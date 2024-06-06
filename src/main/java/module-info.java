@@ -30,4 +30,6 @@ module gradle.migration.data.main
 	requires java.logging;
 
 	exports io.github.astrapi69.gradle.migration.data;
+    exports io.github.astrapi69.gradle.migration.extension;
+	exports io.github.astrapi69.gradle.migration.runner;
 }

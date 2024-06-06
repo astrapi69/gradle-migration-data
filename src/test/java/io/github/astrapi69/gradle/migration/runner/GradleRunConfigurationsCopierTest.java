@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.runner;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
+import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +43,7 @@ public class GradleRunConfigurationsCopierTest
 {
 
 	@Test
-	public void testGetContentOfNonExistingSection() throws IOException
+	public void testGetContentOfNonExistingSection()
 	{
 		File srcTestResourcesTest = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
 			"test");
@@ -135,11 +136,10 @@ public class GradleRunConfigurationsCopierTest
 		targetProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
 		onlyRunConfigurations = false;
-		copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
-			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
+
+		GradleRunConfigurationsCopier.copyRunConfigurations(sourceProjectName, targetProjectName,
 				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, onlyRunConfigurations,
 				runConfigurationsInSameFolder);
-		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 	}
 
 }

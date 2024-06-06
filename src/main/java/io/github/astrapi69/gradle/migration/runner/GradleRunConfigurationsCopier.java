@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.runner;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +33,9 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
+import io.github.astrapi69.gradle.migration.data.DependenciesInfo;
+import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -56,6 +59,31 @@ public class GradleRunConfigurationsCopier
 {
 	private final CopyGradleRunConfigurations copyGradleRunConfigurations;
 	private final Logger log = Logger.getLogger(GradleRunConfigurationsCopier.class.getName());
+
+	public static void copyOnlyRunConfigurations(String sourceProjectName,
+												 String targetProjectName,
+												 String sourceProjectDirNamePrefix,
+												 String targetProjectDirNamePrefix) {
+
+		CopyGradleRunConfigurations copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
+				.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
+						sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true,
+						false);
+		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
+	}
+
+	public static void copyRunConfigurations(String sourceProjectName,
+											 String targetProjectName,
+											 String sourceProjectDirNamePrefix,
+											 String targetProjectDirNamePrefix, boolean onlyRunConfigurations,
+											 boolean runConfigurationsInSameFolder) {
+
+		CopyGradleRunConfigurations copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
+				.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
+						sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true,
+						false);
+		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
+	}
 
 	private GradleRunConfigurationsCopier(CopyGradleRunConfigurations copyGradleRunConfigurations)
 	{

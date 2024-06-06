@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.gradle.migration.data;
 
-import static io.github.astrapi69.gradle.migration.data.DependenciesExtensions.getLibsVersionTomlMapAsString;
+import static io.github.astrapi69.gradle.migration.extension.DependenciesExtensions.getLibsVersionTomlMapAsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import org.apache.commons.text.WordUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

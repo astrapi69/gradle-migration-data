@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.extension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,12 +36,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.dataformat.toml.TomlMapper;
+import io.github.astrapi69.gradle.migration.data.DependencyInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
+
+import com.fasterxml.jackson.dataformat.toml.TomlMapper;
 
 import io.github.astrapi69.file.search.PathFinder;
 
@@ -55,22 +57,27 @@ public class JacksonTomlExtensionsTest
 	private File tempFile;
 
 	@BeforeEach
-	public void setUp() throws IOException {
+	public void setUp() throws IOException
+	{
 		tempFile = Files.createTempFile("test", ".toml").toFile();
 	}
 
 	@AfterEach
-	public void tearDown() {
-		if (tempFile.exists()) {
+	public void tearDown()
+	{
+		if (tempFile.exists())
+		{
 			tempFile.delete();
 		}
 	}
 
 
 	@Test
-	public void testRead() throws IOException {
+	public void testRead() throws IOException
+	{
 		String tomlContent = "key = \"value\"";
-		try (FileWriter writer = new FileWriter(tempFile)) {
+		try (FileWriter writer = new FileWriter(tempFile))
+		{
 			writer.write(tomlContent);
 		}
 
@@ -82,7 +89,8 @@ public class JacksonTomlExtensionsTest
 	}
 
 	@Test
-	public void testWriteValue() throws IOException {
+	public void testWriteValue() throws IOException
+	{
 		Map<String, Map<String, String>> data = new HashMap<>();
 		Map<String, String> innerMap = new HashMap<>();
 		innerMap.put("key", "value");
