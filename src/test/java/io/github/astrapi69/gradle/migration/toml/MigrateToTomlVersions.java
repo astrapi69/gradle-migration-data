@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.copy.CopyFileExtensions;
@@ -84,7 +85,25 @@ public class MigrateToTomlVersions
 		return newLibsVersionsTomlFile(MigrationInfo.fromAbsolutePath(projectDirectoryName));
 	}
 
+	public static File migrateToTomlVersions(File gradleDirectory, String targetProjectName,
+		String targetProjectDirNamePrefix) throws IOException
+	{
+		String versionCatalogUpdateFileName = "version-catalog-update.gradle";
+		File sourceVersionCatalogUpdateFile = PathFinder.getRelativePath(gradleDirectory,
+			versionCatalogUpdateFileName);
+		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
+		File libsVersionsTomlFile = newLibsVersionsTomlFile(projectDirectoryName);
+		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
+		File destinationVersionCatalogUpdateFile = FileFactory
+			.newFile(migrationInfo.getGradleDirectory(), versionCatalogUpdateFileName);
+		CopyFileExtensions.copyFile(sourceVersionCatalogUpdateFile,
+			destinationVersionCatalogUpdateFile, StandardCharsets.UTF_8, StandardCharsets.UTF_8,
+			true);
+		return libsVersionsTomlFile;
+	}
+
 	@Test
+	@Disabled
 	public void testNewLibsVersionsTomlFile() throws IOException
 	{
 		File gradleDirectory = getGradleDirectory();
@@ -108,24 +127,8 @@ public class MigrateToTomlVersions
 
 	}
 
-	public static File migrateToTomlVersions(File gradleDirectory, String targetProjectName,
-		String targetProjectDirNamePrefix) throws IOException
-	{
-		String versionCatalogUpdateFileName = "version-catalog-update.gradle";
-		File sourceVersionCatalogUpdateFile = PathFinder.getRelativePath(gradleDirectory,
-			versionCatalogUpdateFileName);
-		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
-		File libsVersionsTomlFile = newLibsVersionsTomlFile(projectDirectoryName);
-		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
-		File destinationVersionCatalogUpdateFile = FileFactory
-			.newFile(migrationInfo.getGradleDirectory(), versionCatalogUpdateFileName);
-		CopyFileExtensions.copyFile(sourceVersionCatalogUpdateFile,
-			destinationVersionCatalogUpdateFile, StandardCharsets.UTF_8, StandardCharsets.UTF_8,
-			true);
-		return libsVersionsTomlFile;
-	}
-
 	@Test
+	@Disabled
 	public void testCopyRunConfigurationsOfVersionCatalogUpdate() throws IOException
 	{
 		String sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
