@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.astrapi69.gradle.migration.data.DependencyInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -46,6 +45,7 @@ import org.meanbean.test.BeanTester;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
 
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.data.DependencyInfo;
 
 /**
  * The unit test class for the class {@link JacksonTomlExtensions}

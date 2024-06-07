@@ -34,13 +34,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import org.apache.commons.text.WordUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 
 /**
  * The unit test class for the class {@link DependenciesExtensions}

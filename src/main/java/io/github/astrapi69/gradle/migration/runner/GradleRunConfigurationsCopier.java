@@ -33,9 +33,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
-import io.github.astrapi69.gradle.migration.data.DependenciesInfo;
-import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -52,6 +49,9 @@ import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.rename.RenameFileExtensions;
 import io.github.astrapi69.file.search.FileSearchExtensions;
 import io.github.astrapi69.file.write.StoreFileExtensions;
+import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
+import io.github.astrapi69.gradle.migration.data.DependenciesInfo;
+import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
@@ -60,28 +60,24 @@ public class GradleRunConfigurationsCopier
 	private final CopyGradleRunConfigurations copyGradleRunConfigurations;
 	private final Logger log = Logger.getLogger(GradleRunConfigurationsCopier.class.getName());
 
-	public static void copyOnlyRunConfigurations(String sourceProjectName,
-												 String targetProjectName,
-												 String sourceProjectDirNamePrefix,
-												 String targetProjectDirNamePrefix) {
+	public static void copyOnlyRunConfigurations(String sourceProjectName, String targetProjectName,
+		String sourceProjectDirNamePrefix, String targetProjectDirNamePrefix)
+	{
 
 		CopyGradleRunConfigurations copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
-				.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
-						sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true,
-						false);
+			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
+				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true, false);
 		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 	}
 
-	public static void copyRunConfigurations(String sourceProjectName,
-											 String targetProjectName,
-											 String sourceProjectDirNamePrefix,
-											 String targetProjectDirNamePrefix, boolean onlyRunConfigurations,
-											 boolean runConfigurationsInSameFolder) {
+	public static void copyRunConfigurations(String sourceProjectName, String targetProjectName,
+		String sourceProjectDirNamePrefix, String targetProjectDirNamePrefix,
+		boolean onlyRunConfigurations, boolean runConfigurationsInSameFolder)
+	{
 
 		CopyGradleRunConfigurations copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
-				.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
-						sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true,
-						false);
+			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
+				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true, false);
 		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 	}
 

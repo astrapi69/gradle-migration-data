@@ -30,11 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
-import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
 
 /**
  * The unit test class for the class {@link GradleRunConfigurationsCopier}
@@ -138,8 +138,8 @@ public class GradleRunConfigurationsCopierTest
 		onlyRunConfigurations = false;
 
 		GradleRunConfigurationsCopier.copyRunConfigurations(sourceProjectName, targetProjectName,
-				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, onlyRunConfigurations,
-				runConfigurationsInSameFolder);
+			sourceProjectDirNamePrefix, targetProjectDirNamePrefix, onlyRunConfigurations,
+			runConfigurationsInSameFolder);
 	}
 
 }

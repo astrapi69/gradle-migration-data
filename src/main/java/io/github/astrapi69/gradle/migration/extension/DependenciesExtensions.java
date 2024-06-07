@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import io.github.astrapi69.gradle.migration.data.DependencyInfo;
-import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -42,6 +40,8 @@ import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.collection.map.MapFactory;
 import io.github.astrapi69.collection.properties.PropertiesExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
+import io.github.astrapi69.gradle.migration.data.DependencyInfo;
+import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
 import io.github.astrapi69.string.StringExtensions;
 import lombok.NonNull;
 
@@ -76,12 +76,13 @@ public class DependenciesExtensions
 	}
 
 	public static List<DependencyInfo> getDependencyInfos(List<String> dependencyRows,
-														  Map<String, String> versionMap)
+		Map<String, String> versionMap)
 	{
 		List<DependencyInfo> dependencyInfos = ListFactory.newArrayList();
 		dependencyRows.stream().forEach(row -> {
 			DependencyInfo dependencyInfo = DependenciesExtensions.getDependencyInfo(row);
-			if(dependencyInfo != null) {
+			if (dependencyInfo != null)
+			{
 				String versionAlias = dependencyInfo.getVersion();
 				if (versionAlias != null)
 				{
@@ -99,19 +100,20 @@ public class DependenciesExtensions
 	{
 		String stripped = dependencyRow.strip();
 		int indexOf = stripped.indexOf("(");
-		if(indexOf != -1){
+		if (indexOf != -1)
+		{
 			String scope = stripped.substring(0, indexOf);
 			String dependency = StringUtils.substringBetween(stripped, "\"");
 			String[] split = dependency.split(":");
 			if (split.length == 2)
 			{
 				return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
-						.build();
+					.build();
 			}
 			if (split.length == 3)
 			{
 				return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
-						.version(split[2]).build();
+					.version(split[2]).build();
 			}
 			return DependencyInfo.builder().scope(scope).build();
 		}
