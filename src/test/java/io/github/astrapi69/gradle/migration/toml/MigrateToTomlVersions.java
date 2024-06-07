@@ -81,30 +81,42 @@ public class MigrateToTomlVersions
 	@Test
 	public void testNewLibsVersionsTomlFile() throws IOException
 	{
-		String projectDirectoryName;
-
 		File gradleDirectory = getGradleDirectory();
 
+		String targetProjectName = "json-extensions";
+		String targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
+		String  projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
+
+		File libsVersionsTomlFile = migrateToTomlVersions(gradleDirectory,targetProjectName,targetProjectDirNamePrefix);
+
+		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
+		String libsVersionTomlMapAsString = newLibsVersionsTomlAsString(migrationInfo);
+		String libsVersionsTomlFileContent = ReadFileExtensions.fromFile(libsVersionsTomlFile);
+		assertEquals(libsVersionsTomlFileContent, libsVersionTomlMapAsString);
+
+		String sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
+		String sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
+		GradleRunConfigurationsCopier.copyOnlyRunConfigurations(sourceProjectName, targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
+
+	}
+
+	public static File migrateToTomlVersions(File gradleDirectory, String targetProjectName, String targetProjectDirNamePrefix)
+			throws IOException {
 		String versionCatalogUpdateFileName = "version-catalog-update.gradle";
 		File sourceVersionCatalogUpdateFile = PathFinder.getRelativePath(gradleDirectory, versionCatalogUpdateFileName);
-
-		String targetProjectName = "xml-base";
-		String targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
-		projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
+		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
 		File libsVersionsTomlFile = newLibsVersionsTomlFile(projectDirectoryName);
 		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
 		File destinationVersionCatalogUpdateFile = FileFactory.newFile(migrationInfo.getGradleDirectory(), versionCatalogUpdateFileName);
 		CopyFileExtensions.copyFile(sourceVersionCatalogUpdateFile, destinationVersionCatalogUpdateFile, StandardCharsets.UTF_8, StandardCharsets.UTF_8, true);
-		String libsVersionTomlMapAsString = newLibsVersionsTomlAsString(migrationInfo);
-		String libsVersionsTomlFileContent = ReadFileExtensions.fromFile(libsVersionsTomlFile);
-		assertEquals(libsVersionsTomlFileContent, libsVersionTomlMapAsString);
+		return libsVersionsTomlFile;
 	}
 
 	@Test
 	public void testCopyRunConfigurationsOfVersionCatalogUpdate() throws IOException
 	{
 		String sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
-		String targetProjectName = "xml-base";
+		String targetProjectName = "json-extensions";
 		String sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		String targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		GradleRunConfigurationsCopier.copyOnlyRunConfigurations(sourceProjectName, targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);

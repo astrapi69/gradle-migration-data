@@ -81,14 +81,16 @@ public class DependenciesExtensions
 		List<DependencyInfo> dependencyInfos = ListFactory.newArrayList();
 		dependencyRows.stream().forEach(row -> {
 			DependencyInfo dependencyInfo = DependenciesExtensions.getDependencyInfo(row);
-			String versionAlias = dependencyInfo.getVersion();
-			if (versionAlias != null)
-			{
-				String stringVersion = versionAlias.substring(1);
-				String actualVersion = versionMap.get(stringVersion);
-				dependencyInfo.setVersion(actualVersion);
+			if(dependencyInfo != null) {
+				String versionAlias = dependencyInfo.getVersion();
+				if (versionAlias != null)
+				{
+					String stringVersion = versionAlias.substring(1);
+					String actualVersion = versionMap.get(stringVersion);
+					dependencyInfo.setVersion(actualVersion);
+				}
+				dependencyInfos.add(dependencyInfo);
 			}
-			dependencyInfos.add(dependencyInfo);
 		});
 		return dependencyInfos;
 	}
@@ -96,20 +98,24 @@ public class DependenciesExtensions
 	public static DependencyInfo getDependencyInfo(String dependencyRow)
 	{
 		String stripped = dependencyRow.strip();
-		String scope = stripped.substring(0, stripped.indexOf("("));
-		String dependency = StringUtils.substringBetween(stripped, "\"");
-		String[] split = dependency.split(":");
-		if (split.length == 2)
-		{
-			return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
-				.build();
+		int indexOf = stripped.indexOf("(");
+		if(indexOf != -1){
+			String scope = stripped.substring(0, indexOf);
+			String dependency = StringUtils.substringBetween(stripped, "\"");
+			String[] split = dependency.split(":");
+			if (split.length == 2)
+			{
+				return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
+						.build();
+			}
+			if (split.length == 3)
+			{
+				return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
+						.version(split[2]).build();
+			}
+			return DependencyInfo.builder().scope(scope).build();
 		}
-		if (split.length == 3)
-		{
-			return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
-				.version(split[2]).build();
-		}
-		return DependencyInfo.builder().scope(scope).build();
+		return null;
 	}
 
 
