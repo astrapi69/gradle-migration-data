@@ -108,7 +108,7 @@ public class MigrateToTomlVersions
 	{
 		File gradleDirectory = getGradleDirectory();
 
-		String targetProjectName = "json-extensions";
+		String targetProjectName = "xstream-extensions";
 		String targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
 
@@ -124,7 +124,38 @@ public class MigrateToTomlVersions
 		String sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		GradleRunConfigurationsCopier.copyOnlyRunConfigurations(sourceProjectName,
 			targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
+	}
 
+	@Test
+	@Disabled
+	public void testMigrateToNewProjectStructure() throws IOException
+	{
+		File gradleDirectory;
+		String sourceProjectDirNamePrefix;
+		String targetProjectDirNamePrefix;
+		String sourceProjectName;
+		String targetProjectName;
+
+		gradleDirectory = getGradleDirectory();
+
+		targetProjectName = "transform-json-api";
+		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
+		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
+		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
+
+		migrateToNewProjectStructure(gradleDirectory, sourceProjectName, targetProjectName,
+			sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
+	}
+
+	public static void migrateToNewProjectStructure(File gradleDirectory, String sourceProjectName,
+		String targetProjectName, String sourceProjectDirNamePrefix,
+		String targetProjectDirNamePrefix) throws IOException
+	{
+		File libsVersionsTomlFile = migrateToTomlVersions(gradleDirectory, targetProjectName,
+			targetProjectDirNamePrefix);
+
+		GradleRunConfigurationsCopier.copyOnlyRunConfigurations(sourceProjectName,
+			targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
 	}
 
 	@Test

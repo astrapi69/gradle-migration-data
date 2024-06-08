@@ -15,9 +15,10 @@ lombok-version = "1.18.32"
 meanbean-version = "3.0.0-M9"
 mockito-core-version = "5.12.0"
 silly-bean-version = "2"
-silly-collection-version = "27"
+silly-collection-version = "27.1"
 silly-io-version = "3"
 silly-strings-version = "9"
+test-object-version = "8.2"
 throwable-version = "2.3"
 
 [libraries]
@@ -34,6 +35,7 @@ silly-bean = { module = "io.github.astrapi69:silly-bean", version.ref = "silly-b
 silly-collection = { module = "io.github.astrapi69:silly-collection", version.ref = "silly-collection-version" }
 silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
 silly-strings = { module = "io.github.astrapi69:silly-strings", version.ref = "silly-strings-version" }
+test-object = { module = "io.github.astrapi69:test-object", version.ref = "test-object-version" }
 throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
 
 [bundles]
@@ -41,6 +43,7 @@ unit-testing = [
     "junit-jupiter",
     "meanbean",
     "mockito-core",
+    "test-object",
 ]
 
 [plugins]
