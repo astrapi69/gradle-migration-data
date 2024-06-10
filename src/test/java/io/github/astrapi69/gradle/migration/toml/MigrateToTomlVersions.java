@@ -127,7 +127,7 @@ public class MigrateToTomlVersions
 	}
 
 	@Test
-//	@Disabled
+	@Disabled
 	public void testMigrateToNewProjectStructure() throws IOException
 	{
 		File gradleDirectory;
@@ -138,7 +138,7 @@ public class MigrateToTomlVersions
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "xml-api";
+		targetProjectName = "throwable";
 		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
