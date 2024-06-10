@@ -6,6 +6,7 @@ Version 2.2-SNAPSHOT
 
 ADDED:
 
+- new libs.versions.toml file for new automatic catalog versions update
 - new method for get the content of a section from the build.gradle file
 
 CHANGED:
