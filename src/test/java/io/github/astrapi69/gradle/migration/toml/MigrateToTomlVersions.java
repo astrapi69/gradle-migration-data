@@ -143,34 +143,33 @@ public class MigrateToTomlVersions
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		ProjectTomlStructureInfo projectTomlStructureInfo = ProjectTomlStructureInfo.builder()
-				.gradleDirectory(gradleDirectory)
-				.sourceProjectName(sourceProjectName)
-				.sourceProjectDirNamePrefix(sourceProjectDirNamePrefix)
-				.targetProjectName(targetProjectName)
-				.targetProjectDirNamePrefix(targetProjectDirNamePrefix)
-				.build();
+			.gradleDirectory(gradleDirectory).sourceProjectName(sourceProjectName)
+			.sourceProjectDirNamePrefix(sourceProjectDirNamePrefix)
+			.targetProjectName(targetProjectName)
+			.targetProjectDirNamePrefix(targetProjectDirNamePrefix).build();
 
 		migrateToNewProjectStructure(projectTomlStructureInfo);
 	}
 
-	public static void migrateToNewProjectStructure(ProjectTomlStructureInfo projectTomlStructureInfo) throws IOException
+	public static void migrateToNewProjectStructure(
+		ProjectTomlStructureInfo projectTomlStructureInfo) throws IOException
 	{
 		migrateToNewProjectStructure(projectTomlStructureInfo.getGradleDirectory(),
-				projectTomlStructureInfo.getSourceProjectName(),
-				projectTomlStructureInfo.getTargetProjectName(),
-				projectTomlStructureInfo.getSourceProjectDirNamePrefix(),
-				projectTomlStructureInfo.getTargetProjectDirNamePrefix());
+			projectTomlStructureInfo.getSourceProjectName(),
+			projectTomlStructureInfo.getTargetProjectName(),
+			projectTomlStructureInfo.getSourceProjectDirNamePrefix(),
+			projectTomlStructureInfo.getTargetProjectDirNamePrefix());
 	}
 
 	public static void migrateToNewProjectStructure(File gradleDirectory, String sourceProjectName,
-													String targetProjectName, String sourceProjectDirNamePrefix,
-													String targetProjectDirNamePrefix) throws IOException
+		String targetProjectName, String sourceProjectDirNamePrefix,
+		String targetProjectDirNamePrefix) throws IOException
 	{
 		File libsVersionsTomlFile = migrateToTomlVersions(gradleDirectory, targetProjectName,
-				targetProjectDirNamePrefix);
+			targetProjectDirNamePrefix);
 
 		GradleRunConfigurationsCopier.copyOnlyRunConfigurations(sourceProjectName,
-				targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
+			targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
 	}
 
 	@Test
