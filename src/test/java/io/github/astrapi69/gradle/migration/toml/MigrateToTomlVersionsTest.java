@@ -25,7 +25,6 @@
 package io.github.astrapi69.gradle.migration.toml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,11 +43,10 @@ import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier
 public class MigrateToTomlVersionsTest
 {
 
-	public static File getGradleDirectory() throws IOException
+	public static File getGradleDirectory()
 	{
 		File projectDirectory = PathFinder.getProjectDirectory();
-		File gradleDirectory = PathFinder.getRelativePath(projectDirectory, "gradle");
-		return gradleDirectory;
+		return PathFinder.getRelativePath(projectDirectory, "gradle");
 	}
 
 	@Test
@@ -88,7 +86,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "throwable";
+		targetProjectName = "test-object";
 		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
@@ -103,7 +101,7 @@ public class MigrateToTomlVersionsTest
 
 	@Test
 	@Disabled
-	public void testCopyRunConfigurationsOfVersionCatalogUpdate() throws IOException
+	public void testCopyRunConfigurationsOfVersionCatalogUpdate()
 	{
 		String sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		String targetProjectName = "json-extensions";
