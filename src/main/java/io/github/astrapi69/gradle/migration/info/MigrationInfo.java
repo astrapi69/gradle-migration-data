@@ -22,19 +22,30 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-module gradle.migration.data.main
-{
-	requires lombok;
-	requires org.apache.commons.lang3;
-	requires org.apache.commons.text;
-	requires silly.collection;
-	requires file.worker;
-	requires silly.io.main;
-	requires silly.strings;
-	requires java.logging;
+package io.github.astrapi69.gradle.migration.info;
 
-	exports io.github.astrapi69.gradle.migration.extension;
-	exports io.github.astrapi69.gradle.migration.info;
-	exports io.github.astrapi69.gradle.migration.runner;
-	exports io.github.astrapi69.gradle.migration.toml;
+import java.io.File;
+import java.io.IOException;
+
+import io.github.astrapi69.file.create.DirectoryFactory;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
+
+@Data
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class MigrationInfo
+{
+	File gradleDirectory;
+	File projectDirectory;
+
+	public static MigrationInfo fromAbsolutePath(String projectDirectoryName) throws IOException
+	{
+		File projectDirectory = DirectoryFactory.newDirectory(projectDirectoryName);
+		File gradleDirectory = DirectoryFactory.newDirectory(projectDirectory, "gradle");
+		return MigrationInfo.builder().projectDirectory(projectDirectory)
+			.gradleDirectory(gradleDirectory).build();
+	}
 }

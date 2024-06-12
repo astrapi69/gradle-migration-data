@@ -6,6 +6,7 @@ Version 2.2-SNAPSHOT
 
 ADDED:
 
+- new class MigrateToTomlVersions that provides methods for migrate to new gradle project with libs.versions.toml file
 - new libs.versions.toml file for new automatic catalog versions update
 - new method for get the content of a section from the build.gradle file
 
@@ -15,6 +16,7 @@ CHANGED:
 - update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 7.0.0.BETA1
 - update of test dependency mockito-core to new version 5.12.0
 - update of test dependency junit-jupiter-api to new version 5.11.0-M2
+- rename of package data to info
 
 Version 2.1
 -------------

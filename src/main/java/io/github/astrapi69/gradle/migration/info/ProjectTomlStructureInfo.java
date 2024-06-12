@@ -22,29 +22,23 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.extension;
+package io.github.astrapi69.gradle.migration.info;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Map;
 
-import com.fasterxml.jackson.dataformat.toml.TomlMapper;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
-public class JacksonTomlExtensions
+@Data
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ProjectTomlStructureInfo
 {
-
-	public static Map read(File tomlFile) throws IOException
-	{
-		TomlMapper mapper = new TomlMapper();
-		Map map = mapper.readValue(tomlFile, Map.class);
-		return map;
-	}
-
-
-	public static void writeValue(File tomlFile, Map<String, ?> libsVersionTomlMap)
-		throws IOException
-	{
-		TomlMapper mapper = new TomlMapper();
-		mapper.writeValue(tomlFile, libsVersionTomlMap);
-	}
+	File gradleDirectory;
+	String sourceProjectDirNamePrefix;
+	String targetProjectDirNamePrefix;
+	String sourceProjectName;
+	String targetProjectName;
 }

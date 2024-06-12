@@ -22,20 +22,27 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.info;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.meanbean.test.BeanTester;
 
-@Data
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class DependencyInfo
+/**
+ * The unit test class for the class {@link CopyGradleRunConfigurations}
+ */
+public class CopyGradleRunConfigurationsTest
 {
-	String scope;
-	String groupId;
-	String artifactId;
-	String version;
+
+	/**
+	 * Test method for {@link CopyGradleRunConfigurations}
+	 */
+	@Test
+	@Disabled
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(CopyGradleRunConfigurations.class);
+	}
+
 }

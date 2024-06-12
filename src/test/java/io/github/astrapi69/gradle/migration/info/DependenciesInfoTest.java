@@ -22,29 +22,27 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.info;
 
-import java.io.File;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.meanbean.test.BeanTester;
 
-import lombok.Data;
-import lombok.experimental.SuperBuilder;
-
-@Data
-@SuperBuilder
-public class CopyGradleRunConfigurations
+/**
+ * The unit test class for the class {@link DependenciesInfo}
+ */
+public class DependenciesInfoTest
 {
-	public static final String IDEA_DIR_NAME = ".idea";
-	public static final String RUN_CONFIGURATIONS_DIR_NAME = "runConfigurations";
-	File ideaSourceDir;
-	File ideaTargetDir;
-	String sourceFilenamePrefix;
-	File sourceProjectDir;
-	String sourceProjectName;
-	File sourceRunConfigDir;
-	String targetFilenamePrefix;
-	File targetProjectDir;
-	boolean onlyRunConfigurations;
-	boolean runConfigurationsInSameFolder;
-	String targetProjectName;
-	File targetRunConfigDir;
+
+	/**
+	 * Test method for {@link DependenciesInfo}
+	 */
+	@Test
+	@Disabled
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(DependenciesInfo.class);
+	}
+
 }

@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.search.PathFinder;
-import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
+import io.github.astrapi69.gradle.migration.info.CopyGradleRunConfigurations;
 
 /**
  * The unit test class for the class {@link GradleRunConfigurationsCopier}

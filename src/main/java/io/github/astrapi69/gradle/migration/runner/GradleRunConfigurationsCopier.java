@@ -49,9 +49,9 @@ import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.rename.RenameFileExtensions;
 import io.github.astrapi69.file.search.FileSearchExtensions;
 import io.github.astrapi69.file.write.StoreFileExtensions;
-import io.github.astrapi69.gradle.migration.data.CopyGradleRunConfigurations;
-import io.github.astrapi69.gradle.migration.data.DependenciesInfo;
 import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
+import io.github.astrapi69.gradle.migration.info.CopyGradleRunConfigurations;
+import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
