@@ -86,7 +86,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "test-object";
+		targetProjectName = "mystic-crypt-ui";
 		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
