@@ -22,31 +22,27 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.info;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.meanbean.test.BeanTester;
 
-import com.fasterxml.jackson.dataformat.toml.TomlMapper;
-
-public class JacksonTomlExtensions
+/**
+ * The unit test class for the class {@link CopyGradleRunConfigurations}
+ */
+public class CopyGradleRunConfigurationsTest
 {
 
-	public static Map read(File tomlFile) throws IOException
+	/**
+	 * Test method for {@link CopyGradleRunConfigurations}
+	 */
+	@Test
+	@Disabled
+	public void testWithBeanTester()
 	{
-		TomlMapper mapper = new TomlMapper();
-		Map map = mapper.readValue(tomlFile, Map.class);
-		return map;
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(CopyGradleRunConfigurations.class);
 	}
 
-
-	public static void writeValue(File tomlFile, Map<String, Map> libsVersionTomlMap)
-		throws IOException
-	{
-		TomlMapper mapper = new TomlMapper();
-		String valueAsString = mapper.writeValueAsString(libsVersionTomlMap);
-		mapper.writeValue(tomlFile, valueAsString);
-	}
 }

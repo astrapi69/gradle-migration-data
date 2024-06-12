@@ -22,9 +22,9 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.info;
 
-import static io.github.astrapi69.gradle.migration.data.DependenciesExtensions.getLibsVersionTomlMapAsString;
+import static io.github.astrapi69.gradle.migration.extension.DependenciesExtensions.getLibsVersionTomlMapAsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 
 /**
  * The unit test class for the class {@link DependenciesExtensions}

@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.gradle.migration.data;
+package io.github.astrapi69.gradle.migration.extension;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +40,8 @@ import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.collection.map.MapFactory;
 import io.github.astrapi69.collection.properties.PropertiesExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
+import io.github.astrapi69.gradle.migration.info.DependencyInfo;
+import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
 import io.github.astrapi69.string.StringExtensions;
 import lombok.NonNull;
 
@@ -51,23 +53,26 @@ public class DependenciesExtensions
 		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
 		int indexOfStart = buildGradleContent.indexOf("dependencies {");
 		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
-		return buildGradleContent.substring(indexOfStart, indexOfEnd);
+		return GradleRunConfigurationsCopier.getContentOf("dependencies", buildGradle);
 	}
 
 	public static String getProjectVersionKeyName(String projectName)
 	{
-		String camelCased = WordUtils.capitalizeFully(projectName, new char[] { '-' })
-			.replaceAll("-", "");
+		String camelCased = toCamelCase(projectName);
 		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
 		return projectVersionKeyName + "Version";
+	}
+
+	public static String toCamelCase(String projectName)
+	{
+		return WordUtils.capitalizeFully(projectName, new char[] { '-' }).replaceAll("-", "");
 	}
 
 	public static List<String> getDependenciesAsStringList(String dependenciesContent)
 	{
 		String[] lines = dependenciesContent.split("\n");
 		String[] copyOfRange = Arrays.copyOfRange(lines, 1, lines.length - 1);
-		List<String> stringList = ArrayExtensions.asList(copyOfRange);
-		return stringList;
+		return ArrayExtensions.asList(copyOfRange);
 	}
 
 	public static List<DependencyInfo> getDependencyInfos(List<String> dependencyRows,
@@ -76,14 +81,17 @@ public class DependenciesExtensions
 		List<DependencyInfo> dependencyInfos = ListFactory.newArrayList();
 		dependencyRows.stream().forEach(row -> {
 			DependencyInfo dependencyInfo = DependenciesExtensions.getDependencyInfo(row);
-			String versionAlias = dependencyInfo.getVersion();
-			if (versionAlias != null)
+			if (dependencyInfo != null)
 			{
-				String stringVersion = versionAlias.substring(1);
-				String actualVersion = versionMap.get(stringVersion);
-				dependencyInfo.setVersion(actualVersion);
+				String versionAlias = dependencyInfo.getVersion();
+				if (versionAlias != null)
+				{
+					String stringVersion = versionAlias.substring(1);
+					String actualVersion = versionMap.get(stringVersion);
+					dependencyInfo.setVersion(actualVersion);
+				}
+				dependencyInfos.add(dependencyInfo);
 			}
-			dependencyInfos.add(dependencyInfo);
 		});
 		return dependencyInfos;
 	}
@@ -91,20 +99,25 @@ public class DependenciesExtensions
 	public static DependencyInfo getDependencyInfo(String dependencyRow)
 	{
 		String stripped = dependencyRow.strip();
-		String scope = stripped.substring(0, stripped.indexOf("("));
-		String dependency = StringUtils.substringBetween(stripped, "\"");
-		String[] split = dependency.split(":");
-		if (split.length == 2)
+		int indexOf = stripped.indexOf("(");
+		if (indexOf != -1)
 		{
-			return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
-				.build();
+			String scope = stripped.substring(0, indexOf);
+			String dependency = StringUtils.substringBetween(stripped, "\"");
+			String[] split = dependency.split(":");
+			if (split.length == 2)
+			{
+				return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
+					.build();
+			}
+			if (split.length == 3)
+			{
+				return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
+					.version(split[2]).build();
+			}
+			return DependencyInfo.builder().scope(scope).build();
 		}
-		if (split.length == 3)
-		{
-			return DependencyInfo.builder().scope(scope).groupId(split[0]).artifactId(split[1])
-				.version(split[2]).build();
-		}
-		return DependencyInfo.builder().scope(scope).build();
+		return null;
 	}
 
 

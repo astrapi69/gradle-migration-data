@@ -29,5 +29,8 @@ module gradle.migration.data.main
 	requires silly.strings;
 	requires java.logging;
 
-	exports io.github.astrapi69.gradle.migration.data;
+	exports io.github.astrapi69.gradle.migration.extension;
+	exports io.github.astrapi69.gradle.migration.info;
+	exports io.github.astrapi69.gradle.migration.runner;
+	exports io.github.astrapi69.gradle.migration.toml;
 }
