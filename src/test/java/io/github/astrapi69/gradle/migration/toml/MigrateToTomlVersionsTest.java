@@ -83,13 +83,21 @@ public class MigrateToTomlVersionsTest
 		String targetProjectDirNamePrefix;
 		String sourceProjectName;
 		String targetProjectName;
+		String sourceGithubUser;
+		String targetGithubUser;
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "mystic-crypt-ui";
-		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
+
+		targetProjectName = "awt-extensions";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
-		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
+		sourceGithubUser = "astrapi69";
+		targetGithubUser = "lightblueseas";
+		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/" + sourceGithubUser
+			+ "/";
+		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/" + targetGithubUser
+			+ "/";
+
 		ProjectTomlStructureInfo projectTomlStructureInfo = ProjectTomlStructureInfo.builder()
 			.gradleDirectory(gradleDirectory).sourceProjectName(sourceProjectName)
 			.sourceProjectDirNamePrefix(sourceProjectDirNamePrefix)

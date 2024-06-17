@@ -37,6 +37,7 @@ import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
+import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.gradle.migration.info.DependencyInfo;
 import io.github.astrapi69.gradle.migration.info.MigrationInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
@@ -52,10 +53,10 @@ public class MigrateToTomlVersions
 	public static String newLibsVersionsTomlAsString(MigrationInfo migrationInfo) throws IOException
 	{
 		File dependenciesGradle = PathFinder.getRelativePath(migrationInfo.getGradleDirectory(),
-			"dependencies.gradle");
+			DependenciesInfo.DEPENDENCIES_GRADLE_FILENAME);
 
 		File gradlePropertiesFile = PathFinder.getRelativePath(migrationInfo.getProjectDirectory(),
-			"gradle.properties");
+			DependenciesInfo.GRADLE_PROPERTIES_FILENAME);
 		// 1. Load all version from gradle.properties
 		Map<String, String> versionMap = DependenciesExtensions.getVersionMap(gradlePropertiesFile,
 			"Version");
@@ -83,7 +84,7 @@ public class MigrateToTomlVersions
 		String libsVersionTomlMapAsString = newLibsVersionsTomlAsString(migrationInfo);
 		// 2. store all version to libs.versions.toml
 		File libsVersionsToml = PathFinder.getRelativePath(migrationInfo.getGradleDirectory(),
-			"libs.versions.toml");
+			DependenciesInfo.LIBS_VERSIONS_TOML_FILENAME);
 		if (!libsVersionsToml.exists())
 		{
 			StoreFileExtensions.toFile(libsVersionsToml, libsVersionTomlMapAsString);
@@ -99,7 +100,7 @@ public class MigrateToTomlVersions
 	public static File migrateToTomlVersions(File gradleDirectory, String targetProjectName,
 		String targetProjectDirNamePrefix) throws IOException
 	{
-		String versionCatalogUpdateFileName = "version-catalog-update.gradle";
+		String versionCatalogUpdateFileName = DependenciesInfo.VERSION_CATALOG_UPDATE_GRADLE_FILENAME;
 		File sourceVersionCatalogUpdateFile = PathFinder.getRelativePath(gradleDirectory,
 			versionCatalogUpdateFileName);
 		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;

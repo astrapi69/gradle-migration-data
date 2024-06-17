@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CaseUtils;
 import org.apache.commons.text.WordUtils;
 
 import io.github.astrapi69.collection.array.ArrayExtensions;
@@ -56,17 +57,21 @@ public class DependenciesExtensions
 		return GradleRunConfigurationsCopier.getContentOf("dependencies", buildGradle);
 	}
 
-	public static String getProjectVersionKeyName(String projectName)
+	/**
+	 * Transforms the given project name(that is in a name convention of kebab-case) in camel-case
+	 * and appends 'Version' to it and returns the result
+	 * 
+	 * @param kebabCaseProjectName
+	 *            the project name that is in a name convention of kebab-case
+	 * @return The project name with appended 'Version' string
+	 */
+	public static String getProjectVersionKeyName(String kebabCaseProjectName)
 	{
-		String camelCased = toCamelCase(projectName);
+		String camelCased = CaseExtensions.kebabToCamelCase(kebabCaseProjectName);
 		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
 		return projectVersionKeyName + "Version";
 	}
 
-	public static String toCamelCase(String projectName)
-	{
-		return WordUtils.capitalizeFully(projectName, new char[] { '-' }).replaceAll("-", "");
-	}
 
 	public static List<String> getDependenciesAsStringList(String dependenciesContent)
 	{

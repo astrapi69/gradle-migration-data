@@ -34,7 +34,6 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 
 import io.github.astrapi69.collection.array.ArrayExtensions;
 import io.github.astrapi69.collection.list.ListExtensions;
@@ -49,6 +48,7 @@ import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.rename.RenameFileExtensions;
 import io.github.astrapi69.file.search.FileSearchExtensions;
 import io.github.astrapi69.file.write.StoreFileExtensions;
+import io.github.astrapi69.gradle.migration.extension.CaseExtensions;
 import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import io.github.astrapi69.gradle.migration.info.CopyGradleRunConfigurations;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
@@ -63,21 +63,18 @@ public class GradleRunConfigurationsCopier
 	public static void copyOnlyRunConfigurations(String sourceProjectName, String targetProjectName,
 		String sourceProjectDirNamePrefix, String targetProjectDirNamePrefix)
 	{
-
-		CopyGradleRunConfigurations copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
-			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
-				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true, false);
-		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
+		copyRunConfigurations(sourceProjectName, targetProjectName, sourceProjectDirNamePrefix,
+			targetProjectDirNamePrefix, true, false);
 	}
 
 	public static void copyRunConfigurations(String sourceProjectName, String targetProjectName,
 		String sourceProjectDirNamePrefix, String targetProjectDirNamePrefix,
 		boolean onlyRunConfigurations, boolean runConfigurationsInSameFolder)
 	{
-
 		CopyGradleRunConfigurations copyGradleRunConfigurationsData = GradleRunConfigurationsCopier
 			.newCopyGradleRunConfigurations(sourceProjectName, targetProjectName,
-				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, true, false);
+				sourceProjectDirNamePrefix, targetProjectDirNamePrefix, onlyRunConfigurations,
+				runConfigurationsInSameFolder);
 		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 	}
 
@@ -125,11 +122,17 @@ public class GradleRunConfigurationsCopier
 			.runConfigurationsInSameFolder(runConfigurationsInSameFolder).build();
 	}
 
+	/**
+	 *
+	 * @param projectName
+	 * @return
+	 * @deprecated use instead the same name method from {@DependenciesExtensions}. Note: will be
+	 *             removed on the next major version
+	 */
 	@Deprecated
 	public static String getProjectVersionKeyName(String projectName)
 	{
-		String camelCased = WordUtils.capitalizeFully(projectName, new char[] { '-' })
-			.replaceAll("-", "");
+		String camelCased = CaseExtensions.kebabToCamelCase(projectName);
 		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
 		return projectVersionKeyName + "Version";
 	}
@@ -218,8 +221,9 @@ public class GradleRunConfigurationsCopier
 
 	private void externalizeVersionFromBuildGradle(File targetProjectDir) throws IOException
 	{
-		File buildGradle = new File(targetProjectDir, DependenciesInfo.BUILD_GRADLE_NAME);
-		File gradleProperties = new File(targetProjectDir, DependenciesInfo.GRADLE_PROPERTIES_NAME);
+		File buildGradle = new File(targetProjectDir, DependenciesInfo.BUILD_GRADLE_FILENAME);
+		File gradleProperties = new File(targetProjectDir,
+			DependenciesInfo.GRADLE_PROPERTIES_FILENAME);
 		FileFactory.newFile(gradleProperties);
 		String dependenciesContent = DependenciesExtensions.getDependenciesContent(buildGradle);
 		List<String> stringList = getDependenciesAsStringList(dependenciesContent);
