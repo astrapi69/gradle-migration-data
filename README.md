@@ -53,6 +53,23 @@ dependencies {
 }
 ```
 
+# with new libs.versions.toml file
+
+If you use the new libs.versions.toml file for new automatic catalog versions update
+
+```
+[versions]
+gradle-migration-data-version=${latestVersion}
+
+[libraries]
+gradle-migration-data = { module = "io.github.astrapi69:gradle-migration-data", version.ref = "gradle-migration-data-version" }
+```
+then add the dependency to the dependencies area
+
+```
+    implementation libs.gradle.migration.data
+```
+
 ## Maven dependency
 
 Maven dependency is now on sonatype. Check
