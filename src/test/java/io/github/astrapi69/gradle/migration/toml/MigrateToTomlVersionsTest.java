@@ -88,10 +88,11 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "mystic-crypt";
+		targetProjectName = "randomizer";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
-		targetGithubUser = "astrapi69";
+//		targetGithubUser = "lightblueseas";
+		 targetGithubUser = "astrapi69";
 		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/" + sourceGithubUser
 			+ "/";
 		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/" + targetGithubUser

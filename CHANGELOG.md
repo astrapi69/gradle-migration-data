@@ -18,8 +18,8 @@ Version 2.2
 
 ADDED:
 
-- new class MigrateToTomlVersions that provides methods for migrate to new gradle project with libs.versions.toml file
 - new libs.versions.toml file for new automatic catalog versions update
+- new class MigrateToTomlVersions that provides methods for migrate to new gradle project with libs.versions.toml file
 - new method for get the content of a section from the build.gradle file
 
 CHANGED:
