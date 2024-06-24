@@ -7,6 +7,7 @@ Version 2.3-SNAPSHOT
 ADDED:
 
 - new class CaseExtensions for handle case transformations
+- new test dependency jgit
 
 CHANGED:
 

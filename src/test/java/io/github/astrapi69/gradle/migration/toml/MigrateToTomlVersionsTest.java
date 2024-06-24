@@ -31,6 +31,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.github.astrapi69.file.create.FileFactory;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -84,9 +89,8 @@ public class MigrateToTomlVersionsTest
 	}
 
 	@Test
-	@Disabled
-	public void testMigrateToNewProjectStructure() throws IOException, InterruptedException
-	{
+//	@Disabled
+	public void testMigrateToNewProjectStructure() throws IOException, InterruptedException, GitAPIException {
 		String shellPath;
 		String executionPath;
 		String command;
@@ -100,7 +104,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "jsonpath-extensions";
+		targetProjectName = "silly-bean";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
@@ -120,10 +124,16 @@ public class MigrateToTomlVersionsTest
 			.migrateToNewProjectStructure(projectTomlStructureInfo);
 
 		Thread.sleep(5000);
-
 		// Add files to git...
 		File targetProjectDir = DirectoryFactory
-			.newDirectory(targetProjectDirNamePrefix + targetProjectName);
+				.newDirectory(targetProjectDirNamePrefix + targetProjectName);
+
+//		File dotGitFile = FileFactory.newFile(targetProjectDir, ".git");
+//		Git git = Git.open( dotGitFile );
+//
+//		git.add().addFilepattern("gradle/version-catalog-update.gradle").call();
+
+
 		shellPath = "/usr/bin/zsh";
 		executionPath = PathFinder.getRelativePath(targetProjectDir, "gradle").getAbsolutePath();
 		command = "git add .";
