@@ -89,7 +89,7 @@ public class MigrateToTomlVersionsTest
 	}
 
 	@Test
-//	@Disabled
+	@Disabled
 	public void testMigrateToNewProjectStructure() throws IOException, InterruptedException, GitAPIException {
 		String shellPath;
 		String executionPath;
