@@ -25,9 +25,10 @@
 package io.github.astrapi69.gradle.migration.info;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
+import io.github.astrapi69.file.create.DirectoryFactory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -36,24 +37,10 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DependenciesInfo
+public class GradleProjectInfo
 {
-	public static final String JAVA_LIBRARY_TEMPLATE_NAME = "java-library-template";
-	public static final String SPRING_BOOT_TEMPLATE_NAME = "spring-boot-template";
-	public static final String SETTINGS_GRADLE_FILENAME = "settings.gradle";
-	public static final String VERSION_CATALOG_UPDATE_GRADLE_FILENAME = "version-catalog-update.gradle";
-	public static final String LIBS_VERSIONS_TOML_FILENAME = "libs.versions.toml";
-	public static final String DEPENDENCIES_GRADLE_FILENAME = "dependencies.gradle";
-	public static final String BUILD_GRADLE_FILENAME = "build.gradle";
-	public static final String GRADLE_PROPERTIES_FILENAME = "gradle.properties";
-	public static final String DOT_GITHUB_DIRECTORY_NAME = ".github";
-	public static final String DOT_TRAVIS_FILENAME = ".travis.yml";
-	public static final String CODE_OF_CONDUCT_FILENAME = "CODE_OF_CONDUCT.md";
-	public static final String README_FILENAME = "README.md";
-
-	File buildGradle;
-	File settingsGradle;
-	Properties properties;
-	List<String> versionStrings;
-
+	List<DependencyInfo> dependencyInfos;
+	MigrationInfo migrationInfo;
+	File libsVersionsTomlFile;
+	String libsVersionTomlMapAsString;
 }

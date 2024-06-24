@@ -31,10 +31,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.CaseUtils;
-import org.apache.commons.text.WordUtils;
 
 import io.github.astrapi69.collection.array.ArrayExtensions;
 import io.github.astrapi69.collection.list.ListFactory;
@@ -210,6 +209,8 @@ public class DependenciesExtensions
 
 	public static String getLibsVersionTomlMapAsString(List<DependencyInfo> dependencyInfos)
 	{
+		AtomicBoolean withLombok = new AtomicBoolean(false);
+		AtomicBoolean withJunit = new AtomicBoolean(false);
 		StringBuilder sb = new StringBuilder();
 		List<String> versionKeys = ListFactory.newArrayList();
 		sb.append("[versions]").append(System.lineSeparator());
@@ -226,7 +227,37 @@ public class DependenciesExtensions
 						.append(System.lineSeparator());
 				}
 			}
+			if (dependencyInfo.getGroupId().equals("org.projectlombok"))
+			{
+				withLombok.set(true);
+			}
+			if (dependencyInfo.getGroupId().equals("org.junit.jupiter"))
+			{
+				withJunit.set(true);
+			}
 		});
+		// add plugin versions
+		sb.append("gradle-plugin-grgit-version").append(" = ").append("\"").append("5.2.2")
+			.append("\"").append(System.lineSeparator());
+
+		sb.append("gradle-plugin-license-version").append(" = ").append("\"").append("0.16.1")
+			.append("\"").append(System.lineSeparator());
+
+		if (withLombok.get())
+		{
+
+			sb.append("gradle-plugin-lombok-version").append(" = ").append("\"").append("8.6")
+				.append("\"").append(System.lineSeparator());
+		}
+
+		sb.append("gradle-plugin-spotless-version").append(" = ").append("\"").append("7.0.0.BETA1")
+			.append("\"").append(System.lineSeparator());
+
+		sb.append("gradle-plugin-version-catalog-update-version").append(" = ").append("\"")
+			.append("0.8.4").append("\"").append(System.lineSeparator());
+
+		sb.append("gradle-plugin-versions-version").append(" = ").append("\"").append("0.51.0")
+			.append("\"").append(System.lineSeparator());
 
 		sb.append(System.lineSeparator());
 		List<String> libraryKeys = ListFactory.newArrayList();
@@ -251,6 +282,57 @@ public class DependenciesExtensions
 				libraryKeys.add(libraryKey);
 			}
 		});
+		// add default bundles section ...
+		sb.append(System.lineSeparator()).append("[bundles]").append(System.lineSeparator());
+		if (withJunit.get())
+		{
+			String junitDefaultBundles = """
+				unit-testing = [
+				    "junit-jupiter",
+				    "meanbean",
+				    "test-object",
+				]
+								""";
+			sb.append(junitDefaultBundles).append(System.lineSeparator());
+		}
+		else
+		{
+			String testngDefaultBundles = """
+				unit-testing = [
+				    "meanbean",
+				    "test-object",
+				    "testng",
+				]
+								""";
+			sb.append(testngDefaultBundles).append(System.lineSeparator());
+		}
+		// TODO add default plugins section...
+		// add default plugins section ...
+		sb.append("[plugins]").append(System.lineSeparator());
+
+		if (withLombok.get())
+		{
+			String withLombokPlugins = """
+				gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+				grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
+				license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
+				lombok-plugin = { id = "io.freefair.lombok", version.ref = "gradle-plugin-lombok-version" }
+				spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+				version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
+												""";
+			sb.append(withLombokPlugins).append(System.lineSeparator());
+		}
+		else
+		{
+			String defaultPlugins = """
+				gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+				grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
+				license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
+				spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+				version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
+												""";
+			sb.append(defaultPlugins).append(System.lineSeparator());
+		}
 		return sb.toString();
 	}
 }

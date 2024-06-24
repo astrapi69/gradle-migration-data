@@ -28,16 +28,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.file.copy.CopyFileExtensions;
+import io.github.astrapi69.file.create.DirectoryFactory;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.extension.CaseExtensions;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
+import io.github.astrapi69.gradle.migration.info.DependencyInfo;
+import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
 import io.github.astrapi69.gradle.migration.info.MigrationInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
+import io.github.astrapi69.gradle.migration.shell.ShellExecutor;
 
 
 public class MigrateToTomlVersionsTest
@@ -59,13 +67,14 @@ public class MigrateToTomlVersionsTest
 		String targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
 		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
 
-		File libsVersionsTomlFile = MigrateToTomlVersions.migrateToTomlVersions(gradleDirectory,
-			targetProjectName, targetProjectDirNamePrefix);
+		GradleProjectInfo libsVersionsTomlFile = MigrateToTomlVersions
+			.migrateToTomlVersions(gradleDirectory, targetProjectName, targetProjectDirNamePrefix);
 
 		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
-		String libsVersionTomlMapAsString = MigrateToTomlVersions
+		GradleProjectInfo libsVersionTomlMapAsString = MigrateToTomlVersions
 			.newLibsVersionsTomlAsString(migrationInfo);
-		String libsVersionsTomlFileContent = ReadFileExtensions.fromFile(libsVersionsTomlFile);
+		String libsVersionsTomlFileContent = ReadFileExtensions
+			.fromFile(libsVersionsTomlFile.getLibsVersionsTomlFile());
 		assertEquals(libsVersionsTomlFileContent, libsVersionTomlMapAsString);
 
 		String sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
@@ -76,8 +85,11 @@ public class MigrateToTomlVersionsTest
 
 	@Test
 	@Disabled
-	public void testMigrateToNewProjectStructure() throws IOException
+	public void testMigrateToNewProjectStructure() throws IOException, InterruptedException
 	{
+		String shellPath;
+		String executionPath;
+		String command;
 		File gradleDirectory;
 		String sourceProjectDirNamePrefix;
 		String targetProjectDirNamePrefix;
@@ -88,11 +100,11 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "randomizer";
+		targetProjectName = "jsonpath-extensions";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
-//		targetGithubUser = "lightblueseas";
-		 targetGithubUser = "astrapi69";
+		// targetGithubUser = "lightblueseas";
+		targetGithubUser = "astrapi69";
 		sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/" + sourceGithubUser
 			+ "/";
 		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/" + targetGithubUser
@@ -104,7 +116,65 @@ public class MigrateToTomlVersionsTest
 			.targetProjectName(targetProjectName)
 			.targetProjectDirNamePrefix(targetProjectDirNamePrefix).build();
 
-		MigrateToTomlVersions.migrateToNewProjectStructure(projectTomlStructureInfo);
+		GradleProjectInfo gradleProjectInfo = MigrateToTomlVersions
+			.migrateToNewProjectStructure(projectTomlStructureInfo);
+
+		Thread.sleep(5000);
+
+		// Add files to git...
+		File targetProjectDir = DirectoryFactory
+			.newDirectory(targetProjectDirNamePrefix + targetProjectName);
+		shellPath = "/usr/bin/zsh";
+		executionPath = PathFinder.getRelativePath(targetProjectDir, "gradle").getAbsolutePath();
+		command = "git add .";
+
+		ShellExecutor.execute(shellPath, executionPath, command);
+
+		// command = "git add version-catalog-update.gradle";
+		// ShellExecutor.execute(shellPath, executionPath, command);
+
+		executionPath = PathFinder.getRelativePath(targetProjectDir, ".idea", "runConfigurations")
+			.getAbsolutePath();
+
+		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
+			+ "__versionCatalogFormat_.xml";
+
+		ShellExecutor.execute(shellPath, executionPath, command);
+
+		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
+			+ "__versionCatalogUpdate_.xml";
+		ShellExecutor.execute(shellPath, executionPath, command);
+
+		// Replace build.gradle content with new one...
+
+		File srcTestResourcesTest = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"test");
+
+		AtomicBoolean withLombok = new AtomicBoolean(false);
+
+		File targetBuildGradle = PathFinder.getRelativePath(targetProjectDir, "build.gradle");
+
+		File buildWithLombokGradle = new File(srcTestResourcesTest, "/build-with-lombok.gradle");
+
+		File buildWithoutLombokGradle = new File(srcTestResourcesTest,
+			"/build-without-lombok.gradle");
+
+		List<DependencyInfo> dependencyInfos = gradleProjectInfo.getDependencyInfos();
+		dependencyInfos.stream().forEach(dependencyInfo -> {
+			if (dependencyInfo.getGroupId().equals("org.projectlombok"))
+			{
+				withLombok.set(true);
+			}
+		});
+		if (withLombok.get())
+		{
+			CopyFileExtensions.copyFile(buildWithLombokGradle, targetBuildGradle);
+		}
+		else
+		{
+			CopyFileExtensions.copyFile(buildWithoutLombokGradle, targetBuildGradle);
+		}
+
 	}
 
 	@Test

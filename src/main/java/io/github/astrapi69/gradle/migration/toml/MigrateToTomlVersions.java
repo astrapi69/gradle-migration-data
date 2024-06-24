@@ -39,9 +39,12 @@ import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.gradle.migration.info.DependencyInfo;
+import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
 import io.github.astrapi69.gradle.migration.info.MigrationInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
+import io.github.astrapi69.gradle.migration.shell.ShellExecutor;
+import io.github.astrapi69.io.shell.LinuxShellExecutor;
 
 /**
  * The class {@link MigrateToTomlVersions} provides methods for migrate to new toml project
@@ -50,8 +53,10 @@ import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier
 public class MigrateToTomlVersions
 {
 
-	public static String newLibsVersionsTomlAsString(MigrationInfo migrationInfo) throws IOException
+	public static GradleProjectInfo newLibsVersionsTomlAsString(MigrationInfo migrationInfo)
+		throws IOException
 	{
+		GradleProjectInfo gradleProjectInfo = GradleProjectInfo.builder().build();
 		File dependenciesGradle = PathFinder.getRelativePath(migrationInfo.getGradleDirectory(),
 			DependenciesInfo.DEPENDENCIES_GRADLE_FILENAME);
 
@@ -60,6 +65,10 @@ public class MigrateToTomlVersions
 		// 1. Load all version from gradle.properties
 		Map<String, String> versionMap = DependenciesExtensions.getVersionMap(gradlePropertiesFile,
 			"Version");
+		if (!dependenciesGradle.exists())
+		{
+			throw new RuntimeException("Could not find file dependencies.gradle");
+		}
 		String dependenciesContent = DependenciesExtensions
 			.getDependenciesContent(dependenciesGradle);
 		List<String> dependenciesAsStringList = DependenciesExtensions
@@ -67,6 +76,7 @@ public class MigrateToTomlVersions
 
 		List<DependencyInfo> dependencyInfos = DependenciesExtensions
 			.getDependencyInfos(dependenciesAsStringList, versionMap);
+		gradleProjectInfo.setDependencyInfos(dependencyInfos);
 
 		String newDependenciesStructure = DependenciesExtensions
 			.getNewDependenciesStructure(dependencyInfos);
@@ -76,63 +86,71 @@ public class MigrateToTomlVersions
 		String libsVersionTomlMapAsString = getLibsVersionTomlMapAsString(dependencyInfos);
 		StoreFileExtensions.toFile(dependenciesGradle, newDependenciesStructure,
 			StandardCharsets.UTF_8);
-		return libsVersionTomlMapAsString;
+		gradleProjectInfo.setLibsVersionTomlMapAsString(libsVersionTomlMapAsString);
+		return gradleProjectInfo;
 	}
 
-	public static File newLibsVersionsTomlFile(MigrationInfo migrationInfo) throws IOException
+	public static GradleProjectInfo newLibsVersionsTomlFile(MigrationInfo migrationInfo)
+		throws IOException
 	{
-		String libsVersionTomlMapAsString = newLibsVersionsTomlAsString(migrationInfo);
+		GradleProjectInfo gradleProjectInfo = newLibsVersionsTomlAsString(migrationInfo);
+		String libsVersionTomlMapAsString = gradleProjectInfo.getLibsVersionTomlMapAsString();
 		// 2. store all version to libs.versions.toml
 		File libsVersionsToml = PathFinder.getRelativePath(migrationInfo.getGradleDirectory(),
 			DependenciesInfo.LIBS_VERSIONS_TOML_FILENAME);
+		gradleProjectInfo.setLibsVersionsTomlFile(libsVersionsToml);
 		if (!libsVersionsToml.exists())
 		{
 			StoreFileExtensions.toFile(libsVersionsToml, libsVersionTomlMapAsString);
 		}
-		return libsVersionsToml;
+		return gradleProjectInfo;
 	}
 
-	public static File newLibsVersionsTomlFile(String projectDirectoryName) throws IOException
+	public static GradleProjectInfo newLibsVersionsTomlFile(String projectDirectoryName)
+		throws IOException
 	{
-		return newLibsVersionsTomlFile(MigrationInfo.fromAbsolutePath(projectDirectoryName));
+		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
+		return newLibsVersionsTomlFile(migrationInfo);
 	}
 
-	public static File migrateToTomlVersions(File gradleDirectory, String targetProjectName,
-		String targetProjectDirNamePrefix) throws IOException
+	public static GradleProjectInfo migrateToTomlVersions(File gradleDirectory,
+		String targetProjectName, String targetProjectDirNamePrefix) throws IOException
 	{
 		String versionCatalogUpdateFileName = DependenciesInfo.VERSION_CATALOG_UPDATE_GRADLE_FILENAME;
 		File sourceVersionCatalogUpdateFile = PathFinder.getRelativePath(gradleDirectory,
 			versionCatalogUpdateFileName);
 		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
-		File libsVersionsTomlFile = newLibsVersionsTomlFile(projectDirectoryName);
+		GradleProjectInfo gradleProjectInfo = newLibsVersionsTomlFile(projectDirectoryName);
 		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
+		gradleProjectInfo.setMigrationInfo(migrationInfo);
 		File destinationVersionCatalogUpdateFile = FileFactory
 			.newFile(migrationInfo.getGradleDirectory(), versionCatalogUpdateFileName);
 		CopyFileExtensions.copyFile(sourceVersionCatalogUpdateFile,
 			destinationVersionCatalogUpdateFile, StandardCharsets.UTF_8, StandardCharsets.UTF_8,
 			true);
-		return libsVersionsTomlFile;
+		return gradleProjectInfo;
 	}
 
-	public static void migrateToNewProjectStructure(
+	public static GradleProjectInfo migrateToNewProjectStructure(
 		ProjectTomlStructureInfo projectTomlStructureInfo) throws IOException
 	{
-		migrateToNewProjectStructure(projectTomlStructureInfo.getGradleDirectory(),
+		return migrateToNewProjectStructure(projectTomlStructureInfo.getGradleDirectory(),
 			projectTomlStructureInfo.getSourceProjectName(),
 			projectTomlStructureInfo.getTargetProjectName(),
 			projectTomlStructureInfo.getSourceProjectDirNamePrefix(),
 			projectTomlStructureInfo.getTargetProjectDirNamePrefix());
 	}
 
-	public static void migrateToNewProjectStructure(File gradleDirectory, String sourceProjectName,
-		String targetProjectName, String sourceProjectDirNamePrefix,
+	public static GradleProjectInfo migrateToNewProjectStructure(File gradleDirectory,
+		String sourceProjectName, String targetProjectName, String sourceProjectDirNamePrefix,
 		String targetProjectDirNamePrefix) throws IOException
 	{
-		File libsVersionsTomlFile = migrateToTomlVersions(gradleDirectory, targetProjectName,
-			targetProjectDirNamePrefix);
+		GradleProjectInfo gradleProjectInfo = migrateToTomlVersions(gradleDirectory,
+			targetProjectName, targetProjectDirNamePrefix);
 
 		GradleRunConfigurationsCopier.copyOnlyRunConfigurations(sourceProjectName,
 			targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
+		return gradleProjectInfo;
 	}
 
 }
