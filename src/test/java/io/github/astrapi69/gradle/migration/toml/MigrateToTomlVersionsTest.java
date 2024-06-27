@@ -33,11 +33,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.file.copy.CopyFileExtensions;
 import io.github.astrapi69.file.create.DirectoryFactory;
 import io.github.astrapi69.file.create.FileFactory;
@@ -50,7 +52,7 @@ import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
 import io.github.astrapi69.gradle.migration.info.MigrationInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
-import io.github.astrapi69.gradle.migration.shell.ShellExecutor;
+import io.github.astrapi69.io.shell.LinuxShellExecutor;
 
 
 public class MigrateToTomlVersionsTest
@@ -88,14 +90,108 @@ public class MigrateToTomlVersionsTest
 			targetProjectName, sourceProjectDirNamePrefix, targetProjectDirNamePrefix);
 	}
 
+	private void addFileToGit(Git git, String filePattern) throws GitAPIException
+	{
+		System.out.println("Adding file: " + filePattern);
+		git.add().addFilepattern(filePattern).call();
+	}
+
+	public void addGitFilesWithJGit(String targetProjectDirNamePrefix, String targetProjectName)
+		throws IOException, GitAPIException
+	{
+
+		// Add files to git...
+		File targetProjectDir = DirectoryFactory
+			.newDirectory(targetProjectDirNamePrefix + targetProjectName);
+
+		if (!targetProjectDir.exists())
+		{
+			throw new IOException(
+				"Target project directory does not exist: " + targetProjectDir.getAbsolutePath());
+		}
+
+		File dotGitDirectory = DirectoryFactory.newDirectory(targetProjectDir, ".git");
+		if (!dotGitDirectory.exists())
+		{
+			throw new IOException(
+				".git directory does not exist in: " + dotGitDirectory.getAbsolutePath());
+		}
+		Git git = Git.open(dotGitDirectory);
+
+		File tomlFile = FileFactory.newFile(PathFinder.getRelativePath(targetProjectDir, "gradle"),
+			"libs.versions.toml");
+		boolean exists = tomlFile.exists();
+		File gradleFile = FileFactory.newFile(
+			PathFinder.getRelativePath(targetProjectDir, "gradle"),
+			"version-catalog-update.gradle");
+		boolean exists1 = gradleFile.exists();
+		File versionCatalogFormatFile = FileFactory.newFile(
+			PathFinder.getRelativePath(targetProjectDir, ".idea", "runConfigurations"),
+			CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogFormat_.xml");
+		boolean exists2 = versionCatalogFormatFile.exists();
+		File versionCatalogUpdateFile = FileFactory.newFile(
+			PathFinder.getRelativePath(targetProjectDir, ".idea", "runConfigurations"),
+			CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogUpdate_.xml");
+		boolean exists3 = versionCatalogUpdateFile.exists();
+
+		git.add().addFilepattern("gradle/libs.versions.toml").call();
+		git.add().addFilepattern("gradle/version-catalog-update.gradle").call();
+		git.add().addFilepattern(".idea/runConfigurations/"
+			+ CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogFormat_.xml")
+			.call();
+		git.add().addFilepattern(".idea/runConfigurations/"
+			+ CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogUpdate_.xml")
+			.call();
+	}
+
+
+	public void addGitFilesWithJGit2(String targetProjectDirNamePrefix, String targetProjectName)
+		throws IOException, GitAPIException
+	{
+		// Add files to git...
+		File targetProjectDir = new File(targetProjectDirNamePrefix + targetProjectName);
+
+		if (!targetProjectDir.exists())
+		{
+			throw new IOException(
+				"Target project directory does not exist: " + targetProjectDir.getAbsolutePath());
+		}
+
+		File dotGitDirectory = new File(targetProjectDir, ".git");
+		if (!dotGitDirectory.exists())
+		{
+			throw new IOException(
+				".git directory does not exist in: " + dotGitDirectory.getAbsolutePath());
+		}
+
+		try (
+			Repository repository = new FileRepositoryBuilder().setGitDir(dotGitDirectory)
+				.readEnvironment().findGitDir().build();
+			Git git = new Git(repository))
+		{
+
+			addFileToGit(git, "gradle/libs.versions.toml");
+			addFileToGit(git, "gradle/version-catalog-update.gradle");
+			addFileToGit(git,
+				".idea/runConfigurations/" + CaseExtensions.kebabToSnakeCase(targetProjectName)
+					+ "__versionCatalogFormat_.xml");
+			addFileToGit(git,
+				".idea/runConfigurations/" + CaseExtensions.kebabToSnakeCase(targetProjectName)
+					+ "__versionCatalogUpdate_.xml");
+
+			System.out.println("Files added successfully.");
+		}
+		catch (RepositoryNotFoundException e)
+		{
+			throw new IOException("Could not open Git repository: " + e.getMessage(), e);
+		}
+	}
+
 	@Test
 	@Disabled
 	public void testMigrateToNewProjectStructure()
 		throws IOException, InterruptedException, GitAPIException
 	{
-		String shellPath;
-		String executionPath;
-		String command;
 		File gradleDirectory;
 		String sourceProjectDirNamePrefix;
 		String targetProjectDirNamePrefix;
@@ -106,7 +202,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "silly-bean";
+		targetProjectName = "swing-wizard";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
@@ -126,39 +222,24 @@ public class MigrateToTomlVersionsTest
 			.migrateToNewProjectStructure(projectTomlStructureInfo);
 
 		Thread.sleep(5000);
-		// Add files to git...
+
 		File targetProjectDir = DirectoryFactory
 			.newDirectory(targetProjectDirNamePrefix + targetProjectName);
 
-		// File dotGitFile = FileFactory.newFile(targetProjectDir, ".git");
-		// Git git = Git.open( dotGitFile );
-		//
-		// git.add().addFilepattern("gradle/version-catalog-update.gradle").call();
-
-
-		shellPath = "/usr/bin/zsh";
-		executionPath = PathFinder.getRelativePath(targetProjectDir, "gradle").getAbsolutePath();
-		command = "git add .";
-
-		ShellExecutor.execute(shellPath, executionPath, command);
-
-		// command = "git add version-catalog-update.gradle";
-		// ShellExecutor.execute(shellPath, executionPath, command);
-
-		executionPath = PathFinder.getRelativePath(targetProjectDir, ".idea", "runConfigurations")
-			.getAbsolutePath();
-
-		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
-			+ "__versionCatalogFormat_.xml";
-
-		ShellExecutor.execute(shellPath, executionPath, command);
-
-		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
-			+ "__versionCatalogUpdate_.xml";
-		ShellExecutor.execute(shellPath, executionPath, command);
-
 		// Replace build.gradle content with new one...
 
+		updateBuildGradleFile(targetProjectDir, gradleProjectInfo);
+
+		updateGradleYamlFile(targetProjectDir, gradleProjectInfo);
+
+		addGitFiles2(targetProjectDir, targetProjectName);
+
+		addGitFilesWithJGit2(targetProjectDirNamePrefix, targetProjectName);
+	}
+
+	private static void updateBuildGradleFile(File targetProjectDir,
+		GradleProjectInfo gradleProjectInfo) throws IOException
+	{
 		File srcTestResourcesTest = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
 			"test");
 
@@ -186,7 +267,124 @@ public class MigrateToTomlVersionsTest
 		{
 			CopyFileExtensions.copyFile(buildWithoutLombokGradle, targetBuildGradle);
 		}
+	}
 
+	private void updateGradleYamlFile(File targetProjectDir, GradleProjectInfo gradleProjectInfo)
+		throws IOException
+	{
+
+		File targetGradleYamlFile = PathFinder.getRelativePath(targetProjectDir, ".github",
+			"workflows", "gradle.yml");
+		File sourceGradleYamlFile = PathFinder.getRelativePath(PathFinder.getProjectDirectory(),
+			".github", "workflows", "gradle.yml");
+
+		CopyFileExtensions.copyFile(sourceGradleYamlFile, targetGradleYamlFile);
+	}
+
+	private static void addGitFiles2(File targetProjectDir, String targetProjectName)
+		throws IOException, InterruptedException
+	{
+		String command;
+		String shellPath;
+		String executionPath;
+
+		// Ensure you are executing in the root of the git repository
+		shellPath = "/usr/bin/zsh";
+		executionPath = targetProjectDir.getAbsolutePath();
+
+		// Log the current directory
+		System.out.println("Executing commands in: " + executionPath);
+
+		// Adding files in batch
+		List<String> filesToAdd = ListFactory.newArrayList();
+		filesToAdd.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "libs.versions.toml")
+			.getAbsolutePath());
+		filesToAdd.add(
+			PathFinder.getRelativePath(targetProjectDir, "gradle", "version-catalog-update.gradle")
+				.getAbsolutePath());
+		filesToAdd.add(PathFinder
+			.getRelativePath(targetProjectDir, ".idea", "runConfigurations",
+				CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogFormat_.xml")
+			.getAbsolutePath());
+		filesToAdd.add(PathFinder
+			.getRelativePath(targetProjectDir, ".idea", "runConfigurations",
+				CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogUpdate_.xml")
+			.getAbsolutePath());
+		String output;
+		// Add files to git
+		for (String file : filesToAdd)
+		{
+			command = "git add " + file;
+			System.out.println("Executing command: " + command);
+			output = LinuxShellExecutor.execute(shellPath, executionPath, command);
+			System.out.println("output of command: " + output);
+		}
+
+		// Check git status
+		command = "git status";
+		System.out.println("Executing command: " + command);
+		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
+		System.out.println("output of command: " + output);
+
+		command = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add --ignore-errors -A"
+			+ " -f -- gradle/libs.versions.toml gradle/version-catalog-update.gradle";
+
+		System.out.println("Executing command: " + command);
+		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
+		System.out.println("output of command: " + output);
+
+		command = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add --ignore-errors -A"
+			+ " -f -- .idea/runConfigurations/" + CaseExtensions.kebabToSnakeCase(targetProjectName)
+			+ "__versionCatalogFormat_.xml .idea/runConfigurations/"
+			+ CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogUpdate_.xml";
+
+		System.out.println("Executing command: " + command);
+		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
+		System.out.println("output of command: " + output);
+
+		// Optional: Commit changes
+		// command = "git commit -m 'Added required files'";
+		// System.out.println("Executing command: " + command);
+		// output = LinuxShellExecutor.execute(shellPath, executionPath, command);
+		// System.out.println("output of command: " + output);
+	}
+
+
+	private static void addGitFiles(File targetProjectDir, String targetProjectName)
+		throws IOException, InterruptedException
+	{
+		String command;
+		String shellPath;
+		String executionPath;
+		// Add files to git...
+		shellPath = "/usr/bin/zsh";
+		executionPath = PathFinder.getRelativePath(targetProjectDir, "gradle").getAbsolutePath();
+
+		command = "git add libs.versions.toml";
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
+		command = "git status";
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
+
+		command = "git add version-catalog-update.gradle";
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
+		command = "git status";
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
+
+		executionPath = PathFinder.getRelativePath(targetProjectDir, ".idea", "runConfigurations")
+			.getAbsolutePath();
+
+		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
+			+ "__versionCatalogFormat_.xml";
+
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
+		command = "git status";
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
+
+		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
+			+ "__versionCatalogUpdate_.xml";
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
+		command = "git status";
+		LinuxShellExecutor.execute(shellPath, executionPath, command);
 	}
 
 	@Test

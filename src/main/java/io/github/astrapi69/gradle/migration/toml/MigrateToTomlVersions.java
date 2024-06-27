@@ -43,8 +43,6 @@ import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
 import io.github.astrapi69.gradle.migration.info.MigrationInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
-import io.github.astrapi69.gradle.migration.shell.ShellExecutor;
-import io.github.astrapi69.io.shell.LinuxShellExecutor;
 
 /**
  * The class {@link MigrateToTomlVersions} provides methods for migrate to new toml project
