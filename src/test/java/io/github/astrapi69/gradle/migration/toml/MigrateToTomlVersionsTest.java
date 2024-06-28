@@ -202,7 +202,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "swing-wizard";
+		targetProjectName = "zip-worker";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
@@ -254,7 +254,8 @@ public class MigrateToTomlVersionsTest
 
 		List<DependencyInfo> dependencyInfos = gradleProjectInfo.getDependencyInfos();
 		dependencyInfos.stream().forEach(dependencyInfo -> {
-			if (dependencyInfo.getGroupId().equals("org.projectlombok"))
+			if (dependencyInfo.getGroupId() != null
+				&& dependencyInfo.getGroupId().equals("org.projectlombok"))
 			{
 				withLombok.set(true);
 			}

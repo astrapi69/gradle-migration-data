@@ -198,8 +198,12 @@ public class DependenciesExtensions
 			{
 				versionKeys.add(dependencyInfoVersionKey);
 				String scope = dependencyInfo.getScope();
-				String artifactId = dependencyInfo.getArtifactId().replaceAll("-", ".");
-				sb.append(scope).append(" libs.").append(artifactId).append(System.lineSeparator());
+				if (dependencyInfo.getArtifactId() != null)
+				{
+					String artifactId = dependencyInfo.getArtifactId().replaceAll("-", ".");
+					sb.append(scope).append(" libs.").append(artifactId)
+						.append(System.lineSeparator());
+				}
 			}
 		});
 		sb.append("}").append(System.lineSeparator());
@@ -227,11 +231,13 @@ public class DependenciesExtensions
 						.append(System.lineSeparator());
 				}
 			}
-			if (dependencyInfo.getGroupId().equals("org.projectlombok"))
+			if (dependencyInfo.getGroupId() != null
+				&& dependencyInfo.getGroupId().equals("org.projectlombok"))
 			{
 				withLombok.set(true);
 			}
-			if (dependencyInfo.getGroupId().equals("org.junit.jupiter"))
+			if (dependencyInfo.getGroupId() != null
+				&& dependencyInfo.getGroupId().equals("org.junit.jupiter"))
 			{
 				withJunit.set(true);
 			}
