@@ -25,10 +25,8 @@
 package io.github.astrapi69.gradle.migration.info;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import io.github.astrapi69.file.create.DirectoryFactory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
