@@ -48,11 +48,11 @@ import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.rename.RenameFileExtensions;
 import io.github.astrapi69.file.search.FileSearchExtensions;
 import io.github.astrapi69.file.write.StoreFileExtensions;
-import io.github.astrapi69.gradle.migration.extension.CaseExtensions;
 import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import io.github.astrapi69.gradle.migration.info.CopyGradleRunConfigurations;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.io.StreamExtensions;
+import io.github.astrapi69.string.CaseExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
 public class GradleRunConfigurationsCopier
@@ -123,11 +123,14 @@ public class GradleRunConfigurationsCopier
 	}
 
 	/**
-	 *
+	 * Transforms the given project name(that is in a name convention of kebab-case) in camel-case
+	 * and appends 'Version' to it and returns the result
+	 * 
 	 * @param projectName
-	 * @return
-	 * @deprecated use instead the same name method from {@DependenciesExtensions}. Note: will be
-	 *             removed on the next major version
+	 *            the project name
+	 * @return The project name with appended 'Version' string
+	 * @deprecated use instead the same name method from {@link DependenciesExtensions}. Note: will
+	 *             be removed on the next major version
 	 */
 	@Deprecated
 	public static String getProjectVersionKeyName(String projectName)

@@ -27,7 +27,6 @@ package io.github.astrapi69.gradle.migration.extension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -42,6 +41,7 @@ import io.github.astrapi69.collection.properties.PropertiesExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.gradle.migration.info.DependencyInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
+import io.github.astrapi69.string.CaseExtensions;
 import io.github.astrapi69.string.StringExtensions;
 import lombok.NonNull;
 
@@ -50,9 +50,6 @@ public class DependenciesExtensions
 
 	public static String getDependenciesContent(File buildGradle) throws IOException
 	{
-		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
-		int indexOfStart = buildGradleContent.indexOf("dependencies {");
-		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
 		return GradleRunConfigurationsCopier.getContentOf("dependencies", buildGradle);
 	}
 
@@ -83,7 +80,7 @@ public class DependenciesExtensions
 		Map<String, String> versionMap)
 	{
 		List<DependencyInfo> dependencyInfos = ListFactory.newArrayList();
-		dependencyRows.stream().forEach(row -> {
+		dependencyRows.forEach(row -> {
 			DependencyInfo dependencyInfo = DependenciesExtensions.getDependencyInfo(row);
 			if (dependencyInfo != null)
 			{
@@ -143,7 +140,7 @@ public class DependenciesExtensions
 	{
 		Properties properties = PropertiesExtensions.loadProperties(gradlePropertiesFile);
 		Map<String, String> versionMap = MapFactory.newLinkedHashMap();
-		properties.keySet().stream().forEach(e -> {
+		properties.keySet().forEach(e -> {
 			String versionKey = e.toString();
 			if (versionKey.endsWith(keyVersionSuffix))
 			{
@@ -153,46 +150,12 @@ public class DependenciesExtensions
 		return versionMap;
 	}
 
-	public static Map<String, Map> getLibsVersionTomlMap(List<DependencyInfo> dependencyInfos)
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("[versions]").append(System.lineSeparator());
-		Map<String, Map> libsVersionsTomlMap = new LinkedHashMap<>();
-		Map<String, String> versionsMap = new LinkedHashMap<>();
-		libsVersionsTomlMap.put("versions", versionsMap);
-		dependencyInfos.stream().forEach(dependencyInfo -> {
-			String dependencyInfoVersionKey = dependencyInfo.getArtifactId() + "-version";
-			sb.append(dependencyInfoVersionKey).append(" = ").append("\"")
-				.append(dependencyInfo.getVersion()).append("\"").append(System.lineSeparator());
-			versionsMap.put(dependencyInfoVersionKey, dependencyInfo.getVersion());
-		});
-		Map<String, Map<String, Map<String, String>>> librariesMap = new LinkedHashMap<>();
-
-		Map<String, Map<String, String>> librariesValuesMap = new LinkedHashMap<>();
-		libsVersionsTomlMap.put("libraries", librariesValuesMap);
-
-		sb.append("[libraries]").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
-			String dependencyInfoVersionKey = dependencyInfo.getArtifactId() + "-version";
-			String libraryKey = dependencyInfo.getArtifactId();
-			sb.append(libraryKey).append(" = { module = \"").append(dependencyInfo.getGroupId())
-				.append(":").append(dependencyInfo.getGroupId()).append("\", version.ref = \"")
-				.append(dependencyInfoVersionKey).append("\"}").append(System.lineSeparator());
-			Map<String, String> libraryValueMap = new LinkedHashMap<>();
-			libraryValueMap.put("module",
-				dependencyInfo.getGroupId() + ":" + dependencyInfo.getGroupId());
-			libraryValueMap.put("version", libraryKey + "-version");
-			librariesValuesMap.put(libraryKey, libraryValueMap);
-		});
-		return libsVersionsTomlMap;
-	}
-
 	public static String getNewDependenciesStructure(List<DependencyInfo> dependencyInfos)
 	{
 		StringBuilder sb = new StringBuilder();
 		List<String> versionKeys = ListFactory.newArrayList();
 		sb.append("dependencies {").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
+		dependencyInfos.forEach(dependencyInfo -> {
 			String dependencyInfoVersionKey = dependencyInfo.getArtifactId() + "-version";
 			if (!versionKeys.contains(dependencyInfoVersionKey))
 			{
@@ -218,7 +181,7 @@ public class DependenciesExtensions
 		StringBuilder sb = new StringBuilder();
 		List<String> versionKeys = ListFactory.newArrayList();
 		sb.append("[versions]").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
+		dependencyInfos.forEach(dependencyInfo -> {
 
 			if (dependencyInfo.getVersion() != null)
 			{
@@ -268,7 +231,7 @@ public class DependenciesExtensions
 		sb.append(System.lineSeparator());
 		List<String> libraryKeys = ListFactory.newArrayList();
 		sb.append("[libraries]").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
+		dependencyInfos.forEach(dependencyInfo -> {
 			String libraryKey = dependencyInfo.getArtifactId();
 
 			if (!libraryKeys.contains(libraryKey))

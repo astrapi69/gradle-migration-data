@@ -45,7 +45,6 @@ import io.github.astrapi69.file.create.DirectoryFactory;
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
-import io.github.astrapi69.gradle.migration.extension.CaseExtensions;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.gradle.migration.info.DependencyInfo;
 import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
@@ -53,6 +52,7 @@ import io.github.astrapi69.gradle.migration.info.MigrationInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
 import io.github.astrapi69.io.shell.LinuxShellExecutor;
+import io.github.astrapi69.string.CaseExtensions;
 
 
 public class MigrateToTomlVersionsTest
@@ -69,21 +69,8 @@ public class MigrateToTomlVersionsTest
 	@Disabled
 	public void testNewLibsVersionsTomlFile() throws IOException
 	{
-		File gradleDirectory = getGradleDirectory();
-
 		String targetProjectName = "xstream-extensions";
 		String targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
-		String projectDirectoryName = targetProjectDirNamePrefix + targetProjectName;
-
-		GradleProjectInfo libsVersionsTomlFile = MigrateToTomlVersions
-			.migrateToTomlVersions(gradleDirectory, targetProjectName, targetProjectDirNamePrefix);
-
-		MigrationInfo migrationInfo = MigrationInfo.fromAbsolutePath(projectDirectoryName);
-		GradleProjectInfo libsVersionTomlMapAsString = MigrateToTomlVersions
-			.newLibsVersionsTomlAsString(migrationInfo);
-		String libsVersionsTomlFileContent = ReadFileExtensions
-			.fromFile(libsVersionsTomlFile.getLibsVersionsTomlFile());
-		assertEquals(libsVersionsTomlFileContent, libsVersionTomlMapAsString);
 
 		String sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		String sourceProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/astrapi69/";
@@ -231,7 +218,7 @@ public class MigrateToTomlVersionsTest
 
 		updateBuildGradleFile(targetProjectDir, gradleProjectInfo);
 
-		updateGradleYamlFile(targetProjectDir, gradleProjectInfo);
+		updateGradleYamlFile(targetProjectDir);
 
 		addGitFiles(targetProjectDir, targetProjectName);
 
@@ -254,7 +241,7 @@ public class MigrateToTomlVersionsTest
 			"/build-without-lombok.gradle");
 
 		List<DependencyInfo> dependencyInfos = gradleProjectInfo.getDependencyInfos();
-		dependencyInfos.stream().forEach(dependencyInfo -> {
+		dependencyInfos.forEach(dependencyInfo -> {
 			if (dependencyInfo.getGroupId() != null
 				&& dependencyInfo.getGroupId().equals("org.projectlombok"))
 			{
@@ -271,8 +258,7 @@ public class MigrateToTomlVersionsTest
 		}
 	}
 
-	private static void updateGradleYamlFile(File targetProjectDir,
-		GradleProjectInfo gradleProjectInfo) throws IOException
+	private static void updateGradleYamlFile(File targetProjectDir) throws IOException
 	{
 		File targetGradleYamlFile = PathFinder.getRelativePath(targetProjectDir, ".github",
 			"workflows", "gradle.yml");

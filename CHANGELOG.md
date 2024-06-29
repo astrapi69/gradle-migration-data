@@ -11,8 +11,11 @@ ADDED:
 
 CHANGED:
 
+- update of dependency lombok to new version 1.18.34
 - update of dependency file-worker to new version 17.2
 - extract string file names of gradle files to constants
+- update of dependency silly-strings to new version 9.1
+- update of test dependency throwable to new version 3
 
 Version 2.2
 -------------
