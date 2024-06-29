@@ -6,6 +6,7 @@ Version 2.3-SNAPSHOT
 
 ADDED:
 
+- new class GradleProjectInfo for handle migration
 - new test dependency jgit
 
 CHANGED:
