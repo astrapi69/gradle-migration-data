@@ -41,6 +41,7 @@ public class DependenciesInfo
 	public static final String JAVA_LIBRARY_TEMPLATE_NAME = "java-library-template";
 	public static final String SPRING_BOOT_TEMPLATE_NAME = "spring-boot-template";
 	public static final String SETTINGS_GRADLE_FILENAME = "settings.gradle";
+	public static final String PROJECT_GRADLE_DIRECTORY_NAME = "gradle";
 	public static final String VERSION_CATALOG_UPDATE_GRADLE_FILENAME = "version-catalog-update.gradle";
 	public static final String LIBS_VERSIONS_TOML_FILENAME = "libs.versions.toml";
 	public static final String DEPENDENCIES_GRADLE_FILENAME = "dependencies.gradle";

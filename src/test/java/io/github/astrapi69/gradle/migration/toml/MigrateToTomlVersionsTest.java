@@ -61,7 +61,8 @@ public class MigrateToTomlVersionsTest
 	public static File getGradleDirectory()
 	{
 		File projectDirectory = PathFinder.getProjectDirectory();
-		return PathFinder.getRelativePath(projectDirectory, "gradle");
+		return PathFinder.getRelativePath(projectDirectory,
+			DependenciesInfo.PROJECT_GRADLE_DIRECTORY_NAME);
 	}
 
 	@Test
@@ -232,7 +233,7 @@ public class MigrateToTomlVersionsTest
 
 		updateGradleYamlFile(targetProjectDir, gradleProjectInfo);
 
-		addGitFiles2(targetProjectDir, targetProjectName);
+		addGitFiles(targetProjectDir, targetProjectName);
 
 		addGitFilesWithJGit2(targetProjectDirNamePrefix, targetProjectName);
 	}
@@ -270,10 +271,9 @@ public class MigrateToTomlVersionsTest
 		}
 	}
 
-	private void updateGradleYamlFile(File targetProjectDir, GradleProjectInfo gradleProjectInfo)
-		throws IOException
+	private static void updateGradleYamlFile(File targetProjectDir,
+		GradleProjectInfo gradleProjectInfo) throws IOException
 	{
-
 		File targetGradleYamlFile = PathFinder.getRelativePath(targetProjectDir, ".github",
 			"workflows", "gradle.yml");
 		File sourceGradleYamlFile = PathFinder.getRelativePath(PathFinder.getProjectDirectory(),
@@ -282,7 +282,7 @@ public class MigrateToTomlVersionsTest
 		CopyFileExtensions.copyFile(sourceGradleYamlFile, targetGradleYamlFile);
 	}
 
-	private static void addGitFiles2(File targetProjectDir, String targetProjectName)
+	private static void addGitFiles(File targetProjectDir, String targetProjectName)
 		throws IOException, InterruptedException
 	{
 		String command;
@@ -348,44 +348,6 @@ public class MigrateToTomlVersionsTest
 		// System.out.println("Executing command: " + command);
 		// output = LinuxShellExecutor.execute(shellPath, executionPath, command);
 		// System.out.println("output of command: " + output);
-	}
-
-
-	private static void addGitFiles(File targetProjectDir, String targetProjectName)
-		throws IOException, InterruptedException
-	{
-		String command;
-		String shellPath;
-		String executionPath;
-		// Add files to git...
-		shellPath = "/usr/bin/zsh";
-		executionPath = PathFinder.getRelativePath(targetProjectDir, "gradle").getAbsolutePath();
-
-		command = "git add libs.versions.toml";
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
-		command = "git status";
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
-
-		command = "git add version-catalog-update.gradle";
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
-		command = "git status";
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
-
-		executionPath = PathFinder.getRelativePath(targetProjectDir, ".idea", "runConfigurations")
-			.getAbsolutePath();
-
-		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
-			+ "__versionCatalogFormat_.xml";
-
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
-		command = "git status";
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
-
-		command = "git add " + CaseExtensions.kebabToSnakeCase(targetProjectName)
-			+ "__versionCatalogUpdate_.xml";
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
-		command = "git status";
-		LinuxShellExecutor.execute(shellPath, executionPath, command);
 	}
 
 	@Test
