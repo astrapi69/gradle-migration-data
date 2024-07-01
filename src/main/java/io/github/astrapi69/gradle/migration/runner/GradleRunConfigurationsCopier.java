@@ -52,7 +52,6 @@ import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
 import io.github.astrapi69.gradle.migration.info.CopyGradleRunConfigurations;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.io.StreamExtensions;
-import io.github.astrapi69.string.CaseExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
 public class GradleRunConfigurationsCopier
@@ -214,8 +213,8 @@ public class GradleRunConfigurationsCopier
 		List<String> stringList = getDependenciesAsStringList(dependenciesContent);
 		DependenciesInfo dependenciesInfo = getGradlePropertiesWithVersions(stringList);
 		String newDependenciesContent = getNewDependenciesContent(dependenciesInfo);
-		String replaceDependenciesContent = replaceDependenciesContent(buildGradle,
-			newDependenciesContent, dependenciesInfo.getProperties());
+		replaceDependenciesContent(buildGradle, newDependenciesContent,
+			dependenciesInfo.getProperties());
 		PropertiesExtensions.export(dependenciesInfo.getProperties(),
 			StreamExtensions.getOutputStream(gradleProperties));
 		StoreFileExtensions.toFile(buildGradle, dependenciesContent);
@@ -266,11 +265,6 @@ public class GradleRunConfigurationsCopier
 			}
 		}
 		throw new IllegalArgumentException("No matching closing brace found.");
-	}
-
-	public String getBuildscriptContent(File buildGradle) throws IOException
-	{
-		return GradleRunConfigurationsCopier.getContentOf("buildscript", buildGradle);
 	}
 
 	private DependenciesInfo getGradlePropertiesWithVersions(List<String> stringList)
