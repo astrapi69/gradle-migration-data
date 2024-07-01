@@ -122,24 +122,6 @@ public class GradleRunConfigurationsCopier
 			.runConfigurationsInSameFolder(runConfigurationsInSameFolder).build();
 	}
 
-	/**
-	 * Transforms the given project name(that is in a name convention of kebab-case) in camel-case
-	 * and appends 'Version' to it and returns the result
-	 * 
-	 * @param projectName
-	 *            the project name
-	 * @return The project name with appended 'Version' string
-	 * @deprecated use instead the same name method from {@link DependenciesExtensions}. Note: will
-	 *             be removed on the next major version
-	 */
-	@Deprecated
-	public static String getProjectVersionKeyName(String projectName)
-	{
-		String camelCased = CaseExtensions.kebabToCamelCase(projectName);
-		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
-		return projectVersionKeyName + "Version";
-	}
-
 	public static GradleRunConfigurationsCopier of(
 		CopyGradleRunConfigurations copyGradleRunConfigurations)
 	{

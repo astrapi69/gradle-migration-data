@@ -16,6 +16,7 @@ CHANGED:
 - extract string file names of gradle files to constants
 - update of dependency silly-strings to new version 9.1
 - update of test dependency throwable to new version 3
+- remove of deprecated method in class GradleRunConfigurationsCopier
 
 Version 2.2
 -------------
