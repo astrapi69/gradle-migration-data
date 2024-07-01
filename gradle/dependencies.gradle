@@ -13,6 +13,7 @@ dependencies {
     implementation libs.silly.collection
     implementation libs.silly.bean
 
+    testImplementation libs.jgit
     testImplementation libs.jackson.dataformat.toml
     testImplementation libs.throwable
     testImplementation libs.commons.lang3

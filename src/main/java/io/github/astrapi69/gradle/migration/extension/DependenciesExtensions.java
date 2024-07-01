@@ -27,13 +27,12 @@ package io.github.astrapi69.gradle.migration.extension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 
 import io.github.astrapi69.collection.array.ArrayExtensions;
 import io.github.astrapi69.collection.list.ListFactory;
@@ -42,6 +41,7 @@ import io.github.astrapi69.collection.properties.PropertiesExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.gradle.migration.info.DependencyInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
+import io.github.astrapi69.string.CaseExtensions;
 import io.github.astrapi69.string.StringExtensions;
 import lombok.NonNull;
 
@@ -50,23 +50,24 @@ public class DependenciesExtensions
 
 	public static String getDependenciesContent(File buildGradle) throws IOException
 	{
-		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
-		int indexOfStart = buildGradleContent.indexOf("dependencies {");
-		int indexOfEnd = buildGradleContent.substring(indexOfStart).indexOf("}") + indexOfStart + 1;
 		return GradleRunConfigurationsCopier.getContentOf("dependencies", buildGradle);
 	}
 
-	public static String getProjectVersionKeyName(String projectName)
+	/**
+	 * Transforms the given project name(that is in a name convention of kebab-case) in camel-case
+	 * and appends 'Version' to it and returns the result
+	 * 
+	 * @param kebabCaseProjectName
+	 *            the project name that is in a name convention of kebab-case
+	 * @return The project name with appended 'Version' string
+	 */
+	public static String getProjectVersionKeyName(String kebabCaseProjectName)
 	{
-		String camelCased = toCamelCase(projectName);
+		String camelCased = CaseExtensions.kebabToCamelCase(kebabCaseProjectName);
 		String projectVersionKeyName = StringExtensions.firstCharacterToLowerCase(camelCased);
 		return projectVersionKeyName + "Version";
 	}
 
-	public static String toCamelCase(String projectName)
-	{
-		return WordUtils.capitalizeFully(projectName, new char[] { '-' }).replaceAll("-", "");
-	}
 
 	public static List<String> getDependenciesAsStringList(String dependenciesContent)
 	{
@@ -79,7 +80,7 @@ public class DependenciesExtensions
 		Map<String, String> versionMap)
 	{
 		List<DependencyInfo> dependencyInfos = ListFactory.newArrayList();
-		dependencyRows.stream().forEach(row -> {
+		dependencyRows.forEach(row -> {
 			DependencyInfo dependencyInfo = DependenciesExtensions.getDependencyInfo(row);
 			if (dependencyInfo != null)
 			{
@@ -139,7 +140,7 @@ public class DependenciesExtensions
 	{
 		Properties properties = PropertiesExtensions.loadProperties(gradlePropertiesFile);
 		Map<String, String> versionMap = MapFactory.newLinkedHashMap();
-		properties.keySet().stream().forEach(e -> {
+		properties.keySet().forEach(e -> {
 			String versionKey = e.toString();
 			if (versionKey.endsWith(keyVersionSuffix))
 			{
@@ -149,53 +150,23 @@ public class DependenciesExtensions
 		return versionMap;
 	}
 
-	public static Map<String, Map> getLibsVersionTomlMap(List<DependencyInfo> dependencyInfos)
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("[versions]").append(System.lineSeparator());
-		Map<String, Map> libsVersionsTomlMap = new LinkedHashMap<>();
-		Map<String, String> versionsMap = new LinkedHashMap<>();
-		libsVersionsTomlMap.put("versions", versionsMap);
-		dependencyInfos.stream().forEach(dependencyInfo -> {
-			String dependencyInfoVersionKey = dependencyInfo.getArtifactId() + "-version";
-			sb.append(dependencyInfoVersionKey).append(" = ").append("\"")
-				.append(dependencyInfo.getVersion()).append("\"").append(System.lineSeparator());
-			versionsMap.put(dependencyInfoVersionKey, dependencyInfo.getVersion());
-		});
-		Map<String, Map<String, Map<String, String>>> librariesMap = new LinkedHashMap<>();
-
-		Map<String, Map<String, String>> librariesValuesMap = new LinkedHashMap<>();
-		libsVersionsTomlMap.put("libraries", librariesValuesMap);
-
-		sb.append("[libraries]").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
-			String dependencyInfoVersionKey = dependencyInfo.getArtifactId() + "-version";
-			String libraryKey = dependencyInfo.getArtifactId();
-			sb.append(libraryKey).append(" = { module = \"").append(dependencyInfo.getGroupId())
-				.append(":").append(dependencyInfo.getGroupId()).append("\", version.ref = \"")
-				.append(dependencyInfoVersionKey).append("\"}").append(System.lineSeparator());
-			Map<String, String> libraryValueMap = new LinkedHashMap<>();
-			libraryValueMap.put("module",
-				dependencyInfo.getGroupId() + ":" + dependencyInfo.getGroupId());
-			libraryValueMap.put("version", libraryKey + "-version");
-			librariesValuesMap.put(libraryKey, libraryValueMap);
-		});
-		return libsVersionsTomlMap;
-	}
-
 	public static String getNewDependenciesStructure(List<DependencyInfo> dependencyInfos)
 	{
 		StringBuilder sb = new StringBuilder();
 		List<String> versionKeys = ListFactory.newArrayList();
 		sb.append("dependencies {").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
+		dependencyInfos.forEach(dependencyInfo -> {
 			String dependencyInfoVersionKey = dependencyInfo.getArtifactId() + "-version";
 			if (!versionKeys.contains(dependencyInfoVersionKey))
 			{
 				versionKeys.add(dependencyInfoVersionKey);
 				String scope = dependencyInfo.getScope();
-				String artifactId = dependencyInfo.getArtifactId().replaceAll("-", ".");
-				sb.append(scope).append(" libs.").append(artifactId).append(System.lineSeparator());
+				if (dependencyInfo.getArtifactId() != null)
+				{
+					String artifactId = dependencyInfo.getArtifactId().replaceAll("-", ".");
+					sb.append(scope).append(" libs.").append(artifactId)
+						.append(System.lineSeparator());
+				}
 			}
 		});
 		sb.append("}").append(System.lineSeparator());
@@ -205,10 +176,12 @@ public class DependenciesExtensions
 
 	public static String getLibsVersionTomlMapAsString(List<DependencyInfo> dependencyInfos)
 	{
+		AtomicBoolean withLombok = new AtomicBoolean(false);
+		AtomicBoolean withJunit = new AtomicBoolean(false);
 		StringBuilder sb = new StringBuilder();
 		List<String> versionKeys = ListFactory.newArrayList();
 		sb.append("[versions]").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
+		dependencyInfos.forEach(dependencyInfo -> {
 
 			if (dependencyInfo.getVersion() != null)
 			{
@@ -221,12 +194,44 @@ public class DependenciesExtensions
 						.append(System.lineSeparator());
 				}
 			}
+			if (dependencyInfo.getGroupId() != null
+				&& dependencyInfo.getGroupId().equals("org.projectlombok"))
+			{
+				withLombok.set(true);
+			}
+			if (dependencyInfo.getGroupId() != null
+				&& dependencyInfo.getGroupId().equals("org.junit.jupiter"))
+			{
+				withJunit.set(true);
+			}
 		});
+		// add plugin versions
+		sb.append("gradle-plugin-grgit-version").append(" = ").append("\"").append("5.2.2")
+			.append("\"").append(System.lineSeparator());
+
+		sb.append("gradle-plugin-license-version").append(" = ").append("\"").append("0.16.1")
+			.append("\"").append(System.lineSeparator());
+
+		if (withLombok.get())
+		{
+
+			sb.append("gradle-plugin-lombok-version").append(" = ").append("\"").append("8.6")
+				.append("\"").append(System.lineSeparator());
+		}
+
+		sb.append("gradle-plugin-spotless-version").append(" = ").append("\"").append("7.0.0.BETA1")
+			.append("\"").append(System.lineSeparator());
+
+		sb.append("gradle-plugin-version-catalog-update-version").append(" = ").append("\"")
+			.append("0.8.4").append("\"").append(System.lineSeparator());
+
+		sb.append("gradle-plugin-versions-version").append(" = ").append("\"").append("0.51.0")
+			.append("\"").append(System.lineSeparator());
 
 		sb.append(System.lineSeparator());
 		List<String> libraryKeys = ListFactory.newArrayList();
 		sb.append("[libraries]").append(System.lineSeparator());
-		dependencyInfos.stream().forEach(dependencyInfo -> {
+		dependencyInfos.forEach(dependencyInfo -> {
 			String libraryKey = dependencyInfo.getArtifactId();
 
 			if (!libraryKeys.contains(libraryKey))
@@ -246,6 +251,57 @@ public class DependenciesExtensions
 				libraryKeys.add(libraryKey);
 			}
 		});
+		// add default bundles section ...
+		sb.append(System.lineSeparator()).append("[bundles]").append(System.lineSeparator());
+		if (withJunit.get())
+		{
+			String junitDefaultBundles = """
+				unit-testing = [
+				    "junit-jupiter",
+				    "meanbean",
+				    "test-object",
+				]
+								""";
+			sb.append(junitDefaultBundles).append(System.lineSeparator());
+		}
+		else
+		{
+			String testngDefaultBundles = """
+				unit-testing = [
+				    "meanbean",
+				    "test-object",
+				    "testng",
+				]
+								""";
+			sb.append(testngDefaultBundles).append(System.lineSeparator());
+		}
+		// TODO add default plugins section...
+		// add default plugins section ...
+		sb.append("[plugins]").append(System.lineSeparator());
+
+		if (withLombok.get())
+		{
+			String withLombokPlugins = """
+				gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+				grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
+				license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
+				lombok-plugin = { id = "io.freefair.lombok", version.ref = "gradle-plugin-lombok-version" }
+				spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+				version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
+												""";
+			sb.append(withLombokPlugins).append(System.lineSeparator());
+		}
+		else
+		{
+			String defaultPlugins = """
+				gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+				grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
+				license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
+				spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+				version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
+												""";
+			sb.append(defaultPlugins).append(System.lineSeparator());
+		}
 		return sb.toString();
 	}
 }

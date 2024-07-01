@@ -24,8 +24,8 @@
  */
 package io.github.astrapi69.gradle.migration.runner;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,7 +119,6 @@ public class GradleRunConfigurationsCopierTest
 	{
 		String sourceProjectDirNamePrefix;
 		String targetProjectDirNamePrefix;
-		CopyGradleRunConfigurations copyGradleRunConfigurationsData;
 		boolean onlyRunConfigurations;
 		boolean runConfigurationsInSameFolder;
 		String sourceProjectName;
