@@ -261,21 +261,21 @@ public class MigrateToTomlVersionsTest
 		System.out.println("Executing command: " + command);
 		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
 		System.out.println("output of command: " + output);
-		command = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add --ignore-errors -A"
-			+ " -f -- gradle/libs.versions.toml gradle/version-catalog-update.gradle";
-
-		System.out.println("Executing command: " + command);
-		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
-		System.out.println("output of command: " + output);
-
-		command = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add --ignore-errors -A"
-			+ " -f -- .idea/runConfigurations/" + CaseExtensions.kebabToSnakeCase(targetProjectName)
-			+ "__versionCatalogFormat_.xml .idea/runConfigurations/"
-			+ CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogUpdate_.xml";
-
-		System.out.println("Executing command: " + command);
-		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
-		System.out.println("output of command: " + output);
+//		command = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add --ignore-errors -A"
+//			+ " -f -- gradle/libs.versions.toml gradle/version-catalog-update.gradle";
+//
+//		System.out.println("Executing command: " + command);
+//		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
+//		System.out.println("output of command: " + output);
+//
+//		command = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add --ignore-errors -A"
+//			+ " -f -- .idea/runConfigurations/" + CaseExtensions.kebabToSnakeCase(targetProjectName)
+//			+ "__versionCatalogFormat_.xml .idea/runConfigurations/"
+//			+ CaseExtensions.kebabToSnakeCase(targetProjectName) + "__versionCatalogUpdate_.xml";
+//
+//		System.out.println("Executing command: " + command);
+//		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
+//		System.out.println("output of command: " + output);
 
 	}
 
