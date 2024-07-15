@@ -1,11 +1,11 @@
 package io.github.astrapi69.gradle.migration.packageinfo;
 
+import static io.github.astrapi69.gradle.migration.packageinfo.PackageHtmlToPackageInfoJavaFileConverter.processDirectory;
+
 import java.io.*;
 import java.nio.file.*;
 
 import org.junit.jupiter.api.*;
-
-import static io.github.astrapi69.gradle.migration.packageinfo.PackageHtmlToPackageInfoJavaFileConverter.processDirectory;
 
 class PackageHtmlToPackageInfoJavaFileConverterTest
 {

@@ -26,7 +26,8 @@ public class PackageHtmlToPackageInfoJavaFileConverter
 	 */
 	public static void processDirectory(Path projectDirectory) throws IOException
 	{
-		Files.walk(projectDirectory).filter(path -> path.getFileName().toString().equals(PACKAGE_HTML))
+		Files.walk(projectDirectory)
+			.filter(path -> path.getFileName().toString().equals(PACKAGE_HTML))
 			.forEach(PackageHtmlToPackageInfoJavaFileConverter::processPackageHtml);
 	}
 
