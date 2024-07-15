@@ -1,4 +1,4 @@
-package io.github.astrapi69.gradle.migration.packinfo;
+package io.github.astrapi69.gradle.migration.packageinfo;
 
 import java.io.*;
 import java.nio.file.*;
@@ -17,27 +17,6 @@ public class PackageHtmlToPackageInfoJavaFileConverter
 	public static final String PACKAGE_INFO_JAVA = "package-info.java";
 	public static final Pattern BODY_PATTERN = Pattern.compile("<body>(.*?)</body>",
 		Pattern.DOTALL);
-
-	/**
-	 * Main method to start the conversion process.
-	 *
-	 * @param args
-	 *            command-line arguments (not used)
-	 */
-	public static void main(String[] args)
-	{
-		Path startDir = Paths.get("path/to/your/project"); // Change this to your project's root
-															// directory
-		try
-		{
-			Files.walk(startDir).filter(path -> path.getFileName().toString().equals(PACKAGE_HTML))
-				.forEach(PackageHtmlToPackageInfoJavaFileConverter::processPackageHtml);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Processes recursively the path of the given directory
