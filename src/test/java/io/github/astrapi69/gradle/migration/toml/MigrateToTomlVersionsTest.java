@@ -121,7 +121,7 @@ public class MigrateToTomlVersionsTest
 	}
 
 	@Test
-	// @Disabled
+	@Disabled
 	public void testMigrateToNewProjectStructure()
 		throws IOException, InterruptedException, GitAPIException
 	{
@@ -135,7 +135,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "auth-api";
+		targetProjectName = "auth";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
