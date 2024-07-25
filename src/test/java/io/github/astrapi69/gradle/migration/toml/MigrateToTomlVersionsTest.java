@@ -135,7 +135,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "auth";
+		targetProjectName = "meanbean-factories";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";

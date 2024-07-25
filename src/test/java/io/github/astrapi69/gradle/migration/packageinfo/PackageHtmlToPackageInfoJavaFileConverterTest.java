@@ -18,7 +18,7 @@ class PackageHtmlToPackageInfoJavaFileConverterTest
 		String targetProjectName;
 		String targetGithubUser;
 
-		targetProjectName = "auth";
+		targetProjectName = "meanbean-factories";
 		// targetGithubUser = "lightblueseas";
 		targetGithubUser = "astrapi69";
 		targetProjectDirNamePrefix = "/run/media/astrapi69/backups/git/hub/" + targetGithubUser
