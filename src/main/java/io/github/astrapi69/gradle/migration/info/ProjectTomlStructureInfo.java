@@ -31,14 +31,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * The class {@link ProjectTomlStructureInfo} holds information related to the TOML structure of a
+ * Gradle project, including details about the source and target projects as well as the Gradle
+ * directory.
+ */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectTomlStructureInfo
 {
+	/** The Gradle directory within the project. */
 	File gradleDirectory;
+
+	/** The prefix for the source project directory name. */
 	String sourceProjectDirNamePrefix;
+
+	/** The prefix for the target project directory name. */
 	String targetProjectDirNamePrefix;
+
+	/** The name of the source project. */
 	String sourceProjectName;
+
+	/** The name of the target project. */
 	String targetProjectName;
 }

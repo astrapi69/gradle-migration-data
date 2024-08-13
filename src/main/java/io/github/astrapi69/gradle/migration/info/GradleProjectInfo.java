@@ -32,13 +32,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * The class {@link GradleProjectInfo} holds information about a Gradle project, including its
+ * dependencies, migration details, and versioning information.
+ */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GradleProjectInfo
 {
+	/** A list of {@link DependencyInfo} objects representing the project's dependencies. */
 	List<DependencyInfo> dependencyInfos;
+
+	/** An instance of {@link MigrationInfo} containing details about the project's migration. */
 	MigrationInfo migrationInfo;
+
+	/** A reference to the libs.versions.toml file used for managing version catalogs. */
 	File libsVersionsTomlFile;
+
+	/** The content of the libs.versions.toml file as a string. */
 	String libsVersionTomlMapAsString;
 }

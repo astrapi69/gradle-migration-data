@@ -33,14 +33,32 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * The class {@link MigrationInfo} holds information related to the migration of a Gradle project,
+ * including references to the project directory and the Gradle directory.
+ */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MigrationInfo
 {
+	/** The Gradle directory within the project. */
 	File gradleDirectory;
+
+	/** The root directory of the project. */
 	File projectDirectory;
 
+	/**
+	 * Creates a new instance of {@link MigrationInfo} from the absolute path of a project
+	 * directory. This method will create the necessary directories if they do not already exist.
+	 *
+	 * @param projectDirectoryName
+	 *            the absolute path of the project directory
+	 * @return a new {@link MigrationInfo} instance with the project and Gradle directories
+	 *         initialized
+	 * @throws IOException
+	 *             if an I/O error occurs during directory creation
+	 */
 	public static MigrationInfo fromAbsolutePath(String projectDirectoryName) throws IOException
 	{
 		File projectDirectory = DirectoryFactory.newDirectory(projectDirectoryName);
