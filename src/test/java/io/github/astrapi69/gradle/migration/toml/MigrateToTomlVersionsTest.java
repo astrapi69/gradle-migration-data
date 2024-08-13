@@ -41,6 +41,7 @@ import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.file.copy.CopyFileExtensions;
 import io.github.astrapi69.file.create.DirectoryFactory;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.extension.GitExtensions;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.gradle.migration.info.DependencyInfo;
 import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
@@ -121,7 +122,7 @@ public class MigrateToTomlVersionsTest
 	}
 
 	@Test
-	@Disabled
+	// @Disabled
 	public void testMigrateToNewProjectStructure()
 		throws IOException, InterruptedException, GitAPIException
 	{
@@ -135,7 +136,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "meanbean-factories";
+		targetProjectName = "bundle-app-ui";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
@@ -216,8 +217,6 @@ public class MigrateToTomlVersionsTest
 	private static void addGitFiles(File targetProjectDir, String targetProjectName)
 		throws IOException, InterruptedException
 	{
-		String command;
-		String gitAddCommandPrefix;
 		String shellPath;
 		String executionPath;
 
@@ -226,7 +225,7 @@ public class MigrateToTomlVersionsTest
 		executionPath = targetProjectDir.getAbsolutePath();
 
 		// Log the current directory
-		System.out.println("Executing commands in: " + executionPath);
+		System.out.println("Executing commands in path: " + executionPath);
 
 		// Adding files in batch
 		List<String> filesToAdd = ListFactory.newArrayList();
@@ -245,22 +244,10 @@ public class MigrateToTomlVersionsTest
 			.getAbsolutePath());
 		String output;
 		// Add files to git
-
-		gitAddCommandPrefix = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add --ignore-errors -A"
-			+ " -f -- ";
-		for (String file : filesToAdd)
-		{
-			command = gitAddCommandPrefix + file;
-			System.out.println("Executing command: " + command);
-			output = LinuxShellExecutor.execute(shellPath, executionPath, command);
-			System.out.println("output of command: " + output);
-		}
+		GitExtensions.addFilesToGit(filesToAdd, shellPath, executionPath);
 
 		// Check git status
-		command = "git status";
-		System.out.println("Executing command: " + command);
-		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
-		System.out.println("output of command: " + output);
+		GitExtensions.gitStatus(shellPath, executionPath);
 	}
 
 	@Test

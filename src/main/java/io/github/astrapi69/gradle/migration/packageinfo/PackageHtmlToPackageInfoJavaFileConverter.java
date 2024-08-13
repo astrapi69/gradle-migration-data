@@ -7,22 +7,36 @@ import java.util.regex.*;
 /**
  * A utility class for converting obsolete package.html files to package-info.java files. It
  * traverses through all the directories of a given project, checks for the existence of
- * package.html files, reads the content of the <body> tag, creates a new package-info.java file
- * with the extracted content, and deletes the obsolete package.html file.
+ * package.html files, reads the content of the body tag, creates a new package-info.java file with
+ * the extracted content, and deletes the obsolete package.html file
  */
 public class PackageHtmlToPackageInfoJavaFileConverter
 {
 
+	/**
+	 * The constant PACKAGE_HTML, representing the name of the package.html file.
+	 */
 	public static final String PACKAGE_HTML = "package.html";
+
+	/**
+	 * The constant PACKAGE_INFO_JAVA, representing the name of the package-info.java file.
+	 */
 	public static final String PACKAGE_INFO_JAVA = "package-info.java";
+
+	/**
+	 * The constant BODY_PATTERN, representing the regular expression pattern to match the content
+	 * within the <body> tag in the package.html file.
+	 */
 	public static final Pattern BODY_PATTERN = Pattern.compile("<body>(.*?)</body>",
 		Pattern.DOTALL);
 
 	/**
-	 * Processes recursively the path of the given directory
+	 * Processes recursively the path of the given directory.
 	 *
 	 * @param projectDirectory
 	 *            the path of the directory to process
+	 * @throws IOException
+	 *             if an I/O error occurs
 	 */
 	public static void processDirectory(Path projectDirectory) throws IOException
 	{
@@ -33,7 +47,7 @@ public class PackageHtmlToPackageInfoJavaFileConverter
 
 	/**
 	 * Processes a package.html file by extracting the content of the <body> tag, creating a
-	 * package-info.java file, and deleting the obsolete package.html file.
+	 * package-info.java file, and deleting the obsolete package.html file
 	 *
 	 * @param packageHtmlPath
 	 *            the path to the package.html file

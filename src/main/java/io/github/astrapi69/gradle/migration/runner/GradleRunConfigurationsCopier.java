@@ -31,6 +31,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,16 +50,34 @@ import io.github.astrapi69.file.rename.RenameFileExtensions;
 import io.github.astrapi69.file.search.FileSearchExtensions;
 import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.gradle.migration.extension.DependenciesExtensions;
+import io.github.astrapi69.gradle.migration.extension.GitExtensions;
 import io.github.astrapi69.gradle.migration.info.CopyGradleRunConfigurations;
 import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 import io.github.astrapi69.io.StreamExtensions;
 import io.github.astrapi69.string.StringExtensions;
 
+/**
+ * The class {@link GradleRunConfigurationsCopier} is responsible for copying and modifying Gradle
+ * run configurations from a source project to a target project. Additionally, it can externalize
+ * versions from the build.gradle file to the gradle.properties file.
+ */
 public class GradleRunConfigurationsCopier
 {
 	private final CopyGradleRunConfigurations copyGradleRunConfigurations;
 	private final Logger log = Logger.getLogger(GradleRunConfigurationsCopier.class.getName());
 
+	/**
+	 * Copies only the run configurations from the source project to the target project.
+	 *
+	 * @param sourceProjectName
+	 *            the name of the source project
+	 * @param targetProjectName
+	 *            the name of the target project
+	 * @param sourceProjectDirNamePrefix
+	 *            the prefix for the source project directory
+	 * @param targetProjectDirNamePrefix
+	 *            the prefix for the target project directory
+	 */
 	public static void copyOnlyRunConfigurations(String sourceProjectName, String targetProjectName,
 		String sourceProjectDirNamePrefix, String targetProjectDirNamePrefix)
 	{
@@ -66,6 +85,23 @@ public class GradleRunConfigurationsCopier
 			targetProjectDirNamePrefix, true, false);
 	}
 
+	/**
+	 * Copies run configurations and optionally other settings from the source project to the target
+	 * project.
+	 *
+	 * @param sourceProjectName
+	 *            the name of the source project
+	 * @param targetProjectName
+	 *            the name of the target project
+	 * @param sourceProjectDirNamePrefix
+	 *            the prefix for the source project directory
+	 * @param targetProjectDirNamePrefix
+	 *            the prefix for the target project directory
+	 * @param onlyRunConfigurations
+	 *            if true, only run configurations are copied
+	 * @param runConfigurationsInSameFolder
+	 *            if true, run configurations are copied within the same folder
+	 */
 	public static void copyRunConfigurations(String sourceProjectName, String targetProjectName,
 		String sourceProjectDirNamePrefix, String targetProjectDirNamePrefix,
 		boolean onlyRunConfigurations, boolean runConfigurationsInSameFolder)
@@ -77,12 +113,35 @@ public class GradleRunConfigurationsCopier
 		GradleRunConfigurationsCopier.of(copyGradleRunConfigurationsData).copy();
 	}
 
+	/**
+	 * Instantiates a new {@link GradleRunConfigurationsCopier} with the specified configuration.
+	 *
+	 * @param copyGradleRunConfigurations
+	 *            the configuration for copying Gradle run configurations
+	 */
 	private GradleRunConfigurationsCopier(CopyGradleRunConfigurations copyGradleRunConfigurations)
 	{
 		Objects.requireNonNull(copyGradleRunConfigurations);
 		this.copyGradleRunConfigurations = copyGradleRunConfigurations;
 	}
 
+	/**
+	 * Creates a new {@link CopyGradleRunConfigurations} instance with the given parameters.
+	 *
+	 * @param sourceProjectName
+	 *            the name of the source project
+	 * @param targetProjectName
+	 *            the name of the target project
+	 * @param sourceProjectDirNamePrefix
+	 *            the prefix for the source project directory
+	 * @param targetProjectDirNamePrefix
+	 *            the prefix for the target project directory
+	 * @param onlyRunConfigurations
+	 *            if true, only run configurations are copied
+	 * @param runConfigurationsInSameFolder
+	 *            if true, run configurations are copied within the same folder
+	 * @return the new {@link CopyGradleRunConfigurations} instance
+	 */
 	public static CopyGradleRunConfigurations newCopyGradleRunConfigurations(
 		String sourceProjectName, String targetProjectName, String sourceProjectDirNamePrefix,
 		String targetProjectDirNamePrefix, boolean onlyRunConfigurations,
@@ -121,12 +180,23 @@ public class GradleRunConfigurationsCopier
 			.runConfigurationsInSameFolder(runConfigurationsInSameFolder).build();
 	}
 
+	/**
+	 * Creates a new instance of {@link GradleRunConfigurationsCopier} with the specified
+	 * configuration.
+	 *
+	 * @param copyGradleRunConfigurations
+	 *            the configuration for copying Gradle run configurations
+	 * @return the new {@link GradleRunConfigurationsCopier} instance
+	 */
 	public static GradleRunConfigurationsCopier of(
 		CopyGradleRunConfigurations copyGradleRunConfigurations)
 	{
 		return new GradleRunConfigurationsCopier(copyGradleRunConfigurations);
 	}
 
+	/**
+	 * Copies the Gradle run configurations according to the specified configuration.
+	 */
 	public void copy()
 	{
 		try
@@ -139,6 +209,19 @@ public class GradleRunConfigurationsCopier
 		}
 	}
 
+	/**
+	 * Copies the Gradle run configurations and optionally externalizes the version from
+	 * build.gradle.
+	 *
+	 * @param copyGradleRunConfigurationsData
+	 *            the configuration for copying Gradle run configurations
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @throws FileIsADirectoryException
+	 *             if the specified file is a directory
+	 * @throws FileDoesNotExistException
+	 *             if the specified file does not exist
+	 */
 	private void copy(CopyGradleRunConfigurations copyGradleRunConfigurationsData)
 		throws IOException, FileIsADirectoryException, FileDoesNotExistException
 	{
@@ -151,6 +234,18 @@ public class GradleRunConfigurationsCopier
 		}
 	}
 
+	/**
+	 * Copies and renames the run configurations from the source project to the target project.
+	 *
+	 * @param copyGradleRunConfigurationsData
+	 *            the configuration for copying Gradle run configurations
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @throws FileIsADirectoryException
+	 *             if the specified file is a directory
+	 * @throws FileDoesNotExistException
+	 *             if the specified file does not exist
+	 */
 	private void copyRunConfigurations(CopyGradleRunConfigurations copyGradleRunConfigurationsData)
 		throws IOException, FileIsADirectoryException, FileDoesNotExistException
 	{
@@ -201,8 +296,32 @@ public class GradleRunConfigurationsCopier
 					+ System.lineSeparator();
 			});
 		}
+		// add all files to git
+		String shellPath;
+		String executionPath;
+		shellPath = "/bin/sh";
+		executionPath = copyGradleRunConfigurationsData.getTargetProjectDir().getAbsolutePath();
+		for (File file : allFiles)
+		{
+			try
+			{
+				GitExtensions.addFileToGit(file.getAbsolutePath(), shellPath, executionPath);
+			}
+			catch (InterruptedException e)
+			{
+				log.log(Level.INFO, file.getAbsolutePath() + " not added to git", e);
+			}
+		}
 	}
 
+	/**
+	 * Externalizes the version from the build.gradle file to the gradle.properties file.
+	 *
+	 * @param targetProjectDir
+	 *            the target project directory
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 */
 	private void externalizeVersionFromBuildGradle(File targetProjectDir) throws IOException
 	{
 		File buildGradle = new File(targetProjectDir, DependenciesInfo.BUILD_GRADLE_FILENAME);
@@ -220,6 +339,13 @@ public class GradleRunConfigurationsCopier
 		StoreFileExtensions.toFile(buildGradle, dependenciesContent);
 	}
 
+	/**
+	 * Converts the dependencies content into a list of strings, each representing a dependency.
+	 *
+	 * @param dependenciesContent
+	 *            the dependencies content
+	 * @return the list of dependencies as strings
+	 */
 	private List<String> getDependenciesAsStringList(String dependenciesContent)
 	{
 		String[] lines = dependenciesContent.split("\n");
@@ -229,12 +355,32 @@ public class GradleRunConfigurationsCopier
 		return stringList;
 	}
 
+	/**
+	 * Gets the content of a specific section from the build.gradle file.
+	 *
+	 * @param section
+	 *            the section name
+	 * @param buildGradle
+	 *            the build.gradle file
+	 * @return the content of the section
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 */
 	public static String getContentOf(String section, File buildGradle) throws IOException
 	{
 		String buildGradleContent = ReadFileExtensions.fromFile(buildGradle);
 		return getContentOf(section, buildGradleContent);
 	}
 
+	/**
+	 * Gets the content of a specific section from the build.gradle content.
+	 *
+	 * @param section
+	 *            the section name
+	 * @param buildGradleContent
+	 *            the build.gradle content as a string
+	 * @return the content of the section
+	 */
 	public static String getContentOf(String section, String buildGradleContent)
 	{
 		int indexOfStart = buildGradleContent.indexOf(section + " {");
@@ -246,6 +392,15 @@ public class GradleRunConfigurationsCopier
 		return buildGradleContent.substring(indexOfStart, indexOfEnd + 1);
 	}
 
+	/**
+	 * Finds the index of the closing brace for a section in the build.gradle content.
+	 *
+	 * @param content
+	 *            the content of the build.gradle file
+	 * @param start
+	 *            the starting index to search for the closing brace
+	 * @return the index of the closing brace
+	 */
 	private static int findClosingBrace(String content, int start)
 	{
 		int braceCount = 1;
@@ -267,6 +422,13 @@ public class GradleRunConfigurationsCopier
 		throw new IllegalArgumentException("No matching closing brace found.");
 	}
 
+	/**
+	 * Extracts the version information from dependencies and creates corresponding properties.
+	 *
+	 * @param stringList
+	 *            the list of dependencies as strings
+	 * @return the {@link DependenciesInfo} containing properties and version strings
+	 */
 	private DependenciesInfo getGradlePropertiesWithVersions(List<String> stringList)
 	{
 		List<String> versionStrings = ListFactory.newArrayList();
@@ -316,6 +478,13 @@ public class GradleRunConfigurationsCopier
 			.build();
 	}
 
+	/**
+	 * Generates the new dependencies content with externalized versions.
+	 *
+	 * @param dependenciesInfo
+	 *            the {@link DependenciesInfo} containing properties and version strings
+	 * @return the new dependencies content as a string
+	 */
 	private String getNewDependenciesContent(DependenciesInfo dependenciesInfo)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -325,6 +494,15 @@ public class GradleRunConfigurationsCopier
 		return sb.toString();
 	}
 
+	/**
+	 * Extracts and externalizes the project version from the build.gradle content.
+	 *
+	 * @param buildGradleContent
+	 *            the build.gradle content as a string
+	 * @param gradleProperties
+	 *            the {@link Properties} to store the extracted version
+	 * @return the updated build.gradle content with the externalized version
+	 */
 	private String getVersion(String buildGradleContent, Properties gradleProperties)
 	{
 		String projectVersionKey = "projectVersion";
@@ -347,6 +525,19 @@ public class GradleRunConfigurationsCopier
 		return StringUtils.replace(buildGradleContent, versionLine, newVersionLine);
 	}
 
+	/**
+	 * Replaces the dependencies content in the build.gradle file with the new dependencies content.
+	 *
+	 * @param buildGradle
+	 *            the build.gradle file
+	 * @param newDependenciesContent
+	 *            the new dependencies content as a string
+	 * @param gradleProperties
+	 *            the {@link Properties} containing externalized versions
+	 * @return the updated build.gradle content as a string
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 */
 	public String replaceDependenciesContent(File buildGradle, String newDependenciesContent,
 		Properties gradleProperties) throws IOException
 	{
@@ -359,5 +550,4 @@ public class GradleRunConfigurationsCopier
 		replacedBuildGradleContent = getVersion(replacedBuildGradleContent, gradleProperties);
 		return StringUtils.replace(replacedBuildGradleContent, "'", "\"");
 	}
-
 }

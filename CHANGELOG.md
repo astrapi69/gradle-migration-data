@@ -4,6 +4,10 @@
 Version 2.4-SNAPSHOT
 -------------
 
+ADDED:
+
+- new class GitExtensions that provides methods for git operations to a Git repository
+- new package-info.java files for all packages
 
 
 Version 2.3

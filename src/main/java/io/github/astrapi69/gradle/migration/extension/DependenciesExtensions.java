@@ -44,21 +44,34 @@ import io.github.astrapi69.string.CaseExtensions;
 import io.github.astrapi69.string.StringExtensions;
 import lombok.NonNull;
 
+/**
+ * The class {@link DependenciesExtensions} provides utility methods for working with dependencies
+ * in a Gradle project.
+ */
 public class DependenciesExtensions
 {
 
+	/**
+	 * Retrieves the content of the 'dependencies' section from the specified build.gradle file.
+	 *
+	 * @param buildGradle
+	 *            the build.gradle file
+	 * @return the content of the 'dependencies' section
+	 * @throws IOException
+	 *             if an I/O error occurs during reading the file
+	 */
 	public static String getDependenciesContent(File buildGradle) throws IOException
 	{
 		return GradleRunConfigurationsCopier.getContentOf("dependencies", buildGradle);
 	}
 
 	/**
-	 * Transforms the given project name(that is in a name convention of kebab-case) in camel-case
-	 * and appends 'Version' to it and returns the result
-	 * 
+	 * Transforms the given project name (in kebab-case) into camel-case, appends 'Version' to it,
+	 * and returns the result.
+	 *
 	 * @param kebabCaseProjectName
-	 *            the project name that is in a name convention of kebab-case
-	 * @return The project name with appended 'Version' string
+	 *            the project name in kebab-case format
+	 * @return the camel-cased project name with 'Version' appended
 	 */
 	public static String getProjectVersionKeyName(String kebabCaseProjectName)
 	{
@@ -67,7 +80,14 @@ public class DependenciesExtensions
 		return projectVersionKeyName + "Version";
 	}
 
-
+	/**
+	 * Converts the content of the 'dependencies' section into a list of strings, each representing
+	 * a dependency.
+	 *
+	 * @param dependenciesContent
+	 *            the content of the 'dependencies' section
+	 * @return a list of dependencies as strings
+	 */
 	public static List<String> getDependenciesAsStringList(String dependenciesContent)
 	{
 		String[] lines = dependenciesContent.split("\n");
@@ -75,6 +95,16 @@ public class DependenciesExtensions
 		return ArrayExtensions.asList(copyOfRange);
 	}
 
+	/**
+	 * Creates a list of {@link DependencyInfo} objects from the given list of dependency strings,
+	 * using the provided version map to resolve version aliases.
+	 *
+	 * @param dependencyRows
+	 *            the list of dependency strings
+	 * @param versionMap
+	 *            the map of version aliases to actual versions
+	 * @return a list of {@link DependencyInfo} objects
+	 */
 	public static List<DependencyInfo> getDependencyInfos(List<String> dependencyRows,
 		Map<String, String> versionMap)
 	{
@@ -96,6 +126,13 @@ public class DependenciesExtensions
 		return dependencyInfos;
 	}
 
+	/**
+	 * Extracts {@link DependencyInfo} from the given dependency string.
+	 *
+	 * @param dependencyRow
+	 *            the dependency string
+	 * @return the {@link DependencyInfo} object or null if the dependency string is invalid
+	 */
 	public static DependencyInfo getDependencyInfo(String dependencyRow)
 	{
 		String stripped = dependencyRow.strip();
@@ -120,19 +157,17 @@ public class DependenciesExtensions
 		return null;
 	}
 
-
 	/**
-	 * Reads all version properties in the gradle.properties file and saves to a java map that will
-	 * be returned
-	 * 
+	 * Reads all version properties from the gradle.properties file and returns them as a map.
+	 *
 	 * @param gradlePropertiesFile
 	 *            the gradle.properties file
 	 * @param keyVersionSuffix
-	 *            the version suffix
-	 * @return a java map with the all versions as key the version string and the actual version as
-	 *         value. For instance 'key:lombokVersion, value:1.18.32'
+	 *            the suffix used for version keys
+	 * @return a map where the key is the version alias (e.g., 'lombokVersion') and the value is the
+	 *         actual version string
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred
+	 *             if an I/O error occurs during reading the file
 	 */
 	public static Map<String, String> getVersionMap(final @NonNull File gradlePropertiesFile,
 		String keyVersionSuffix) throws IOException
@@ -149,6 +184,14 @@ public class DependenciesExtensions
 		return versionMap;
 	}
 
+	/**
+	 * Generates a new dependencies block in the build.gradle format from a list of
+	 * {@link DependencyInfo} objects.
+	 *
+	 * @param dependencyInfos
+	 *            the list of {@link DependencyInfo} objects
+	 * @return the new dependencies block as a string
+	 */
 	public static String getNewDependenciesStructure(List<DependencyInfo> dependencyInfos)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -172,7 +215,14 @@ public class DependenciesExtensions
 		return sb.toString();
 	}
 
-
+	/**
+	 * Generates the content for a libs.versions.toml file from a list of {@link DependencyInfo}
+	 * objects, including sections for versions, libraries, and bundles.
+	 *
+	 * @param dependencyInfos
+	 *            the list of {@link DependencyInfo} objects
+	 * @return the content for a libs.versions.toml file as a string
+	 */
 	public static String getLibsVersionTomlMapAsString(List<DependencyInfo> dependencyInfos)
 	{
 		AtomicBoolean withLombok = new AtomicBoolean(false);
@@ -260,7 +310,7 @@ public class DependenciesExtensions
 				    "meanbean",
 				    "test-object",
 				]
-								""";
+				                """;
 			sb.append(junitDefaultBundles).append(System.lineSeparator());
 		}
 		else
@@ -271,7 +321,7 @@ public class DependenciesExtensions
 				    "test-object",
 				    "testng",
 				]
-								""";
+				                """;
 			sb.append(testngDefaultBundles).append(System.lineSeparator());
 		}
 		// TODO add default plugins section...
@@ -287,7 +337,7 @@ public class DependenciesExtensions
 				lombok-plugin = { id = "io.freefair.lombok", version.ref = "gradle-plugin-lombok-version" }
 				spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
 				version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
-												""";
+				                                """;
 			sb.append(withLombokPlugins).append(System.lineSeparator());
 		}
 		else
@@ -298,7 +348,7 @@ public class DependenciesExtensions
 				license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
 				spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
 				version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
-												""";
+				                                """;
 			sb.append(defaultPlugins).append(System.lineSeparator());
 		}
 		return sb.toString();

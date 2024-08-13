@@ -45,12 +45,23 @@ import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
 
 /**
- * The class {@link MigrateToTomlVersions} provides methods for migrate to new toml project
- * structure
+ * The class {@link MigrateToTomlVersions} provides methods for migrating Gradle projects to a new
+ * TOML-based project structure. This includes creating the necessary TOML files for version
+ * management and updating project structures to conform to the new Gradle standards.
  */
 public class MigrateToTomlVersions
 {
 
+	/**
+	 * Creates a new {@link GradleProjectInfo} object containing the libs.versions.toml content as a
+	 * string based on the provided {@link MigrationInfo}.
+	 *
+	 * @param migrationInfo
+	 *            the migration information containing details about the project directories
+	 * @return a {@link GradleProjectInfo} object with the TOML content as a string
+	 * @throws IOException
+	 *             if an I/O error occurs during file operations
+	 */
 	public static GradleProjectInfo newLibsVersionsTomlAsString(MigrationInfo migrationInfo)
 		throws IOException
 	{
@@ -88,6 +99,16 @@ public class MigrateToTomlVersions
 		return gradleProjectInfo;
 	}
 
+	/**
+	 * Creates a new {@link GradleProjectInfo} object and generates a libs.versions.toml file based
+	 * on the provided {@link MigrationInfo}.
+	 *
+	 * @param migrationInfo
+	 *            the migration information containing details about the project directories
+	 * @return a {@link GradleProjectInfo} object with the TOML file and content
+	 * @throws IOException
+	 *             if an I/O error occurs during file operations
+	 */
 	public static GradleProjectInfo newLibsVersionsTomlFile(MigrationInfo migrationInfo)
 		throws IOException
 	{
@@ -104,6 +125,16 @@ public class MigrateToTomlVersions
 		return gradleProjectInfo;
 	}
 
+	/**
+	 * Creates a new {@link GradleProjectInfo} object and generates a libs.versions.toml file for
+	 * the project located at the specified directory.
+	 *
+	 * @param projectDirectoryName
+	 *            the absolute path to the project directory
+	 * @return a {@link GradleProjectInfo} object with the TOML file and content
+	 * @throws IOException
+	 *             if an I/O error occurs during file operations
+	 */
 	public static GradleProjectInfo newLibsVersionsTomlFile(String projectDirectoryName)
 		throws IOException
 	{
@@ -111,6 +142,20 @@ public class MigrateToTomlVersions
 		return newLibsVersionsTomlFile(migrationInfo);
 	}
 
+	/**
+	 * Migrates a Gradle project to use TOML for version management by generating a
+	 * libs.versions.toml file and copying necessary configuration files.
+	 *
+	 * @param gradleDirectory
+	 *            the directory containing the Gradle files
+	 * @param targetProjectName
+	 *            the name of the target project
+	 * @param targetProjectDirNamePrefix
+	 *            the prefix for the target project directory
+	 * @return a {@link GradleProjectInfo} object with the migrated project information
+	 * @throws IOException
+	 *             if an I/O error occurs during file operations
+	 */
 	public static GradleProjectInfo migrateToTomlVersions(File gradleDirectory,
 		String targetProjectName, String targetProjectDirNamePrefix) throws IOException
 	{
@@ -129,6 +174,16 @@ public class MigrateToTomlVersions
 		return gradleProjectInfo;
 	}
 
+	/**
+	 * Migrates a Gradle project to a new TOML-based project structure using the specified
+	 * {@link ProjectTomlStructureInfo}.
+	 *
+	 * @param projectTomlStructureInfo
+	 *            the information about the source and target project structure
+	 * @return a {@link GradleProjectInfo} object with the migrated project information
+	 * @throws IOException
+	 *             if an I/O error occurs during file operations
+	 */
 	public static GradleProjectInfo migrateToNewProjectStructure(
 		ProjectTomlStructureInfo projectTomlStructureInfo) throws IOException
 	{
@@ -139,6 +194,23 @@ public class MigrateToTomlVersions
 			projectTomlStructureInfo.getTargetProjectDirNamePrefix());
 	}
 
+	/**
+	 * Migrates a Gradle project to a new TOML-based project structure.
+	 *
+	 * @param gradleDirectory
+	 *            the directory containing the Gradle files
+	 * @param sourceProjectName
+	 *            the name of the source project
+	 * @param targetProjectName
+	 *            the name of the target project
+	 * @param sourceProjectDirNamePrefix
+	 *            the prefix for the source project directory
+	 * @param targetProjectDirNamePrefix
+	 *            the prefix for the target project directory
+	 * @return a {@link GradleProjectInfo} object with the migrated project information
+	 * @throws IOException
+	 *             if an I/O error occurs during file operations
+	 */
 	public static GradleProjectInfo migrateToNewProjectStructure(File gradleDirectory,
 		String sourceProjectName, String targetProjectName, String sourceProjectDirNamePrefix,
 		String targetProjectDirNamePrefix) throws IOException
