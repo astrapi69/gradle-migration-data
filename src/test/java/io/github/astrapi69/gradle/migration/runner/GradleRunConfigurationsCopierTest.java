@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 
 /**
  * The unit test class for the class {@link GradleRunConfigurationsCopier}
@@ -125,10 +126,11 @@ public class GradleRunConfigurationsCopierTest
 		String sourceGithubUser;
 		String targetGithubUser;
 		// copy
-		sourceProjectName = "gradle-migration-data";
-		targetProjectName = "email-tails";
+		targetProjectName = "swing-base-components";
+		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
+		// sourceProjectName = "gradle-migration-data";
 		sourceGithubUser = "astrapi69";
-		targetGithubUser = "lightblueseas";
+		targetGithubUser = "astrapi69";
 		// targetGithubUser = "astrapi69";
 		sourceProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + sourceGithubUser + "/";
 		targetProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + targetGithubUser + "/";
