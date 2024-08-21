@@ -125,15 +125,21 @@ public class GradleRunConfigurationsCopierTest
 		String targetProjectName;
 		String sourceGithubUser;
 		String targetGithubUser;
+		String sourceProjectDriveDir;
+		String targetProjectDriveDir;
 		// copy
-		targetProjectName = "swing-base-components";
+		targetProjectName = "crypt-data";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		// sourceProjectName = "gradle-migration-data";
 		sourceGithubUser = "astrapi69";
 		targetGithubUser = "astrapi69";
-		// targetGithubUser = "astrapi69";
-		sourceProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + sourceGithubUser + "/";
-		targetProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + targetGithubUser + "/";
+		// targetGithubUser = "lightblueseas";
+		// sourceProjectDriveDir = "/home/astrapi69/dev";
+		// targetProjectDriveDir = "/home/astrapi69/dev";
+		sourceProjectDriveDir = "/run/media/astrapi69/backups";
+		targetProjectDriveDir = "run/media/astrapi69/backups";
+		sourceProjectDirNamePrefix = sourceProjectDriveDir + "/git/hub/" + sourceGithubUser + "/";
+		targetProjectDirNamePrefix = targetProjectDriveDir + "/git/hub/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
 		onlyRunConfigurations = false;
 
