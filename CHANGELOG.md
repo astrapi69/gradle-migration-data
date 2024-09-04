@@ -1,9 +1,13 @@
 ## Change log
 ----------------------
 
-Version 2.5-SNAPSHOT
+Version 3-SNAPSHOT
 -------------
 
+CHANGED:
+
+- rename of module to new name 'io.github.astrapisixtynine.gradle.migration.data'
+- major version to 3.*
 
 Version 2.4
 -------------

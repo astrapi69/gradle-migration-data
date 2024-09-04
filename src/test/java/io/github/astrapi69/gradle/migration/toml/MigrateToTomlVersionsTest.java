@@ -136,7 +136,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "crypt-data";
+		targetProjectName = "silly-collection";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
