@@ -136,7 +136,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "silly-collection";
+		targetProjectName = "comparator-extensions";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
