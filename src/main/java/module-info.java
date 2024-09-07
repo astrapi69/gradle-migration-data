@@ -23,7 +23,7 @@ module io.github.astrapisixtynine.gradle.migration.data
 	requires static lombok;
 	requires org.apache.commons.lang3;
 	requires org.apache.commons.text;
-	requires silly.collection;
+	requires io.github.astrapisixtynine.silly.collection;
 	requires file.worker;
 	requires silly.io.main;
 	requires silly.strings;
