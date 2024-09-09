@@ -42,10 +42,14 @@ throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable
 
 [bundles]
 unit-testing = [
+    "commons-lang3",
+    "jackson-dataformat-toml",
+    "jgit",
     "junit-jupiter",
     "meanbean",
     "mockito-core",
     "test-object",
+    "throwable",
 ]
 
 [plugins]
