@@ -158,9 +158,9 @@ public class MigrateToTomlVersionsTest
 		Thread.sleep(5000);
 
 		File targetProjectDir = DirectoryFactory
-				.newDirectory(targetProjectDirNamePrefix + targetProjectName);
+			.newDirectory(targetProjectDirNamePrefix + targetProjectName);
 		File sourceProjectDir = DirectoryFactory
-				.newDirectory(sourceProjectDirNamePrefix + sourceProjectName);
+			.newDirectory(sourceProjectDirNamePrefix + sourceProjectName);
 
 		updateGradlePluginFiles(targetProjectDir, sourceProjectDir);
 		// Replace build.gradle content with new one...
@@ -210,24 +210,26 @@ public class MigrateToTomlVersionsTest
 	private static void updateGradleYamlFile(File targetProjectDir) throws IOException
 	{
 		File targetGradleYamlFile = PathFinder.getRelativePath(targetProjectDir, ".github",
-				"workflows", "gradle.yml");
+			"workflows", "gradle.yml");
 		File sourceGradleYamlFile = PathFinder.getRelativePath(PathFinder.getProjectDirectory(),
-				".github", "workflows", "gradle.yml");
+			".github", "workflows", "gradle.yml");
 
 		CopyFileExtensions.copyFile(sourceGradleYamlFile, targetGradleYamlFile);
 	}
 
-	private static void updateGradlePluginFiles(File targetProjectDir, File sourceProjectDir) throws IOException
+	private static void updateGradlePluginFiles(File targetProjectDir, File sourceProjectDir)
+		throws IOException
 	{
 		File targetGradleApplyGradleFiles = PathFinder.getRelativePath(targetProjectDir, "gradle",
-				"apply-gradle-files.gradle");
+			"apply-gradle-files.gradle");
 		File targetGradleFilesList = PathFinder.getRelativePath(targetProjectDir, "gradle",
+			"gradle-files.list");
+		if (!targetGradleApplyGradleFiles.exists())
+		{
+			File sourceGradleApplyGradleFiles = PathFinder.getRelativePath(sourceProjectDir,
+				"gradle", "apply-gradle-files.gradle");
+			File sourceGradleFilesList = PathFinder.getRelativePath(sourceProjectDir, "gradle",
 				"gradle-files.list");
-		if(!targetGradleApplyGradleFiles.exists()) {
-			File sourceGradleApplyGradleFiles = PathFinder.getRelativePath(sourceProjectDir,"gradle",
-					"apply-gradle-files.gradle");
-			File sourceGradleFilesList = PathFinder.getRelativePath(sourceProjectDir,"gradle",
-					"gradle-files.list");
 			CopyFileExtensions.copyFile(sourceGradleApplyGradleFiles, targetGradleApplyGradleFiles);
 			CopyFileExtensions.copyFile(sourceGradleFilesList, targetGradleFilesList);
 		}
@@ -248,12 +250,13 @@ public class MigrateToTomlVersionsTest
 
 		// Adding files in batch
 		List<String> filesToAdd = ListFactory.newArrayList();
-		filesToAdd.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "apply-gradle-files.gradle")
+		filesToAdd
+			.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "apply-gradle-files.gradle")
 				.getAbsolutePath());
 		filesToAdd.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "gradle-files.list")
-				.getAbsolutePath());
+			.getAbsolutePath());
 		filesToAdd.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "libs.versions.toml")
-				.getAbsolutePath());
+			.getAbsolutePath());
 		filesToAdd.add(
 			PathFinder.getRelativePath(targetProjectDir, "gradle", "version-catalog-update.gradle")
 				.getAbsolutePath());
