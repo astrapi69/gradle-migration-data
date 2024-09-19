@@ -1,4 +1,5 @@
 [versions]
+assertj-core-version = "3.26.3"
 commons-lang3-version = "3.17.0"
 commons-text-version = "1.12.0"
 file-worker-version = "17.4"
@@ -9,7 +10,7 @@ gradle-plugin-spotless-version = "7.0.0.BETA2"
 gradle-plugin-version-catalog-update-version = "0.8.4"
 gradle-plugin-versions-version = "0.51.0"
 jackson-dataformat-toml-version = "2.18.0-rc1"
-jgit-version = "6.10.0.202406032230-r"
+jgit-version = "7.0.0.202409031743-r"
 junit-jupiter-version = "5.11.0"
 junit-platform-launcher-version = "1.11.0"
 lombok-version = "1.18.34"
@@ -19,10 +20,11 @@ silly-bean-version = "2"
 silly-collection-version = "28"
 silly-io-version = "3.1"
 silly-strings-version = "9.1"
-test-object-version = "8.2"
+test-object-version = "9"
 throwable-version = "3"
 
 [libraries]
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj-core-version" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3-version" }
 commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text-version" }
 file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
@@ -42,6 +44,7 @@ throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable
 
 [bundles]
 unit-testing = [
+    "assertj-core",
     "commons-lang3",
     "jackson-dataformat-toml",
     "jgit",
@@ -55,6 +58,7 @@ unit-testing = [
 [plugins]
 gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
 grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
+java-gradle-plugin = { id = "java-gradle-plugin" }
 license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
 lombok-plugin = { id = "io.freefair.lombok", version.ref = "gradle-plugin-lombok-version" }
 spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }

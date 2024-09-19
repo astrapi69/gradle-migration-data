@@ -13,6 +13,8 @@ dependencies {
     implementation libs.silly.collection
     implementation libs.silly.bean
 
+    // test kit for gradle
+    testImplementation gradleTestKit()
     // Note: use of bundles...
     testImplementation libs.bundles.unit.testing
     testRuntimeOnly libs.junit.platform.launcher
