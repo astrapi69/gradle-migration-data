@@ -6,7 +6,7 @@ Version 3-SNAPSHOT
 
 ADDED:
 
-- new test dependecy gradleTestKit 
+- new test dependecy gradleTestKit
 - new test dependecy assertj-core
 - new gradle plugin with id 'java-gradle-plugin'
 
