@@ -58,10 +58,10 @@ public class GitExtensions
 	{
 		String command;
 		String output;
-		String gitAddCommandPrefix;
-		gitAddCommandPrefix = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add "
+		String commandPrefix;
+		commandPrefix = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add "
 			+ "--ignore-errors -A -f -- ";
-		command = gitAddCommandPrefix + fileToAdd;
+		command = commandPrefix + fileToAdd;
 		log.info("Executing command: " + command);
 
 		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
