@@ -3,21 +3,21 @@ assertj-core-version = "3.26.3"
 commons-lang3-version = "3.17.0"
 commons-text-version = "1.12.0"
 file-worker-version = "17.4"
-gradle-plugin-grgit-version = "5.2.2"
+gradle-plugin-grgit-version = "5.3.0"
 gradle-plugin-license-version = "0.16.1"
-gradle-plugin-lombok-version = "8.10"
+gradle-plugin-lombok-version = "8.10.2"
 gradle-plugin-spotless-version = "7.0.0.BETA2"
 gradle-plugin-version-catalog-update-version = "0.8.4"
 gradle-plugin-versions-version = "0.51.0"
-jackson-dataformat-toml-version = "2.18.0-rc1"
+jackson-dataformat-toml-version = "2.18.0"
 jgit-version = "7.0.0.202409031743-r"
-junit-jupiter-version = "5.11.0"
-junit-platform-launcher-version = "1.11.0"
+junit-jupiter-version = "5.11.2"
+junit-platform-launcher-version = "1.11.2"
 lombok-version = "1.18.34"
 meanbean-version = "3.0.0-M9"
-mockito-core-version = "5.13.0"
-silly-bean-version = "2"
-silly-collection-version = "28"
+mockito-core-version = "5.14.1"
+silly-bean-version = "3.0"
+silly-collection-version = "28.1"
 silly-io-version = "3.1"
 silly-strings-version = "9.1"
 test-object-version = "9"
@@ -43,6 +43,36 @@ test-object = { module = "io.github.astrapi69:test-object", version.ref = "test-
 throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
 
 [bundles]
+# Dependencies for the annotation processor used during the compilation process
+annotation-processor = [
+    "lombok",
+]
+# Dependencies required only at compile-time and not included in the final artifact
+compile-only = [
+    "lombok",
+]
+# The core dependencies
+core-dependencies = [
+    "commons-text",
+    "file-worker",
+    "silly-bean",
+    "silly-collection",
+    "silly-io",
+    "silly-strings",
+]
+# Annotation processor dependencies used specifically for test classes
+test-annotation-processor = [
+    "lombok",
+]
+# Dependencies required only at test compile-time and not included in test runtime
+test-compile-only = [
+    "lombok",
+]
+# Dependencies required only at test runtime, such as test execution platforms
+test-runtime-only = [
+    "junit-platform-launcher",
+]
+# Dependencies required for unit testing
 unit-testing = [
     "assertj-core",
     "commons-lang3",

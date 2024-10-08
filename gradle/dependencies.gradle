@@ -1,22 +1,13 @@
 
 dependencies {
-
-    compileOnly libs.lombok
-    annotationProcessor libs.lombok
-    testCompileOnly libs.lombok
-    testAnnotationProcessor libs.lombok
-
-    implementation libs.commons.text
-    implementation libs.silly.io
-    implementation libs.file.worker
-    implementation libs.silly.strings
-    implementation libs.silly.collection
-    implementation libs.silly.bean
-
+    // Note: use of bundles...
+    compileOnly libs.bundles.compile.only
+    annotationProcessor libs.bundles.annotation.processor
+    testCompileOnly libs.bundles.test.compile.only
+    testAnnotationProcessor libs.bundles.test.annotation.processor
+    implementation libs.bundles.core.dependencies
+    testImplementation libs.bundles.unit.testing
+    testRuntimeOnly libs.bundles.test.runtime.only
     // test kit for gradle
     testImplementation gradleTestKit()
-    // Note: use of bundles...
-    testImplementation libs.bundles.unit.testing
-    testRuntimeOnly libs.junit.platform.launcher
-
 }

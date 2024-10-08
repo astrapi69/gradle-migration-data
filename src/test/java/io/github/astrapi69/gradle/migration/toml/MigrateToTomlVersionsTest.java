@@ -47,7 +47,6 @@ import io.github.astrapi69.gradle.migration.info.DependencyInfo;
 import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
-import io.github.astrapi69.io.shell.LinuxShellExecutor;
 import io.github.astrapi69.string.CaseExtensions;
 
 
