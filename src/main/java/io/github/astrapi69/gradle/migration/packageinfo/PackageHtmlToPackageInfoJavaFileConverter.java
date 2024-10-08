@@ -34,8 +34,13 @@ import java.util.regex.*;
  * package.html files, reads the content of the body tag, creates a new package-info.java file with
  * the extracted content, and deletes the obsolete package.html file
  */
-public class PackageHtmlToPackageInfoJavaFileConverter
+public final class PackageHtmlToPackageInfoJavaFileConverter
 {
+
+	/**
+	 * Private constructor to prevent instantiation
+	 */
+	private PackageHtmlToPackageInfoJavaFileConverter(){}
 
 	/**
 	 * The constant PACKAGE_HTML, representing the name of the package.html file.
@@ -49,7 +54,7 @@ public class PackageHtmlToPackageInfoJavaFileConverter
 
 	/**
 	 * The constant BODY_PATTERN, representing the regular expression pattern to match the content
-	 * within the <body> tag in the package.html file.
+	 * within the &#x3C;body&#x3E; tag in the package.html file.
 	 */
 	public static final Pattern BODY_PATTERN = Pattern.compile("<body>(.*?)</body>",
 		Pattern.DOTALL);
@@ -70,7 +75,7 @@ public class PackageHtmlToPackageInfoJavaFileConverter
 	}
 
 	/**
-	 * Processes a package.html file by extracting the content of the <body> tag, creating a
+	 * Processes a package.html file by extracting the content of the &#x3C;body&#x3E; tag, creating a
 	 * package-info.java file, and deleting the obsolete package.html file
 	 *
 	 * @param packageHtmlPath

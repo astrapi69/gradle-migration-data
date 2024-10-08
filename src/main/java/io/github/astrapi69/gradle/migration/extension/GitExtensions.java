@@ -34,8 +34,13 @@ import lombok.extern.java.Log;
  * The class {@code GitAddExtensions} provides methods to add files to a Git repository
  */
 @Log
-public class GitExtensions
+public final class GitExtensions
 {
+
+	/**
+	 * Private constructor to prevent instantiation
+	 */
+	private GitExtensions(){}
 
 	/**
 	 * Adds a list of files to Git using the specified shell path and execution path
