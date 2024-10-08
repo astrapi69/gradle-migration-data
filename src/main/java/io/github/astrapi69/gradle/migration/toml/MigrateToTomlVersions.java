@@ -49,8 +49,15 @@ import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier
  * TOML-based project structure. This includes creating the necessary TOML files for version
  * management and updating project structures to conform to the new Gradle standards.
  */
-public class MigrateToTomlVersions
+public final class MigrateToTomlVersions
 {
+
+	/**
+	 * Private constructor to prevent instantiation
+	 */
+	private MigrateToTomlVersions()
+	{
+	}
 
 	/**
 	 * Creates a new {@link GradleProjectInfo} object containing the libs.versions.toml content as a

@@ -47,7 +47,6 @@ import io.github.astrapi69.gradle.migration.info.DependencyInfo;
 import io.github.astrapi69.gradle.migration.info.GradleProjectInfo;
 import io.github.astrapi69.gradle.migration.info.ProjectTomlStructureInfo;
 import io.github.astrapi69.gradle.migration.runner.GradleRunConfigurationsCopier;
-import io.github.astrapi69.io.shell.LinuxShellExecutor;
 import io.github.astrapi69.string.CaseExtensions;
 
 
@@ -136,7 +135,7 @@ public class MigrateToTomlVersionsTest
 
 		gradleDirectory = getGradleDirectory();
 
-		targetProjectName = "bundle-app-ui";
+		targetProjectName = "silly-strings";
 		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
 		sourceGithubUser = "astrapi69";
 		// targetGithubUser = "lightblueseas";
@@ -159,7 +158,10 @@ public class MigrateToTomlVersionsTest
 
 		File targetProjectDir = DirectoryFactory
 			.newDirectory(targetProjectDirNamePrefix + targetProjectName);
+		File sourceProjectDir = DirectoryFactory
+			.newDirectory(sourceProjectDirNamePrefix + sourceProjectName);
 
+		updateGradlePluginFiles(targetProjectDir, sourceProjectDir);
 		// Replace build.gradle content with new one...
 
 		updateBuildGradleFile(targetProjectDir, gradleProjectInfo);
@@ -214,6 +216,24 @@ public class MigrateToTomlVersionsTest
 		CopyFileExtensions.copyFile(sourceGradleYamlFile, targetGradleYamlFile);
 	}
 
+	private static void updateGradlePluginFiles(File targetProjectDir, File sourceProjectDir)
+		throws IOException
+	{
+		File targetGradleApplyGradleFiles = PathFinder.getRelativePath(targetProjectDir, "gradle",
+			"apply-gradle-files.gradle");
+		File targetGradleFilesList = PathFinder.getRelativePath(targetProjectDir, "gradle",
+			"gradle-files.list");
+		if (!targetGradleApplyGradleFiles.exists())
+		{
+			File sourceGradleApplyGradleFiles = PathFinder.getRelativePath(sourceProjectDir,
+				"gradle", "apply-gradle-files.gradle");
+			File sourceGradleFilesList = PathFinder.getRelativePath(sourceProjectDir, "gradle",
+				"gradle-files.list");
+			CopyFileExtensions.copyFile(sourceGradleApplyGradleFiles, targetGradleApplyGradleFiles);
+			CopyFileExtensions.copyFile(sourceGradleFilesList, targetGradleFilesList);
+		}
+	}
+
 	private static void addGitFiles(File targetProjectDir, String targetProjectName)
 		throws IOException, InterruptedException
 	{
@@ -229,6 +249,11 @@ public class MigrateToTomlVersionsTest
 
 		// Adding files in batch
 		List<String> filesToAdd = ListFactory.newArrayList();
+		filesToAdd
+			.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "apply-gradle-files.gradle")
+				.getAbsolutePath());
+		filesToAdd.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "gradle-files.list")
+			.getAbsolutePath());
 		filesToAdd.add(PathFinder.getRelativePath(targetProjectDir, "gradle", "libs.versions.toml")
 			.getAbsolutePath());
 		filesToAdd.add(

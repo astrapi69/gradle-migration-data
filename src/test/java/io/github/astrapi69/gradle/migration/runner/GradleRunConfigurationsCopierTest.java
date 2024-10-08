@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.gradle.migration.info.DependenciesInfo;
 
 /**
  * The unit test class for the class {@link GradleRunConfigurationsCopier}
@@ -124,14 +125,21 @@ public class GradleRunConfigurationsCopierTest
 		String targetProjectName;
 		String sourceGithubUser;
 		String targetGithubUser;
+		String sourceProjectDriveDir;
+		String targetProjectDriveDir;
 		// copy
-		sourceProjectName = "gradle-migration-data";
-		targetProjectName = "email-tails";
+		targetProjectName = "crypt-data";
+		sourceProjectName = DependenciesInfo.JAVA_LIBRARY_TEMPLATE_NAME;
+		// sourceProjectName = "gradle-migration-data";
 		sourceGithubUser = "astrapi69";
-		targetGithubUser = "lightblueseas";
-		// targetGithubUser = "astrapi69";
-		sourceProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + sourceGithubUser + "/";
-		targetProjectDirNamePrefix = "/home/astrapi69/dev/git/hub/" + targetGithubUser + "/";
+		targetGithubUser = "astrapi69";
+		// targetGithubUser = "lightblueseas";
+		// sourceProjectDriveDir = "/home/astrapi69/dev";
+		// targetProjectDriveDir = "/home/astrapi69/dev";
+		sourceProjectDriveDir = "/run/media/astrapi69/backups";
+		targetProjectDriveDir = "run/media/astrapi69/backups";
+		sourceProjectDirNamePrefix = sourceProjectDriveDir + "/git/hub/" + sourceGithubUser + "/";
+		targetProjectDirNamePrefix = targetProjectDriveDir + "/git/hub/" + targetGithubUser + "/";
 		runConfigurationsInSameFolder = false;
 		onlyRunConfigurations = false;
 

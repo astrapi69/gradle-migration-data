@@ -14,6 +14,8 @@ plugins {
     id 'signing'
     alias(libs.plugins.gradle.versions.plugin)
     alias(libs.plugins.grgit.gradle)
+    // only for use with gradle plugin testing
+    // alias(libs.plugins.java.gradle.plugin)
     alias(libs.plugins.license.gradle.plugin)
     alias(libs.plugins.lombok.plugin)
     alias(libs.plugins.spotless.plugin.gradle)

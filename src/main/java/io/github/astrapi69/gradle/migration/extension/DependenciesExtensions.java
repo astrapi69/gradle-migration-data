@@ -48,8 +48,15 @@ import lombok.NonNull;
  * The class {@link DependenciesExtensions} provides utility methods for working with dependencies
  * in a Gradle project.
  */
-public class DependenciesExtensions
+public final class DependenciesExtensions
 {
+
+	/**
+	 * Private constructor to prevent instantiation
+	 */
+	private DependenciesExtensions()
+	{
+	}
 
 	/**
 	 * Retrieves the content of the 'dependencies' section from the specified build.gradle file.

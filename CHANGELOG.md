@@ -1,6 +1,33 @@
 ## Change log
 ----------------------
 
+Version 3.0
+-------------
+
+ADDED:
+
+- new test dependecy gradleTestKit
+- new test dependecy assertj-core
+- new gradle plugin with id 'java-gradle-plugin'
+
+CHANGED:
+
+- update to jdk version 21
+- update gradle to new version 8.10.2
+- rename of module to new name 'io.github.astrapisixtynine.gradle.migration.data'
+- major version to 3.*
+- update of gradle-plugin dependency with id 'io.freefair.lombok' to new patch version 8.10
+- update of gradle-plugin dependency with id 'com.diffplug.spotless' to new beta version 7.0.0.BETA2
+- update of dependency file-worker to new version 18.0
+- update of dependency silly-bean to new major version 3.0
+- update of dependency silly-collection to new major version 28.1
+- update of dependency silly-strings to new version 9.2
+- update of test dependency commons-lang3 to new version 3.17.0
+- update of test dependency test-object to new major version 9
+- update of test dependency mockito-core to the new version 5.14.1
+- update of test dependency junit-jupiter-api to new version 5.11.2
+- dependencies are managed now over bundles
+
 Version 2.4
 -------------
 

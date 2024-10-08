@@ -7,8 +7,8 @@
  *
  * <ul>
  * <li>Traversing project directories to identify and process package.html files.</li>
- * <li>Extracting the content of the <body> tag from package.html files and transferring it to newly
- * created package-info.java files.</li>
+ * <li>Extracting the content of the &#x3C;body&#x3E; tag from package.html files and transferring
+ * it to newly created package-info.java files.</li>
  * <li>Ensuring the correct package structure is maintained in the generated package-info.java
  * files.</li>
  * <li>Deleting obsolete package.html files after successful conversion.</li>

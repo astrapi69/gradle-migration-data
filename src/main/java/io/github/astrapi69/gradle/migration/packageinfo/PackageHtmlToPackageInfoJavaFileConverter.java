@@ -1,3 +1,27 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2023 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package io.github.astrapi69.gradle.migration.packageinfo;
 
 import java.io.*;
@@ -10,8 +34,15 @@ import java.util.regex.*;
  * package.html files, reads the content of the body tag, creates a new package-info.java file with
  * the extracted content, and deletes the obsolete package.html file
  */
-public class PackageHtmlToPackageInfoJavaFileConverter
+public final class PackageHtmlToPackageInfoJavaFileConverter
 {
+
+	/**
+	 * Private constructor to prevent instantiation
+	 */
+	private PackageHtmlToPackageInfoJavaFileConverter()
+	{
+	}
 
 	/**
 	 * The constant PACKAGE_HTML, representing the name of the package.html file.
@@ -25,7 +56,7 @@ public class PackageHtmlToPackageInfoJavaFileConverter
 
 	/**
 	 * The constant BODY_PATTERN, representing the regular expression pattern to match the content
-	 * within the <body> tag in the package.html file.
+	 * within the &#x3C;body&#x3E; tag in the package.html file.
 	 */
 	public static final Pattern BODY_PATTERN = Pattern.compile("<body>(.*?)</body>",
 		Pattern.DOTALL);
@@ -46,8 +77,8 @@ public class PackageHtmlToPackageInfoJavaFileConverter
 	}
 
 	/**
-	 * Processes a package.html file by extracting the content of the <body> tag, creating a
-	 * package-info.java file, and deleting the obsolete package.html file
+	 * Processes a package.html file by extracting the content of the &#x3C;body&#x3E; tag, creating
+	 * a package-info.java file, and deleting the obsolete package.html file
 	 *
 	 * @param packageHtmlPath
 	 *            the path to the package.html file

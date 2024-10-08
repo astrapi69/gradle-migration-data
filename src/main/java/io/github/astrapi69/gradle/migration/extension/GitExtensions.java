@@ -1,3 +1,27 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2023 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package io.github.astrapi69.gradle.migration.extension;
 
 import java.io.IOException;
@@ -10,8 +34,15 @@ import lombok.extern.java.Log;
  * The class {@code GitAddExtensions} provides methods to add files to a Git repository
  */
 @Log
-public class GitExtensions
+public final class GitExtensions
 {
+
+	/**
+	 * Private constructor to prevent instantiation
+	 */
+	private GitExtensions()
+	{
+	}
 
 	/**
 	 * Adds a list of files to Git using the specified shell path and execution path
@@ -58,10 +89,10 @@ public class GitExtensions
 	{
 		String command;
 		String output;
-		String gitAddCommandPrefix;
-		gitAddCommandPrefix = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add "
+		String commandPrefix;
+		commandPrefix = "git -c credential.helper= -c core.quotepath=false -c log.showSignature=false add "
 			+ "--ignore-errors -A -f -- ";
-		command = gitAddCommandPrefix + fileToAdd;
+		command = commandPrefix + fileToAdd;
 		log.info("Executing command: " + command);
 
 		output = LinuxShellExecutor.execute(shellPath, executionPath, command);
