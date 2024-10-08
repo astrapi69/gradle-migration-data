@@ -40,7 +40,9 @@ public final class GitExtensions
 	/**
 	 * Private constructor to prevent instantiation
 	 */
-	private GitExtensions(){}
+	private GitExtensions()
+	{
+	}
 
 	/**
 	 * Adds a list of files to Git using the specified shell path and execution path

@@ -40,7 +40,9 @@ public final class PackageHtmlToPackageInfoJavaFileConverter
 	/**
 	 * Private constructor to prevent instantiation
 	 */
-	private PackageHtmlToPackageInfoJavaFileConverter(){}
+	private PackageHtmlToPackageInfoJavaFileConverter()
+	{
+	}
 
 	/**
 	 * The constant PACKAGE_HTML, representing the name of the package.html file.
@@ -75,8 +77,8 @@ public final class PackageHtmlToPackageInfoJavaFileConverter
 	}
 
 	/**
-	 * Processes a package.html file by extracting the content of the &#x3C;body&#x3E; tag, creating a
-	 * package-info.java file, and deleting the obsolete package.html file
+	 * Processes a package.html file by extracting the content of the &#x3C;body&#x3E; tag, creating
+	 * a package-info.java file, and deleting the obsolete package.html file
 	 *
 	 * @param packageHtmlPath
 	 *            the path to the package.html file

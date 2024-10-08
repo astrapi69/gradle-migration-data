@@ -55,7 +55,9 @@ public final class MigrateToTomlVersions
 	/**
 	 * Private constructor to prevent instantiation
 	 */
-	private MigrateToTomlVersions(){}
+	private MigrateToTomlVersions()
+	{
+	}
 
 	/**
 	 * Creates a new {@link GradleProjectInfo} object containing the libs.versions.toml content as a

@@ -54,7 +54,9 @@ public final class DependenciesExtensions
 	/**
 	 * Private constructor to prevent instantiation
 	 */
-	private DependenciesExtensions(){}
+	private DependenciesExtensions()
+	{
+	}
 
 	/**
 	 * Retrieves the content of the 'dependencies' section from the specified build.gradle file.
