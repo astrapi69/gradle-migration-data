@@ -20,9 +20,15 @@ If you like this project put a ⭐ and donate
 
 No animals were harmed in the making of this library.
 
+## Import dependencies to your project
+
+<details>
+  <summary>gradle (click to expand)</summary>
+
 ## gradle dependency
 
-Replace the variable ${latestVersion} with the current latest version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data)
+Replace the variable ${latestVersion} with the current latest
+version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data)
 
 You can first define the version in the ext section and add than the following gradle dependency to
 your project `build.gradle` if you want to import the core functionality of gradle-migration-data:
@@ -36,21 +42,13 @@ gradleMigrationDataVersion=${latestVersion}
 or in build.gradle ext area
 
 ```
-ext {
-            ...
     gradleMigrationDataVersion = "${latestVersion}"
-            ...
-}
 ```
 
-and then add the dependency to the dependencies area
+then add the dependency to the dependencies area
 
 ```
-dependencies {
-            ...
     implementation("io.github.astrapi69:gradle-migration-data:$gradleMigrationDataVersion")
-            ...
-}
 ```
 
 # with new libs.versions.toml file
@@ -59,46 +57,99 @@ If you use the new libs.versions.toml file for new automatic catalog versions up
 
 ```
 [versions]
-gradle-migration-data-version=${latestVersion}
-
+```
+```
+gradle-migration-data-version= "${latestVersion}"
+```
+```
 [libraries]
+```
+```
 gradle-migration-data = { module = "io.github.astrapi69:gradle-migration-data", version.ref = "gradle-migration-data-version" }
 ```
+
 then add the dependency to the dependencies area
 
 ```
     implementation libs.gradle.migration.data
 ```
 
+</details>
+
+<details>
+  <summary>Maven (click to expand)</summary>
+
 ## Maven dependency
 
-Maven dependency is now on sonatype. Check
+Maven dependency is now on sonatype.
+Check
 out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~gradle-migration-data~~~)
 for latest snapshots and releases.
 
 Add the following maven dependency to your project `pom.xml` if you want to import the core
 functionality of gradle-migration-data:
 
-Than you can add the dependency to your dependencies:
+Then you can add the dependency to your dependencies:
 
     <properties>
-            ...
+        ...
+
+```xml
         <!-- gradle-migration-data version -->
         <gradle-migration-data.version>${latestVersion}</gradle-migration-data.version>
-            ...
+```
+
+        ...
     </properties>
-            ...
+        ...
         <dependencies>
-            ...
+        ...
+
+```xml
             <!-- gradle-migration-data DEPENDENCY -->
             <dependency>
                 <groupId>io.github.astrapi69</groupId>
                 <artifactId>gradle-migration-data</artifactId>
                 <version>${gradle-migration-data.version}</version>
             </dependency>
-            ...
+```
+
+        ...
         </dependencies>
 
+</details>
+
+
+<details>
+  <summary>Snapshots (click to expand)</summary>
+
+## 📸 Snapshots
+
+[![Snapshot](https://img.shields.io/badge/dynamic/xml?url=https://oss.sonatype.org/service/local/repositories/snapshots/content/io/github/astrapi69/gradle-migration-data/maven-metadata.xml&label=snapshot&color=red&query=.//versioning/latest)](https://oss.sonatype.org/content/repositories/snapshots/io/github/astrapi69/gradle-migration-data/)
+
+This section describes how to import snapshot versions into your project.
+Add the following code snippet to your gradle file in the repositories section:
+
+```
+repositories {
+   //...
+```
+
+```groovy
+    maven {
+        name "Sonatype Nexus Snapshots"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
+```
+
+```
+}
+```
+
+</details>
 
 # Donations
 
