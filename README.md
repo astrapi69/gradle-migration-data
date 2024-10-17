@@ -2,7 +2,7 @@
 
 <div style="text-align: center">
 
-[![Build Status](https://travis-ci.com/astrapi69/gradle-migration-data.svg?branch=master)](https://travis-ci.com/astrapi69/gradle-migration-data)
+[![Build Status](https://github.com/astrapi69/gradle-migration-data/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/gradle-migration-data/actions/workflows/gradle.yml)
 [![Coverage Status](https://coveralls.io/repos/github/astrapi69/gradle-migration-data/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/gradle-migration-data?branch=develop)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/gradle-migration-data.svg?style=flat)](https://github.com/astrapi69/gradle-migration-data/issues)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/gradle-migration-data)
