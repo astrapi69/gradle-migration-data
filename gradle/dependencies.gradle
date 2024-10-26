@@ -4,10 +4,10 @@ dependencies {
     annotationProcessor libs.bundles.annotation.processor
     compileOnly libs.bundles.compile.only
 
+    implementation libs.bundles.core.dependencies
+    
     testAnnotationProcessor libs.bundles.test.annotation.processor
     testCompileOnly libs.bundles.test.compile.only
-
-    implementation libs.bundles.core.dependencies
 
     testImplementation libs.bundles.unit.testing
     testRuntimeOnly libs.bundles.test.runtime.only
