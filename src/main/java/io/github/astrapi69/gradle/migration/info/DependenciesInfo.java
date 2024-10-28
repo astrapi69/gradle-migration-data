@@ -46,6 +46,9 @@ public class DependenciesInfo
 	/** The template name for a Java library project. */
 	public static final String JAVA_LIBRARY_TEMPLATE_NAME = "java-library-template";
 
+	/** The template name for a kotlin library project. */
+	public static final String KOTLIN_LIBRARY_TEMPLATE_NAME = "kotlin-library-template";
+
 	/** The template name for a Spring Boot project. */
 	public static final String SPRING_BOOT_TEMPLATE_NAME = "spring-boot-template";
 
