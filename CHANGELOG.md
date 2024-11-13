@@ -6,8 +6,10 @@ Version 3.1-SNAPSHOT
 
 CHANGED:
 
-- update gradle to new version 8.11-rc-1
-- update of gradle-plugin dependency with id 'com.diffplug.spotless' to new beta version 7.0.0.BETA3
+- update gradle to new version 8.11
+- update of gradle-plugin dependency with id 'com.diffplug.spotless' to new beta version 7.0.0.BETA4
+- update of dependency file-worker to new version 19.0
+- update of dependency silly-io to new version 3.3
 - update of test dependency mockito-core to the new version 5.14.2
 
 Version 3.0
