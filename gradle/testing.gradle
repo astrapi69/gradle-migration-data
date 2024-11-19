@@ -1,3 +1,6 @@
+tasks.named("test") {
+    it.mustRunAfter(tasks.named("jar"))
+}
 
 test {
     useJUnitPlatform()
