@@ -1,15 +1,13 @@
-
 java {
-    sourceCompatibility = "$projectSourceCompatibility" as Object
+    sourceCompatibility = projectSourceCompatibility
     toolchain {
-        languageVersion = JavaLanguageVersion.of("$projectSourceCompatibility")
+        languageVersion = JavaLanguageVersion.of(projectSourceCompatibility)
     }
 }
 
-tasks.withType(JavaCompile).configureEach { javaCompiler ->
+tasks.withType(JavaCompile).configureEach  { javaCompiler ->
     options.encoding = "UTF-8"
-    // uncomment the next line for build with compiler argument -Xlint:deprecation
+    // Uncomment the lines below if you want to enable specific compiler warnings
     // options.compilerArgs << "-Xlint:deprecation"
-    // uncomment the next line for build with compiler argument -Xlint:unchecked
     // options.compilerArgs << "-Xlint:unchecked"
 }
